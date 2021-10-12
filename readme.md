@@ -41,7 +41,7 @@
 
 ### **已官方支持TTS通道（CTP开放平台）的产品：**
 - [vn.py（Python量化交易客户端）](https://www.vnpy.com/)
-- [MT5（已支持国内A股及期货期权交易）](https://www.zhihu.com/people/mt5ctp)
+- [MT5CTP（已支持国内A股及期货期权交易）](https://www.zhihu.com/people/mt5ctp)
 - [TextTrader（CTP开源命令行交易终端）](https://github.com/krenx1983/TextTrader)
 
 ### **QQ技术交流群：**
