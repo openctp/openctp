@@ -40,13 +40,13 @@
 股票接入方式采用**直连证券柜台**方式，不经过开放平台处理，因此需要向证券公司申请模拟账号，华鑫证券N视界模拟账号申请地址：http://www.n-sight.com.cn
 
 ### **已官方支持TTS通道（CTP开放平台）的产品：**
-- [vn.py（知名Python量化交易客户端）](https://www.vnpy.com/)
+- [vn.py（知名Python量化交易客户端，支持全球市场交易）](https://www.vnpy.com/)
 <img src="https://user-images.githubusercontent.com/83346523/136988918-1159fc88-073e-4b6f-a8d6-3f33991e8a72.png" alt="vnpy" width="700" height="400" />
 
 - [MT5CTP（MT5软件，已支持国内A股、期货及期权交易）](https://www.zhihu.com/people/mt5ctp)
 <img src="https://user-images.githubusercontent.com/83346523/136989596-b12d91e8-48a0-4b26-bcaf-fdfca52d962c.png" alt="mt5ctp" width="700" height="400" />
 
-- [TextTrader（CTP开源命令行交易终端）](https://github.com/krenx1983/TextTrader)
+- [TextTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/krenx1983/TextTrader)
 <img src="https://user-images.githubusercontent.com/83346523/136989754-1f0130e6-5d75-427f-bbf3-7ed084b6eae1.png" alt="texttrader" width="700" height="400" />
 
 ### **QQ技术交流群：**
