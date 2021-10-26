@@ -49,6 +49,10 @@
 - [TextTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/krenx1983/TextTrader)
 <img src="https://user-images.githubusercontent.com/83346523/136989754-1f0130e6-5d75-427f-bbf3-7ed084b6eae1.png" alt="texttrader" width="700" height="400" />
 
+### **通过自己替换dll可接入TTS通道（CTP开放平台）的产品：**
+- [快期V3（CTP期货交易客户端）](https://zhuanlan.zhihu.com/p/376482285)
+<img src="https://user-images.githubusercontent.com/83346523/138928402-f7e12a28-50d3-457b-9c0a-32b356448913.png" alt="快期V3" width="700" height="400" />
+
 ### **QQ技术交流群：**
 
 <img src="https://user-images.githubusercontent.com/83346523/123681604-99a1e380-d87c-11eb-9ac1-301551cc704c.jpg" alt="QQ群二维码" width="300" height="300" />
