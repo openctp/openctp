@@ -70,7 +70,7 @@
 
 ### **微信技术交流群先加这个微信：**
 
-<img src="https://user-images.githubusercontent.com/83346523/143444956-807a00d2-602a-4c11-9a46-6a4938596806.jpg" alt="krenx微信" width="300" height="300" />
+<img src="https://user-images.githubusercontent.com/83346523/143476515-e7e9f086-40b7-47d1-a0e3-85a41a2912bf.jpg" alt="krenx微信" width="300" height="300" />
 
 ### **特别说明：**
 
