@@ -68,7 +68,9 @@
 
 <img src="https://user-images.githubusercontent.com/83346523/123681604-99a1e380-d87c-11eb-9ac1-301551cc704c.jpg" alt="QQ群二维码" width="300" height="300" />
 
+### **微信技术交流群先加这个微信：**
 
+<img src="https://user-images.githubusercontent.com/83346523/143444956-807a00d2-602a-4c11-9a46-6a4938596806.jpg" alt="krenx微信" width="300" height="300" />
 
 ### **特别说明：**
 
