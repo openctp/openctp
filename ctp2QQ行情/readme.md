@@ -12,37 +12,40 @@
 
 **一个连接能够查询的股票数量是有限的，性能也不高，但是可以创建多个api实例并发工作，在每个实例中订阅一部分合约。**
 
-`#include <iostream>`
-`#include <chrono>`
-`#include "./ThostFtdcMdApi.h"`
-`#pragma comment( lib, "thostmduserapi_se.lib" )`
+demo代码：
+```
+#include <iostream>
+#include <chrono>
+#include "./ThostFtdcMdApi.h"
+#pragma comment( lib, "thostmduserapi_se.lib" )
 
-`class CMarketSpi :public CThostFtdcMdSpi`
-`{`
-`public:`
-	`CMarketSpi(CThostFtdcMdApi* pApi) :m_pMarketApi(pApi)`
-	`{`
-		`pApi->RegisterSpi(this);`
-	`}`
+class CMarketSpi :public CThostFtdcMdSpi
+{
+public:
+	CMarketSpi(CThostFtdcMdApi* pApi) :m_pMarketApi(pApi)
+	{
+		pApi->RegisterSpi(this);
+	}
 
 	void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField* pDepthMarketData)
 	{
 		std::cout << pDepthMarketData->InstrumentID << " - " << pDepthMarketData->LastPrice << " - " << pDepthMarketData->Volume << std::endl;
 	}
-	
-	CThostFtdcMdApi* m_pMarketApi;
-`};`
 
-`int main(int argc, char* argv[])`
-`{`
-	`CThostFtdcMdApi* pApi = CThostFtdcMdApi::CreateFtdcMdApi();`
-	`CMarketSpi Spi(pApi);`
-	`const char* symbols[4] = { "600000","000001","00700","AAPL" };`
-	`pApi->SubscribeMarketData((char**)symbols, 4);`
-	`pApi->Init();`
-	`getchar();`
+	CThostFtdcMdApi* m_pMarketApi;
+};
+
+int main(int argc, char* argv[])
+{
+	CThostFtdcMdApi* pApi = CThostFtdcMdApi::CreateFtdcMdApi();
+	CMarketSpi Spi(pApi);
+	const char* symbols[4] = { "600000","000001","00700","AAPL" };
+	pApi->SubscribeMarketData((char**)symbols, 4);
+	pApi->Init();
+	getchar();
 
 	return 0;
-
-`}`
-
+}
+```
+数据展示：
+![ctp2QQ](https://user-images.githubusercontent.com/83346523/144754227-39c022a1-26b1-4735-9c28-128ec4e648f8.png)
