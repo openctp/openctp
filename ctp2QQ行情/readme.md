@@ -39,13 +39,13 @@ int main(int argc, char* argv[])
 {
 	CThostFtdcMdApi* pApi = CThostFtdcMdApi::CreateFtdcMdApi();
 	CMarketSpi Spi(pApi);
-	const char* symbols[4] = { "600000","000001","00700","AAPL" };
 	pApi->Init();
+	const char* symbols[4] = { "600000","000001","00700","AAPL" };
 	pApi->SubscribeMarketData((char**)symbols, 4);
 	getchar();
 
 	return 0;
 }
 ```
-数据展示：
+
 ![ctp2QQ](https://user-images.githubusercontent.com/83346523/144754227-39c022a1-26b1-4735-9c28-128ec4e648f8.png)
