@@ -12,6 +12,8 @@
 
 **一个连接能够查询的股票数量是有限的，性能也不高，但是可以创建多个api实例并发工作，在每个实例中订阅一部分合约。**
 
+demo代码：
+```
 #include <iostream>
 #include <chrono>
 #include "./ThostFtdcMdApi.h"
@@ -29,7 +31,7 @@ public:
 	{
 		std::cout << pDepthMarketData->InstrumentID << " - " << pDepthMarketData->LastPrice << " - " << pDepthMarketData->Volume << std::endl;
 	}
-	
+
 	CThostFtdcMdApi* m_pMarketApi;
 };
 
@@ -43,6 +45,7 @@ int main(int argc, char* argv[])
 	getchar();
 
 	return 0;
-
 }
-
+```
+数据展示：
+![ctp2QQ](https://user-images.githubusercontent.com/83346523/144754227-39c022a1-26b1-4735-9c28-128ec4e648f8.png)
