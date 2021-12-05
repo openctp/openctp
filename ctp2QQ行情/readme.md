@@ -40,8 +40,8 @@ int main(int argc, char* argv[])
 	CThostFtdcMdApi* pApi = CThostFtdcMdApi::CreateFtdcMdApi();
 	CMarketSpi Spi(pApi);
 	const char* symbols[4] = { "600000","000001","00700","AAPL" };
-	pApi->SubscribeMarketData((char**)symbols, 4);
 	pApi->Init();
+	pApi->SubscribeMarketData((char**)symbols, 4);
 	getchar();
 
 	return 0;
