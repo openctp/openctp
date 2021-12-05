@@ -1,17 +1,48 @@
-# CTP程序接入腾讯行情（A股、港美股）
+# CTP程序接入腾讯行情（A股、港股、美股）
 
-Level1行情接口其实早已是公开的了，腾讯、新浪、网易、雪球等互联网公司以及一些证券公司都有免费的接口，随便搜搜就有很多这方面的接入介绍。
-
-本次发布的是以CTP接口接收股票行情，CTP接口是期货交易接口中的王者，拥有众多的开发者及成熟市场产品，将腾讯、新浪等行情接口封装成CTP接口，可以为众多投资者及开发者节省很多时间。
-
-即使是对CTP接口完全不熟悉的开发者，也可以通过该封装接口轻松接收行情，因为CTP行情接口非常简单。
-
-本次发布的接口为C++语言开发的动态库，需要开发者自己下载相应的头文件等其它所需文件。
-
-CTP接口除官方发布的C++动态库外，很多人也提供了Python、Java、C#等各主流语言的接口，可搜索相应的开发方法。
+本接口底层直接腾讯行情服务器，通讯协议为http协议，相关协议说明网上有很多介绍，封装成CTP接口可以为CTP开发者们接股票行情节省很多时间。
 
 调用订阅接口时还是同订阅期货合约行情一样，订阅股票合约代码即可，如下是demo程序接收的数据：
 
-本次发布了CTP四个接口版本，每个版本发布了win32、win64及linux三个版本。
+行情前置地址设置个空值即可，也可以不设置，接口内部会以腾讯的网址进行连接。
 
-行情前置地址设置个空值即可，接口内部会以腾讯的网址进行连接。
+不必在登录响应后进行订阅，当然登录响应还是会被回调的，以便符合CTP程序本身的工作流程。
+
+接口会每隔3秒钟发起一次http短连接行情查询。
+
+**一个连接能够查询的股票数量是有限的，性能也不高，但是可以创建多个api实例并发工作，在每个实例中订阅一部分合约。**
+
+#include <iostream>
+#include <chrono>
+#include "./ThostFtdcMdApi.h"
+#pragma comment( lib, "thostmduserapi_se.lib" )
+
+class CMarketSpi :public CThostFtdcMdSpi
+{
+public:
+	CMarketSpi(CThostFtdcMdApi* pApi) :m_pMarketApi(pApi)
+	{
+		pApi->RegisterSpi(this);
+	}
+
+	void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField* pDepthMarketData)
+	{
+		std::cout << pDepthMarketData->InstrumentID << " - " << pDepthMarketData->LastPrice << " - " << pDepthMarketData->Volume << std::endl;
+	}
+	
+	CThostFtdcMdApi* m_pMarketApi;
+};
+
+int main(int argc, char* argv[])
+{
+	CThostFtdcMdApi* pApi = CThostFtdcMdApi::CreateFtdcMdApi();
+	CMarketSpi Spi(pApi);
+	const char* symbols[4] = { "600000","000001","00700","AAPL" };
+	pApi->SubscribeMarketData((char**)symbols, 4);
+	pApi->Init();
+	getchar();
+
+	return 0;
+
+}
+
