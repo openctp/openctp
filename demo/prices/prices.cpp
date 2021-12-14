@@ -71,6 +71,7 @@ std::map<std::string, size_t> mquotes; // 索引，合约号==>vquotes下标
 int ConnectionStatus = CONNECTION_STATUS_DISCONNECTED;
 char** instruments = NULL; // 要订阅的合约列表
 size_t instrument_count = 0;
+std::string user,password;
 
 // Basic
 void init_screen();
@@ -119,6 +120,8 @@ public:
 		CThostFtdcReqUserLoginField Req;
 
 		memset(&Req, 0x00, sizeof(Req));
+		strncpy(Req.UserID,user.c_str(),sizeof(Req.UserID)-1);
+		strncpy(Req.Password,password.c_str(),sizeof(Req.Password)-1);
 		m_pMdApi->ReqUserLogin(&Req, 0);
 	}
 
@@ -136,7 +139,7 @@ public:
 		if (instrument_count == 0)
 		{
 			char* contracts[1];
-			contracts[0] = "*";
+			contracts[0] = (char*)"*";
 			m_pMdApi->SubscribeMarketData(contracts, 1);
 		}
 		else
@@ -279,43 +282,119 @@ std::map<int,bool> mcolumns;	// column select status
 int curr_line=0,curr_col=1,max_lines,max_cols=7;
 int curr_pos=0,curr_col_pos=2;
 
-int main(int argc,char *argv[])
+#if !(defined(WIN32) || defined(_WIN32) || defined(WIN64))
+#include <unistd.h>
+#else
+int opterr = 1, optind = 1, optopt, optreset;
+char* optarg;
+int getopt(int argc, char* argv[], const char* ostr)
 {
-	if (argc != 2 && argc != 3)
-	{
-		std::cout << "usage:ctppriceview marketaddr [instrument,instrument ...]" << std::endl;
-		std::cout << "example:ctppriceview tcp://180.168.146.187:10100" << std::endl;
-		std::cout << "example:ctppriceview tcp://180.168.146.187:10100 rb2105,IF2101" << std::endl;
-		return -1;
-	}
+	static char* place = (char*)"";		/* option letter processing */
+	const char* oli;				/* option letter list index */
 
-	char* servaddr = argv[1];
-	const char* p;
-	
-	// instruments
-	if (argc == 3) {
-		instrument_count =1;
-		for (p = argv[2]; *p != '\0'; p++)
-			if (*p == ',')
-				instrument_count++;
-	
-		instruments = (char**)malloc(sizeof(char*)* instrument_count);
-		char** instrument = instruments;
-		char* token=NULL;
-		p = argv[2];
-		for (int i=0; i<instrument_count; i++) {
-			if (token == NULL) {
-				token = strtok(argv[2], ",");
-			}
-			else {
-				token = strtok(NULL, ",");
-			}
-			*instrument++ = token;
+	if (optreset || !*place) {		/* update scanning pointer */
+		optreset = 0;
+		if (optind >= argc || *(place = argv[optind]) != '-') {
+			place = (char*)"";
+			return (EOF);
+		}
+		if (place[1] && *++place == '-') {	/* found "--" */
+			++optind;
+			place = (char*)"";
+			return (EOF);
+		}
+	}					/* option letter okay? */
+	if ((optopt = (int)*place++) == (int)':' ||
+		!(oli = strchr(ostr, optopt))) {
+		/*
+		 * if the user didn't specify '-' as an option,
+		 * assume it means EOF.
+		 */
+		if (optopt == (int)'-')
+			return (EOF);
+		if (!*place)
+			++optind;
+		return ('?');
+	}
+	if (*++oli != ':') {			/* don't need argument */
+		optarg = NULL;
+		if (!*place)
+			++optind;
+	}
+	else {					/* need an argument */
+		if (*place)			/* no white space */
+			optarg = place;
+		else if (argc <= ++optind) {	/* no arg */
+			place = (char*)"";
+			if (*ostr == ':')
+				return (':');
+			return ('?');
+		}
+		else				/* white space */
+			optarg = argv[optind];
+		place = (char*)"";
+		++optind;
+	}
+	return (optopt);			/* dump back option letter */
+}
+#endif
+
+void display_usage()
+{
+	std::cout << "usage:ctppriceview [-u user] [-p password] marketaddr instrument1,instrument2 ..." << std::endl;
+	std::cout << "example:ctppriceview -u 000001 -p 888888 tcp://180.168.146.187:10131 rb2205,IF2201" << std::endl;
+	std::cout << "example:ctppriceview tcp://180.168.146.187:10131 rb2205,IF2201" << std::endl;
+}
+
+int main(int argc, char * argv[])
+{
+	int opt;
+	while ((opt = getopt(argc, argv, "u:p:")) != -1)
+	{
+		switch (opt) 
+		{
+		case 'u':
+		       user = optarg;
+		       break;
+		case 'p':
+		       password = optarg;
+		       break;
+		case '?':
+			display_usage();
+			return -1;
 		}
 	}
 
+	if (argc - optind != 2)
+	{
+		display_usage();
+		return -1;
+	}
+
+	char* servaddr = argv[optind];
+	const char* p;
+	
+	// instruments
+	instrument_count =1;
+	for (p = argv[optind+1]; *p != '\0'; p++)
+		if (*p == ',')
+			instrument_count++;
+	
+	instruments = (char**)malloc(sizeof(char*)* instrument_count);
+	char** instrument = instruments;
+	char* token=NULL;
+	for (int i=0; i<instrument_count; i++) {
+		if (token == NULL) {
+			token = strtok(argv[optind + 1], ",");
+		}
+		else {
+			token = strtok(NULL, ",");
+		}
+		*instrument++ = token;
+	}
+
 	if (strstr(servaddr,"://") == NULL) {
-		std::cout << "invalid addr format" << std::endl;
+		std::cout << "invalid address format" << std::endl;
 		return -1;
 	}
 	CThostFtdcMdApi* pMdApi = CThostFtdcMdApi::CreateFtdcMdApi();
@@ -357,13 +436,13 @@ int main(int argc,char *argv[])
 	int ch;
 	while (1) {
 #ifdef _WIN32
-		ch = getch();
+		ch = _getch();
 #else
 		ch = getchar();
 #endif
 		if (ch == 224) {
 #ifdef _WIN32
-			ch = getch();
+			ch = _getch();
 #else
 			ch = getchar();
 #endif
@@ -390,7 +469,7 @@ int main(int argc,char *argv[])
 		}
 		else if (ch == 0) {
 #ifdef WIN32
-			ch = getch();
+			ch = _getch();
 #else
 			ch = getchar();
 #endif
