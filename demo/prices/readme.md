@@ -17,20 +17,20 @@ Prices支持CTP期货柜台，也支持采用CTP兼容接口的其它平台（[C
 
 ### 用法
 
-prices marketaddr [instrument,instrument ...]
+prices [-u user] [-p password] marketaddr instrument1,instrument2 ...
 
 example:
 
-	prices tcp://180.168.146.187:10131（可用于局域网环境，不指定合约可以订阅所有合约，未测试）
+	prices tcp://180.168.146.187:10131 rb2105,IF2101（绝大部分通道都不需要提供用户名、密码）
 	
-	prices tcp://180.168.146.187:10131 rb2105,IF2101
+	prices -u 000001 -p 888888 tcp://180.168.146.187:10131 rb2105,IF2101 （中泰证券XTP需要指定用户，密码可略）
 
 ### 编译
 Linux：
 执行make
 
 Windows：
-执行nmake -f makefile.win32
+执行nmake -f makefile.win32，或者直接打开virtual studio 2019工程
 
 MacOSX:
 执行make -f makefile.mac
