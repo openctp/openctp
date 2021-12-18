@@ -64,13 +64,13 @@
 - [快期V3（CTP期货交易客户端）](https://zhuanlan.zhihu.com/p/376482285)
 <img src="https://user-images.githubusercontent.com/83346523/138928402-f7e12a28-50d3-457b-9c0a-32b356448913.png" alt="快期V3" width="700" height="400" />
 
-### **QQ技术交流群：546977604**
+### **QQ交流群：564385877**
 
-<img src="https://user-images.githubusercontent.com/83346523/123681604-99a1e380-d87c-11eb-9ac1-301551cc704c.jpg" alt="QQ群二维码" width="300" height="300" />
+<img src="https://user-images.githubusercontent.com/83346523/146651068-3c2b3401-8c87-4ff3-beb4-a86492ea6bef.png" alt="QQ群二维码" width="300" height="300" />
 
-### **微信技术交流群先加这个微信：**
+### **微信交流群先加这个微信（注明加群）：**
 
-<img src="https://user-images.githubusercontent.com/83346523/144716639-48c183f6-3095-425a-9d66-4a8838e763be.JPG" alt="krenx微信" width="300" height="300" />
+<img src="https://user-images.githubusercontent.com/83346523/146651159-19eb5ae9-1fef-42a8-aa30-669a77571c47.jpg" alt="krenx微信" width="300" height="300" />
 
 ### **特别说明：**
 
