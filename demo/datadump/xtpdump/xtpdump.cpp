@@ -139,7 +139,7 @@ public:
 			if (error_info->error_id == 11000350) {
 				// 没有记录
 				XTPQueryTraderReq Req = { 0 };
-				if (!m_pUserApi->QueryTrades(&Req, m_session_id, 0)) {
+				if (m_pUserApi->QueryTrades(&Req, m_session_id, 0)) {
 					OnError(m_pUserApi->GetApiLastError());
 					return;
 				}
@@ -149,11 +149,11 @@ public:
 			OnError(error_info);
 			return;
 		}
-		m_vOrders.push_back(*order_info);
+		printf("order_xtp_id:%I64u,ticker:%s,quantity:%I64d,price:%lf,qty_left:%I64d,order_status:%s,insert_time:%I64d\n", order_info->order_xtp_id, order_info->ticker, order_info->quantity, order_info->price, order_info->qty_left, order_status_desc[order_info->order_status], order_info->insert_time);
 
 		if (is_last) {
 			XTPQueryTraderReq Req = { 0 };
-			if (!m_pUserApi->QueryTrades(&Req, m_session_id, 0)) {
+			if (m_pUserApi->QueryTrades(&Req, m_session_id, 0)) {
 				OnError(m_pUserApi->GetApiLastError());
 				return;
 			}
@@ -166,7 +166,7 @@ public:
 		{
 			if (error_info->error_id == 11000350) {
 				// 没有记录
-				if (!m_pUserApi->QueryPosition(NULL, m_session_id, 0)) {
+				if (m_pUserApi->QueryPosition(NULL, m_session_id, 0)) {
 					OnError(m_pUserApi->GetApiLastError());
 					return;
 				}
@@ -174,10 +174,10 @@ public:
 			OnError(error_info);
 			return;
 		}
-		m_vTrades.push_back(*trade_info);
+		printf("order_xtp_id:%I64u,ticker:%s,quantity:%I64d,price:%lf,exec_id:%s,trade_time:%I64d\n", trade_info->order_xtp_id, trade_info->ticker, trade_info->quantity, trade_info->price, trade_info->exec_id, trade_info->trade_time);
 
 		if (is_last) {
-			if (!m_pUserApi->QueryPosition(NULL, m_session_id, 0)) {
+			if (m_pUserApi->QueryPosition(NULL, m_session_id, 0)) {
 				OnError(m_pUserApi->GetApiLastError());
 				return;
 			}
@@ -190,7 +190,7 @@ public:
 		{
 			if (error_info->error_id == 11000350) {
 				// 没有记录
-				if (!m_pUserApi->QueryAsset(m_session_id, 0)) {
+				if (m_pUserApi->QueryAsset(m_session_id, 0)) {
 					OnError(m_pUserApi->GetApiLastError());
 					return;
 				}
@@ -201,7 +201,7 @@ public:
 		m_vPositions.push_back(*investor_position);
 
 		if (is_last) {
-			if (!m_pUserApi->QueryAsset(m_session_id, 0)) {
+			if (m_pUserApi->QueryAsset(m_session_id, 0)) {
 				OnError(m_pUserApi->GetApiLastError());
 				return;
 			}
@@ -225,11 +225,19 @@ public:
 			std::cout << "Completed." << std::endl;
 	}
 
+	const char* order_status_desc[XTP_ORDER_STATUS_UNKNOWN+1] = {"初始化","全部成交","部分成交","部分撤单","未成交","已撤单","已拒绝","未知订单状态"};
+
 	// 报单通知
-	virtual void OnOrderEvent(XTPOrderInfo* order_info, XTPRI* error_info, uint64_t session_id) {}
+	virtual void OnOrderEvent(XTPOrderInfo* order_info, XTPRI* error_info, uint64_t session_id)
+	{
+		printf("order_xtp_id:%I64u,ticker:%s,quantity:%I64d,price:%lf,qty_left:%I64d,order_status:%s,insert_time:%I64d\n", order_info->order_xtp_id, order_info->ticker, order_info->quantity, order_info->price, order_info->qty_left, order_status_desc[order_info->order_status], order_info->insert_time);
+	}
 
 	// 成交通知
-	virtual void OnTradeEvent(XTPTradeReport* trade_info, uint64_t session_id) {}
+	virtual void OnTradeEvent(XTPTradeReport* trade_info, uint64_t session_id)
+	{
+		printf("order_xtp_id:%I64u,ticker:%s,quantity:%I64d,price:%lf,exec_id:%s,trade_time:%I64d\n", trade_info->order_xtp_id, trade_info->ticker, trade_info->quantity, trade_info->price, trade_info->exec_id, trade_info->trade_time);
+	}
 
 	// 撤单错误应答
 	virtual void OnCancelOrderError(XTPOrderCancelInfo* cancel_info, XTPRI* error_info, uint64_t session_id) {}
