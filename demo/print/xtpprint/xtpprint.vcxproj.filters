@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="xtpdump.cpp">
+    <ClCompile Include="xtpprint.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

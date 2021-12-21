@@ -1,7 +1,4 @@
-﻿// xtpdump.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
-
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <string>
 #include "xtp_trader_api.h"
 
@@ -232,8 +229,8 @@ private:
 
 void display_usage()
 {
-	printf("usage:xtpdump host user password authcode\n");
-	printf("example:xtpdump 122.112.139.0:6101 000001 888888 b8aa7173bba3470e390d787219b2112e\n");
+	printf("usage:xtpprint host user password authcode\n");
+	printf("example:xtpprint 122.112.139.0:6101 000001 888888 b8aa7173bba3470e390d787219b2112e\n");
 }
 
 
