@@ -1,84 +1,12 @@
 ﻿// xtpdump.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
-#include <iostream>
-#include <cstring>
-#include <iomanip>
 #include <stdio.h>
-#include <time.h>
-#include <sys/timeb.h>
-#ifndef _WIN32
-#include <sys/time.h>
-#include <unistd.h>
-#else
-#include <windows.h>
-#endif
-#include <sstream>
-#include <map>
-#include "nlohmann/json.hpp"
+#include <string>
 #include "xtp_trader_api.h"
 
-/////////////////// getopt //////////////////
-#ifdef _WIN32
-int	opterr = 1;
-int	optind = 1;
-int	optopt;
-char* optarg;
-
-int getopt(int argc, char** argv, const char *opts)
-{
-	static int sp = 1;
-	register int c;
-	register const char* cp;
-
-	if (sp == 1)
-		if (optind >= argc ||
-			argv[optind][0] != '-' || argv[optind][1] == '\0')
-			return(EOF);
-		else if (strcmp(argv[optind], "--") == NULL) {
-			optind++;
-			return(EOF);
-		}
-	optopt = c = argv[optind][sp];
-	if (c == ':' || (cp = strchr(opts, c)) == NULL) {
-		// illegal option
-		if (argv[optind][++sp] == '\0') {
-			optind++;
-			sp = 1;
-		}
-		return('?');
-	}
-	if (*++cp == ':') {
-		if (argv[optind][sp + 1] != '\0')
-			optarg = &argv[optind++][sp + 1];
-		else if (++optind >= argc) {
-			// option requires an argument
-			sp = 1;
-			return('?');
-		}
-		else
-			optarg = argv[optind++];
-		sp = 1;
-	}
-	else {
-		if (argv[optind][++sp] == '\0') {
-			sp = 1;
-			optind++;
-		}
-		optarg = NULL;
-	}
-	return(c);
-}
-#else
-#include <getopt.h>
-#endif
-
-
-using namespace std;
-
-extern XTPOrderInsertInfo* orderList;
-
 using namespace XTP::API;
+#define XTP_CLIENT_ID 83
 
 class MyTraderSpi : public TraderSpi
 {
@@ -89,7 +17,7 @@ public:
 		m_password(password),
 		m_authcode(authcode)
 	{
-		m_pUserApi = XTP::API::TraderApi::CreateTraderApi(99, ".", XTP_LOG_LEVEL_WARNING);
+		m_pUserApi = TraderApi::CreateTraderApi(XTP_CLIENT_ID, ".", XTP_LOG_LEVEL_WARNING);
 		m_pUserApi->RegisterSpi(this);
 		m_pUserApi->SetSoftwareVersion("1.0"); //设定此软件的开发版本号，用户自定义
 		m_pUserApi->SetSoftwareKey(m_authcode.c_str());//设定用户的开发代码，在XTP申请开户时，由xtp人员提供
@@ -100,19 +28,30 @@ public:
 	{
 	}
 
+	const std::string time_to_string(int64_t tm)
+	{
+		std::string d,t,dt;
+		d = std::to_string(tm / 1000000000);
+		tm %= 1000000000;
+		tm /= 1000;
+		t = std::to_string(tm/10000)+":"+std::to_string(tm%10000/100) + ":" + std::to_string(tm % 100);
+		dt = d + " " + t;
+		return std::move(dt);
+	}
 	int Run()
 	{
 		std::string ip = m_host.substr(0, m_host.find(':'));
 		std::string port = m_host.substr(m_host.find(':')+1);
 		m_session_id = m_pUserApi->Login(ip.c_str(), atol(port.c_str()), m_user.c_str(), m_password.c_str(), XTP_PROTOCOL_TCP);
 		if (!m_session_id) {
+			printf("Login failed.\n");
 			OnError(m_pUserApi->GetApiLastError());
-			std::cout << "Login failed." << std::endl;
 			return -1;
 		}
-		std::cout << "Login succeeded." << std::endl;
+		printf("Login succeeded.\n");
 
 		// 查询订单
+		printf("Query Order ...\n");
 		XTPQueryOrderReq Req = { 0 };
 		m_pUserApi->QueryOrders(&Req, m_session_id, 0);
 
@@ -121,7 +60,7 @@ public:
 
 	virtual void OnDisconnected(uint64_t session_id, int reason)
 	{
-		std::cout << "Disconnected." << endl;
+		printf("Disconnected.\n");
 	}
 
 	///错误响应
@@ -129,7 +68,7 @@ public:
 	{
 		if (!error_info)
 			return;
-		cout << "Error:" << error_info->error_id << " - " << error_info->error_msg << endl;
+		printf("Error: %d - %s\n",error_info->error_id, error_info->error_msg);
 	}
 
 	virtual void OnQueryOrder(XTPQueryOrderRsp* order_info, XTPRI* error_info, int request_id, bool is_last, uint64_t session_id)
@@ -138,6 +77,7 @@ public:
 		{
 			if (error_info->error_id == 11000350) {
 				// 没有记录
+				printf("Query Trade ...\n");
 				XTPQueryTraderReq Req = { 0 };
 				if (m_pUserApi->QueryTrades(&Req, m_session_id, 0)) {
 					OnError(m_pUserApi->GetApiLastError());
@@ -149,9 +89,10 @@ public:
 			OnError(error_info);
 			return;
 		}
-		printf("order_xtp_id:%I64u,ticker:%s,quantity:%I64d,price:%lf,qty_left:%I64d,order_status:%s,insert_time:%I64d\n", order_info->order_xtp_id, order_info->ticker, order_info->quantity, order_info->price, order_info->qty_left, order_status_desc[order_info->order_status], order_info->insert_time);
+		printf("order_xtp_id:%I64u,ticker:%s,quantity:%I64d,price:%lf,qty_left:%I64d,order_status:%s,insert_time:%s\n", order_info->order_xtp_id, order_info->ticker, order_info->quantity, order_info->price, order_info->qty_left, order_status_desc[order_info->order_status], time_to_string(order_info->insert_time).c_str());
 
 		if (is_last) {
+			printf("Query Trade ...\n");
 			XTPQueryTraderReq Req = { 0 };
 			if (m_pUserApi->QueryTrades(&Req, m_session_id, 0)) {
 				OnError(m_pUserApi->GetApiLastError());
@@ -166,6 +107,7 @@ public:
 		{
 			if (error_info->error_id == 11000350) {
 				// 没有记录
+				printf("Query Position ...\n");
 				if (m_pUserApi->QueryPosition(NULL, m_session_id, 0)) {
 					OnError(m_pUserApi->GetApiLastError());
 					return;
@@ -174,9 +116,10 @@ public:
 			OnError(error_info);
 			return;
 		}
-		printf("order_xtp_id:%I64u,ticker:%s,quantity:%I64d,price:%lf,exec_id:%s,trade_time:%I64d\n", trade_info->order_xtp_id, trade_info->ticker, trade_info->quantity, trade_info->price, trade_info->exec_id, trade_info->trade_time);
+		printf("order_xtp_id:%I64u,ticker:%s,quantity:%I64d,price:%lf,exec_id:%s,trade_time:%s\n", trade_info->order_xtp_id, trade_info->ticker, trade_info->quantity, trade_info->price, trade_info->exec_id, time_to_string(trade_info->trade_time).c_str());
 
 		if (is_last) {
+			printf("Query Position ...\n");
 			if (m_pUserApi->QueryPosition(NULL, m_session_id, 0)) {
 				OnError(m_pUserApi->GetApiLastError());
 				return;
@@ -190,6 +133,7 @@ public:
 		{
 			if (error_info->error_id == 11000350) {
 				// 没有记录
+				printf("Query Asset ...\n");
 				if (m_pUserApi->QueryAsset(m_session_id, 0)) {
 					OnError(m_pUserApi->GetApiLastError());
 					return;
@@ -198,9 +142,9 @@ public:
 			OnError(error_info);
 			return;
 		}
-		m_vPositions.push_back(*investor_position);
-
+		printf("ticker:%s,total_qty:%I64d,sellable_qty:%I64d,avg_price:%lf,yesterday_position:%I64d\n", investor_position->ticker, investor_position->total_qty, investor_position->sellable_qty, investor_position->avg_price, investor_position->yesterday_position);
 		if (is_last) {
+			printf("Query Asset ...\n");
 			if (m_pUserApi->QueryAsset(m_session_id, 0)) {
 				OnError(m_pUserApi->GetApiLastError());
 				return;
@@ -214,15 +158,15 @@ public:
 		{
 			if (error_info->error_id == 11000350) {
 				// 没有记录
-				std::cout << "Completed." << std::endl;
+				printf("Query completed.\n");
 				return;
 			}
 			OnError(error_info);
 			return;
 		}
-		m_vAccounts.push_back(*trading_account);
+		printf("banlance:%lf,buying_power:%lf,withholding_amount:%lf\n", trading_account->banlance, trading_account->buying_power, trading_account->withholding_amount);
 		if (is_last)
-			std::cout << "Completed." << std::endl;
+			printf("Query completed.\n");
 	}
 
 	const char* order_status_desc[XTP_ORDER_STATUS_UNKNOWN+1] = {"初始化","全部成交","部分成交","部分撤单","未成交","已撤单","已拒绝","未知订单状态"};
@@ -283,69 +227,24 @@ private:
 	uint64_t m_session_id;
 
 	XTP::API::TraderApi* m_pUserApi;
-	std::vector<XTPQueryOrderRsp> m_vOrders;
-	std::vector<XTPQueryTradeRsp> m_vTrades;
-	std::vector<XTPQueryStkPositionRsp> m_vPositions;
-	std::vector<XTPQueryAssetRsp> m_vAccounts;
 };
 
 
 void display_usage()
 {
-	std::cout << "usage:xtpdump host user password authcode" << std::endl;
-	std::cout << "example:xtpdump 122.112.139.0:6101 000001 888888 b8aa7173bba3470e390d787219b2112e" << std::endl;
+	printf("usage:xtpdump host user password authcode\n");
+	printf("example:xtpdump 122.112.139.0:6101 000001 888888 b8aa7173bba3470e390d787219b2112e\n");
 }
 
 
 int main(int argc, char* argv[])
 {
-	std::string host;
-	std::string user;
-	std::string password;
-	std::string authcode;
-
 	if (argc != 5) {
 		display_usage();
 		return -1;
 	}
 
-	int opt;
-	while ((opt = getopt(argc, argv, "h:u:p:")) != -1)
-	{
-		switch (opt)
-		{
-		case 'h':
-			host = optarg;
-			break;
-		case 'u':
-			user = optarg;
-			break;
-		case 'p':
-			password = optarg;
-			break;
-		case 'a':
-			authcode = optarg;
-			break;
-		case '?':
-			display_usage();
-			return -1;
-		default:
-			display_usage();
-			return -1;
-		}
-	}
-
-	if (argc - optind != 4)
-	{
-		display_usage();
-		return -1;
-	}
-
-	host = argv[optind++];
-	user = argv[optind++];
-	password = argv[optind++];
-	authcode = argv[optind++];
-	MyTraderSpi Spi(host, user, password, authcode);
+	MyTraderSpi Spi(argv[1], argv[2], argv[3], argv[4]);
 
 	// 启动
 	if (Spi.Run() < 0)
