@@ -5,10 +5,10 @@
 using namespace XTP::API;
 #define XTP_CLIENT_ID 83
 
-class MyTraderSpi : public TraderSpi
+class CApplication : public TraderSpi
 {
 public:
-	MyTraderSpi(std::string host, std::string user, std::string password, std::string authcode):
+	CApplication(std::string host, std::string user, std::string password, std::string authcode):
 		m_host(host),
 		m_user(user),
 		m_password(password),
@@ -21,7 +21,7 @@ public:
 		m_pUserApi->SetHeartBeatInterval(16);//设定交易服务器超时时间，单位为秒，此为1.1.16新增接口
 	}
 
-	~MyTraderSpi()
+	~CApplication()
 	{
 	}
 
@@ -241,7 +241,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	MyTraderSpi Spi(argv[1], argv[2], argv[3], argv[4]);
+	CApplication Spi(argv[1], argv[2], argv[3], argv[4]);
 
 	// 启动
 	if (Spi.Run() < 0)
