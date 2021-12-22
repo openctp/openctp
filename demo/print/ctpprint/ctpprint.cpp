@@ -34,6 +34,8 @@ private:
 	std::condition_variable cv;
 };
 
+semaphore _semaphore(0);
+
 class CApplication : public CThostFtdcTraderSpi
 {
 public:
@@ -139,10 +141,7 @@ public:
 		strncpy_s(SettlementInfoConfirmField.ConfirmTime, pRspUserLogin->LoginTime, sizeof(SettlementInfoConfirmField.ConfirmTime) - 1);
 		m_pUserApi->ReqSettlementInfoConfirm(&SettlementInfoConfirmField, 0);
 
-		// 查询合约
-		printf("查询合约 ...\n");
-		CThostFtdcQryInstrumentField Req = { 0 };
-		m_pUserApi->ReqQryInstrument(&Req, 0);
+		_semaphore.signal();
 	}
 
 	// 查询合约列表
@@ -152,10 +151,7 @@ public:
 			printf("InstrumentID:%s,InstrumentName:%s,ProductID:%s,PriceTick:%lf,UnderlyingInstrID:%s,StrikePrice:%lf,ExchangeID:%s\n", pInstrument->InstrumentID, pInstrument->InstrumentName, pInstrument->ProductID, pInstrument->PriceTick, pInstrument->UnderlyingInstrID, pInstrument->StrikePrice, pInstrument->ExchangeID);
 
 		if (bIsLast) {
-			// 查询行情
-			printf("查询行情 ...\n");
-			CThostFtdcQryDepthMarketDataField Req = { 0 };
-			m_pUserApi->ReqQryDepthMarketData(&Req, 0);
+			_semaphore.signal();
 		}
 	}
 
@@ -174,10 +170,7 @@ public:
 			double_format(pDepthMarketData->SettlementPrice), pDepthMarketData->UpdateTime, pDepthMarketData->ActionDay, pDepthMarketData->TradingDay, pDepthMarketData->ExchangeID);
 
 		if (bIsLast) {
-			// 查询订单
-			printf("查询订单 ...\n");
-			CThostFtdcQryOrderField Req = { 0 };
-			m_pUserApi->ReqQryOrder(&Req, 0);
+			_semaphore.signal();
 		}
 	}
 
@@ -194,9 +187,7 @@ public:
 				pOrder->OrderLocalID, pOrder->InstrumentID, direction_to_string(pOrder->Direction).c_str(), pOrder->VolumeTotalOriginal, pOrder->LimitPrice, pOrder->VolumeTraded, pOrder->VolumeTotal, pOrder->OrderSysID, pOrder->FrontID, pOrder->SessionID, pOrder->OrderRef, pOrder->OrderStatus, pOrder->StatusMsg, pOrder->InsertTime);
 
 		if (bIsLast) {
-			printf("查询成交 ...\n");
-			CThostFtdcQryTradeField Req = { 0 };
-			m_pUserApi->ReqQryTrade(&Req, 0);
+			_semaphore.signal();
 		}
 	}
 
@@ -213,9 +204,7 @@ public:
 				pTrade->OrderLocalID, pTrade->InstrumentID, direction_to_string(pTrade->Direction).c_str(), pTrade->Volume, pTrade->Price, pTrade->OrderSysID, pTrade->OrderRef, pTrade->TradeTime);
 
 		if (bIsLast) {
-			printf("查询持仓 ...\n");
-			CThostFtdcQryInvestorPositionField Req = { 0 };
-			m_pUserApi->ReqQryInvestorPosition(&Req, 0);
+			_semaphore.signal();
 		}
 	}
 
@@ -232,10 +221,7 @@ public:
 				pInvestorPosition->InstrumentID, posidirection_to_string(pInvestorPosition->PosiDirection).c_str(), pInvestorPosition->HedgeFlag, pInvestorPosition->Position, pInvestorPosition->YdPosition, pInvestorPosition->TodayPosition, pInvestorPosition->PositionCost, pInvestorPosition->OpenCost, pInvestorPosition->ExchangeID);
 
 		if (bIsLast) {
-			// 持仓明细
-			printf("持仓明细 ...\n");
-			CThostFtdcQryInvestorPositionDetailField Req = { 0 };
-			m_pUserApi->ReqQryInvestorPositionDetail(&Req, 0);
+			_semaphore.signal();
 		}
 	}
 
@@ -253,10 +239,7 @@ public:
 				pInvestorPositionDetail->InstrumentID, direction_to_string(pInvestorPositionDetail->Direction).c_str(), pInvestorPositionDetail->HedgeFlag, pInvestorPositionDetail->Volume, pInvestorPositionDetail->OpenDate, pInvestorPositionDetail->OpenPrice, pInvestorPositionDetail->Margin, pInvestorPositionDetail->ExchangeID);
 
 		if (bIsLast) {
-			// 查询资金
-			printf("查询资金 ...\n");
-			CThostFtdcQryTradingAccountField Req = { 0 };
-			m_pUserApi->ReqQryTradingAccount(&Req, 0);
+			_semaphore.signal();
 		}
 	}
 
@@ -309,7 +292,7 @@ public:
 				pOrderAction->FrontID, pOrderAction->SessionID, pOrderAction->OrderRef, pOrderAction->InstrumentID, pOrderAction->OrderActionRef, pOrderAction->OrderSysID, pOrderAction->LimitPrice, pOrderAction->ExchangeID);
 	}
 
-private:
+public:
 	std::string m_host;
 	std::string m_broker;
 	std::string m_user;
@@ -323,8 +306,8 @@ private:
 
 void display_usage()
 {
-	printf("usage:ctpprint host user password appid authcode\n");
-	printf("example:ctpprint tcp://180.168.146.187:10130 000001 888888 simnow_client_test 0000000000000000\n");
+	printf("usage:ctpprint host broker user password appid authcode\n");
+	printf("example:ctpprint tcp://180.168.146.187:10130 9999 000001 888888 simnow_client_test 0000000000000000\n");
 }
 
 
@@ -341,6 +324,55 @@ int main(int argc, char* argv[])
 	if (Spi.Run() < 0)
 		return -1;
 
+	// 等待登录完成
+	_semaphore.wait();
+
+	// 查询合约
+	printf("查询合约 ...\n");
+	CThostFtdcQryInstrumentField QryInstrument = { 0 };
+	Spi.m_pUserApi->ReqQryInstrument(&QryInstrument, 0);
+	_semaphore.wait();
+
+	// 查询行情
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询行情 ...\n");
+	CThostFtdcQryDepthMarketDataField QryDepthMarketData = { 0 };
+	Spi.m_pUserApi->ReqQryDepthMarketData(&QryDepthMarketData, 0);
+	_semaphore.wait();
+
+	// 查询订单
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询订单 ...\n");
+	CThostFtdcQryOrderField QryOrder = { 0 };
+	Spi.m_pUserApi->ReqQryOrder(&QryOrder, 0);
+	_semaphore.wait();
+
+	// 查询成交
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询成交 ...\n");
+	CThostFtdcQryTradeField QryTrade = { 0 };
+	Spi.m_pUserApi->ReqQryTrade(&QryTrade, 0);
+	_semaphore.wait();
+
+	// 查询持仓
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询持仓 ...\n");
+	CThostFtdcQryInvestorPositionField QryInvestorPosition = { 0 };
+	Spi.m_pUserApi->ReqQryInvestorPosition(&QryInvestorPosition, 0);
+	_semaphore.wait();
+
+	// 持仓明细
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("持仓明细 ...\n");
+	CThostFtdcQryInvestorPositionDetailField QryInvestorPositionDetail = { 0 };
+	Spi.m_pUserApi->ReqQryInvestorPositionDetail(&QryInvestorPositionDetail, 0);
+	_semaphore.wait();
+
+	// 查询资金
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询资金 ...\n");
+	CThostFtdcQryTradingAccountField QryTradingAccount = { 0 };
+	Spi.m_pUserApi->ReqQryTradingAccount(&QryTradingAccount, 0);
 
 	getchar();
 

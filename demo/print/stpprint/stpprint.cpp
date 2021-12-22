@@ -4,10 +4,10 @@
 
 using namespace TORASTOCKAPI;
 
-class MyTraderSpi : public CTORATstpTraderSpi
+class CApplication : public CTORATstpTraderSpi
 {
 public:
-	MyTraderSpi(std::string host, std::string user, std::string password) :
+	CApplication(std::string host, std::string user, std::string password) :
 		m_host(host),
 		m_user(user),
 		m_password(password)
@@ -16,7 +16,7 @@ public:
 		m_pUserApi->RegisterSpi(this);
 	}
 
-	~MyTraderSpi()
+	~CApplication()
 	{
 	}
 
@@ -204,7 +204,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	MyTraderSpi Spi(argv[1], argv[2], argv[3]);
+	CApplication Spi(argv[1], argv[2], argv[3]);
 
 	// 启动
 	if (Spi.Run() < 0)
