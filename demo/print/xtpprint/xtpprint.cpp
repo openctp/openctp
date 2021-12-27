@@ -86,7 +86,7 @@ public:
 			OnError(error_info);
 			return;
 		}
-		printf("order_xtp_id:%I64u,ticker:%s,quantity:%I64d,price:%lf,qty_left:%I64d,order_status:%s,insert_time:%s\n", order_info->order_xtp_id, order_info->ticker, order_info->quantity, order_info->price, order_info->qty_left, order_status_desc[order_info->order_status], time_to_string(order_info->insert_time).c_str());
+		printf("order_xtp_id:%I64u,order_client_id:%u,ticker:%s,quantity:%I64d,price:%lf,qty_left:%I64d,order_status:%s,insert_time:%s\n", order_info->order_xtp_id, order_info->order_client_id, order_info->ticker, order_info->quantity, order_info->price, order_info->qty_left, order_status_desc[order_info->order_status], time_to_string(order_info->insert_time).c_str());
 
 		if (is_last) {
 			printf("Query Trade ...\n");
@@ -171,7 +171,7 @@ public:
 	// 报单通知
 	virtual void OnOrderEvent(XTPOrderInfo* order_info, XTPRI* error_info, uint64_t session_id)
 	{
-		printf("order_xtp_id:%I64u,ticker:%s,quantity:%I64d,price:%lf,qty_left:%I64d,order_status:%s,insert_time:%I64d\n", order_info->order_xtp_id, order_info->ticker, order_info->quantity, order_info->price, order_info->qty_left, order_status_desc[order_info->order_status], order_info->insert_time);
+		printf("order_xtp_id:%I64u,order_client_id:%u,ticker:%s,quantity:%I64d,price:%lf,qty_left:%I64d,order_status:%s,insert_time:%s\n", order_info->order_xtp_id, order_info->order_client_id, order_info->ticker, order_info->quantity, order_info->price, order_info->qty_left, order_status_desc[order_info->order_status], time_to_string(order_info->insert_time).c_str());
 	}
 
 	// 成交通知
