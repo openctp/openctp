@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <thread>
 #include "ThostFtdcMdApi.h"
 
 auto reqtime = std::chrono::steady_clock::now();
@@ -52,7 +53,9 @@ int main(int argc,char *argv[])
 	CMarketSpi Spi(pApi);
 	pApi->RegisterFront(argv[1]);
 	pApi->Init();
-	pApi->Join();
+
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+	std::cout << "time out." << std::endl;
 
 	return 0;
 }
