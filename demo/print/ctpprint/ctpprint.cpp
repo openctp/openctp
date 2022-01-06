@@ -82,6 +82,55 @@ public:
 		return 0;
 	}
 
+	// 下单
+	int OrderInsert(const char* ExchangeID, const char* InstrumentID, TThostFtdcDirectionType Direction, TThostFtdcOffsetFlagType OffsetFlag, double Price, unsigned int Qty)
+	{
+		CThostFtdcInputOrderField Req;
+
+		memset(&Req, 0x00, sizeof(Req));
+		strncpy_s(Req.BrokerID, m_broker.c_str(), sizeof(Req.BrokerID) - 1);
+		strncpy_s(Req.InvestorID, m_user.c_str(), sizeof(Req.InvestorID) - 1);
+		strncpy_s(Req.InstrumentID, InstrumentID, sizeof(Req.InstrumentID) - 1);
+		strncpy_s(Req.ExchangeID, ExchangeID, sizeof(Req.ExchangeID) - 1);
+		Req.Direction = Direction;
+		Req.CombOffsetFlag[0] = OffsetFlag;
+		Req.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
+		Req.VolumeTotalOriginal = Qty;
+		Req.LimitPrice = Price;
+		Req.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
+		sprintf_s(Req.OrderRef, "%d", m_nOrderRef++);
+		Req.TimeCondition = THOST_FTDC_TC_GFD;
+		if (Req.OrderPriceType == THOST_FTDC_OPT_AnyPrice)
+			Req.TimeCondition = THOST_FTDC_TC_IOC;
+		Req.VolumeCondition = THOST_FTDC_VC_AV;
+		Req.MinVolume = 1;
+		Req.ContingentCondition = THOST_FTDC_CC_Immediately;
+		Req.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
+		Req.IsAutoSuspend = 0;
+		Req.UserForceClose = 0;
+		
+		return m_pUserApi->ReqOrderInsert(&Req, 0);
+	}
+
+	// 撤单
+	int OrderCancel(const char* ExchangeID, const char* InstrumentID, const char* OrderSysID)
+	{
+		CThostFtdcInputOrderActionField Req;
+
+		memset(&Req, 0x00, sizeof(Req));
+		strncpy_s(Req.BrokerID, m_broker.c_str(), sizeof(Req.BrokerID) - 1);
+		strncpy_s(Req.InvestorID, m_user.c_str(), sizeof(Req.InvestorID) - 1);
+		strncpy_s(Req.InstrumentID, InstrumentID, sizeof(Req.InstrumentID) - 1);
+		strncpy_s(Req.ExchangeID, ExchangeID, sizeof(Req.ExchangeID) - 1);
+		strncpy_s(Req.OrderSysID, OrderSysID, sizeof(Req.OrderSysID) - 1);
+		//Req.FrontID = 100;
+		//Req.SessionID = 1;
+		//strncpy_s(Req.OrderRef, "111", sizeof(Req.OrderRef) - 1);
+		Req.ActionFlag = THOST_FTDC_AF_Delete;
+
+		return m_pUserApi->ReqOrderAction(&Req, 0);
+	}
+
 	//连接成功
 	void OnFrontConnected()
 	{
@@ -142,6 +191,26 @@ public:
 		m_pUserApi->ReqSettlementInfoConfirm(&SettlementInfoConfirmField, 0);
 
 		_semaphore.signal();
+	}
+
+	// 下单应答
+	void OnRspOrderInsert(CThostFtdcInputOrderField* pInputOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+	{
+		if (pRspInfo && pRspInfo->ErrorID != 0) {
+			printf("下单失败. %d - %s\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+			return;
+		}
+		printf("下单应答：InstrumentID:%s,ExchangeID:%s,VolumeTotalOriginal:%d,LimitPrice:%lf\n", pInputOrder->InstrumentID, pInputOrder->ExchangeID, pInputOrder->VolumeTotalOriginal, pInputOrder->LimitPrice);
+	}
+
+	// 撤单应答
+	void OnRspOrderAction(CThostFtdcInputOrderActionField* pInputOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+	{
+		if (pRspInfo && pRspInfo->ErrorID != 0) {
+			printf("撤单失败. %d - %s\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+			return;
+		}
+		printf("撤单应答：InstrumentID:%s,ExchangeID:%s,OrderSysID:%s\n",pInputOrderAction->InstrumentID,pInputOrderAction->ExchangeID,pInputOrderAction->OrderSysID);
 	}
 
 	// 查询合约列表
@@ -299,6 +368,7 @@ public:
 	std::string m_password;
 	std::string m_appid;
 	std::string m_authcode;
+	unsigned int m_nOrderRef;
 
 	CThostFtdcTraderApi* m_pUserApi;
 };
@@ -374,6 +444,19 @@ int main(int argc, char* argv[])
 	CThostFtdcQryTradingAccountField QryTradingAccount = { 0 };
 	Spi.m_pUserApi->ReqQryTradingAccount(&QryTradingAccount, 0);
 
+	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	//printf("按任意键下单 ...\n");
+	//Spi.OrderInsert("SHFE", "au2206", THOST_FTDC_D_Buy, THOST_FTDC_OF_Open, 380.0, 3);
+	//Spi.OrderInsert("CFFEX", "IF2201", THOST_FTDC_D_Sell, THOST_FTDC_OF_Open, 5000.0, 1);
+	//getchar();
+
+	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	//printf("按任意键撤单 ...\n");
+	//Spi.OrderCancel("CFFEX", "IF2201", "xxx");
+	//getchar();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("按任意键退出 ...\n");
 	getchar();
 
 	return 0;
