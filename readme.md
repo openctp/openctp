@@ -1,11 +1,15 @@
 ## **CTP开放平台（Powered by TTS - Tick Trading System）**
 
 Github集 1000 Star，[知乎krenx](https://www.zhihu.com/people/krenx)集 10000 收藏，将开启平台各接口源码开放进程。
+![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
 
 开放平台采用与CTPAPI完全兼容的接口，一定程度上可替代simnow等模拟平台进行功能测试。 CTP程序无需修改代码也无需重新编译，只需在这里**下载与CTP API版本号一致的交易dll**，覆盖掉自己的即可，**行情dll不用改**，行情的接入地址可使用各期货公司的实盘地址。
 
 目前已提供CTPAPI全部在用的四个版本API，提供**Win32、Win64、Linux64、Mac64及FreeBSD64**共5个平台40个动态库。
 
+### 各套环境运行状态监控：
+http://122.51.136.165:50080/detail.html
+![1641634119(1)](https://user-images.githubusercontent.com/83346523/148639198-7ea4d3c3-ebb7-463d-b28e-4adc3596e685.png)
 ### **支持品种：**
 - A股股票、债券、基金
 - 上期所等国内全品种期货、期权
@@ -21,6 +25,11 @@ Github集 1000 Star，[知乎krenx](https://www.zhihu.com/people/krenx)集 10000
 - 真正的7x24，1秒钟都不停。
 - 除国内期货及期权外，还提供A股股票、债券、基金及港美股、外盘期货等全球市场模拟交易。
 - 支持市价单。
+
+### 知乎热门文章：
+- [CTP开放平台（Powered by TTS - Tick Trading System）](https://zhuanlan.zhihu.com/p/425679896)
+- [如何使用CTP开放平台提供的各项能力](https://zhuanlan.zhihu.com/p/425679896)
+- [连接CTP开放平台报错4097的解决方法](https://zhuanlan.zhihu.com/p/425679896)
 
 ### 撮合方式（同时支持做市与撮合）：
 - 撮合：完全由用户之间撮合，按价格优先、时间优先撮合成交。撮合模式的合约只有三个，合约代码分别为TEST、BTC、MINUS，其它合约均为做市模式。
