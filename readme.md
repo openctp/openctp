@@ -8,7 +8,10 @@ Github集 1000 Star，[知乎krenx](https://www.zhihu.com/people/krenx)集 10000
 目前已提供CTPAPI全部在用的四个版本API，提供**Win32、Win64、Linux64、Mac64及FreeBSD64**共5个平台40个动态库。
 
 ### 各套环境运行状态监控：
-http://122.51.136.165:50080/detail.html
+- 监控页面地址：http://122.51.136.165:50080/detail.html
+- 使用的技术：https://github.com/krenx1983/openctp/tree/master/tools/Ping
+- 相关源码：https://github.com/krenx1983/openctp/tree/master/demo/ctpping
+
 ![1641634119(1)](https://user-images.githubusercontent.com/83346523/148639198-7ea4d3c3-ebb7-463d-b28e-4adc3596e685.png)
 ### **支持品种：**
 - A股股票、债券、基金
