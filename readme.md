@@ -80,6 +80,8 @@ Github集 1000 Star，[知乎krenx](https://www.zhihu.com/people/krenx)集 10000
 ### **通过自己替换dll可接入TTS通道（CTP开放平台）的产品：**
 - [快期V3（CTP期货交易客户端）](https://zhuanlan.zhihu.com/p/376482285)
 <img src="https://user-images.githubusercontent.com/83346523/138928402-f7e12a28-50d3-457b-9c0a-32b356448913.png" alt="快期V3" width="700" height="400" />
+- [快期V2（CTP期货交易客户端）](https://zhuanlan.zhihu.com/p/432252376)
+<img src="https://user-images.githubusercontent.com/83346523/148678947-b2a7ed9c-f77f-43d6-8e85-74b2c9ca4c44.png" alt="快期V2" width="700" height="400" />
 
 ### **QQ交流群：564385877**
 
