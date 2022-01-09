@@ -272,7 +272,9 @@ column_item_t column_items[]={
 	{"涨停",		10},
 #define COL_LOW_LIMIT		21		// 跌停
 	{"跌停",		10},
-#define COL_TRADINGDAY		22		// 交易日
+#define COL_EXCHANGE		22		// 交易所
+	{"交易所",		10},
+#define COL_TRADINGDAY		23		// 交易日
 	{"交易日",		10}
 };
 std::vector<int> vcolumns;	// columns in order
@@ -341,9 +343,9 @@ int getopt(int argc, char* argv[], const char* ostr)
 
 void display_usage()
 {
-	std::cout << "usage:ctppriceview [-u user] [-p password] marketaddr instrument1,instrument2 ..." << std::endl;
-	std::cout << "example:ctppriceview -u 000001 -p 888888 tcp://180.168.146.187:10131 rb2205,IF2201" << std::endl;
-	std::cout << "example:ctppriceview tcp://180.168.146.187:10131 rb2205,IF2201" << std::endl;
+	std::cout << "usage:prices [-u user] [-p password] marketaddr instrument1,instrument2 ..." << std::endl;
+	std::cout << "example:prices -u 000001 -p 888888 tcp://180.168.146.187:10131 rb2205,IF2201" << std::endl;
+	std::cout << "example:prices tcp://180.168.146.187:10131 rb2205,IF2201" << std::endl;
 }
 
 int main(int argc, char * argv[])
@@ -427,6 +429,7 @@ int main(int argc, char * argv[])
 	mcolumns[COL_OPENINT]=true;vcolumns.push_back(COL_OPENINT);
 	mcolumns[COL_PREV_OPENINT]=true;vcolumns.push_back(COL_PREV_OPENINT);
 	mcolumns[COL_SETTLEMENT]=true;vcolumns.push_back(COL_SETTLEMENT);
+	mcolumns[COL_EXCHANGE] = true; vcolumns.push_back(COL_EXCHANGE);
 	mcolumns[COL_TRADINGDAY] = true; vcolumns.push_back(COL_TRADINGDAY);
 
 	std::thread workthread(&work_thread);
@@ -703,36 +706,36 @@ void display_quotation(const char *product_id)
 			mvprintw(y,x,"%*d",column_items[COL_VOLUME].width,vquotes[i].quantity);
 			x+=column_items[COL_VOLUME].width+1;
 			break;
-		case COL_BID_PRICE:		//close
+		case COL_BID_PRICE:		//bid price
 			if(vquotes[i].buy_price==DBL_MAX)
 				mvprintw(y,x,"%*c",column_items[COL_BID_PRICE].width,'-');
 			else
 				mvprintw(y,x,"%*.*f",column_items[COL_BID_PRICE].width,vquotes[i].precision,vquotes[i].buy_price);
 			x+=column_items[COL_BID_PRICE].width+1;
 			break;
-		case COL_BID_VOLUME:		//volume
+		case COL_BID_VOLUME:		//bi volume
 			mvprintw(y,x,"%*d",column_items[COL_BID_VOLUME].width,vquotes[i].buy_quantity);
 			x+=column_items[COL_BID_VOLUME].width+1;
 			break;
-		case COL_ASK_PRICE:		//close
+		case COL_ASK_PRICE:		//ask price
 			if(vquotes[i].sell_price==DBL_MAX)
 				mvprintw(y,x,"%*c",column_items[COL_ASK_PRICE].width,'-');
 			else
 				mvprintw(y,x,"%*.*f",column_items[COL_ASK_PRICE].width,vquotes[i].precision,vquotes[i].sell_price);
 			x+=column_items[COL_ASK_PRICE].width+1;
 			break;
-		case COL_ASK_VOLUME:		//volume
+		case COL_ASK_VOLUME:		//ask volume
 			mvprintw(y,x,"%*d",column_items[COL_ASK_VOLUME].width,vquotes[i].sell_quantity);
 			x+=column_items[COL_ASK_VOLUME].width+1;
 			break;
-		case COL_OPEN:		//close
+		case COL_OPEN:		//open
 			if(vquotes[i].open_price==DBL_MAX)
 				mvprintw(y,x,"%*c",column_items[COL_OPEN].width,'-');
 			else
 				mvprintw(y,x,"%*.*f",column_items[COL_OPEN].width,vquotes[i].precision,vquotes[i].open_price);
 			x+=column_items[COL_OPEN].width+1;
 			break;
-		case COL_PREV_SETTLEMENT:		//close
+		case COL_PREV_SETTLEMENT:		//settlement
 			if(vquotes[i].prev_settle==DBL_MAX)
 				mvprintw(y,x,"%*c",column_items[COL_PREV_SETTLEMENT].width,'-');
 			else
@@ -743,64 +746,68 @@ void display_quotation(const char *product_id)
 			mvprintw(y,x,"%*d",column_items[COL_TRADE_VOLUME].width,vquotes[i].trade_volume);
 			x+=column_items[COL_TRADE_VOLUME].width+1;
 			break;
-		case COL_AVERAGE_PRICE:		//close
+		case COL_AVERAGE_PRICE:		//avgprice
 			if(vquotes[i].average_price==DBL_MAX)
 				mvprintw(y,x,"%*c",column_items[COL_AVERAGE_PRICE].width,'-');
 			else
 				mvprintw(y,x,"%*.*f",column_items[COL_AVERAGE_PRICE].width,vquotes[i].precision,vquotes[i].average_price);
 			x+=column_items[COL_AVERAGE_PRICE].width+1;
 			break;
-		case COL_HIGH:		//close
+		case COL_HIGH:		//high
 			if(vquotes[i].high==DBL_MAX)
 				mvprintw(y,x,"%*c",column_items[COL_HIGH].width,'-');
 			else
 				mvprintw(y,x,"%*.*f",column_items[COL_HIGH].width,vquotes[i].precision,vquotes[i].high);
 			x+=column_items[COL_HIGH].width+1;
 			break;
-		case COL_LOW:		//close
+		case COL_LOW:		//low
 			if(vquotes[i].low==DBL_MAX)
 				mvprintw(y,x,"%*c",column_items[COL_LOW].width,'-');
 			else
 				mvprintw(y,x,"%*.*f",column_items[COL_LOW].width,vquotes[i].precision,vquotes[i].low);
 			x+=column_items[COL_LOW].width+1;
 			break;
-		case COL_HIGH_LIMIT:		//close
+		case COL_HIGH_LIMIT:		//highlimit
 			if (vquotes[i].high_limit == DBL_MAX)
 				mvprintw(y, x, "%*c", column_items[COL_HIGH].width, '-');
 			else
 				mvprintw(y, x, "%*.*f", column_items[COL_HIGH].width, vquotes[i].precision, vquotes[i].high_limit);
 			x += column_items[COL_HIGH].width + 1;
 			break;
-		case COL_LOW_LIMIT:		//close
+		case COL_LOW_LIMIT:		//lowlimit
 			if (vquotes[i].low_limit == DBL_MAX)
 				mvprintw(y, x, "%*c", column_items[COL_HIGH].width, '-');
 			else
 				mvprintw(y, x, "%*.*f", column_items[COL_HIGH].width, vquotes[i].precision, vquotes[i].low_limit);
 			x += column_items[COL_HIGH].width + 1;
 			break;
-		case COL_SETTLEMENT:		//close
+		case COL_SETTLEMENT:		//settlement
 			if(vquotes[i].settle==DBL_MAX)
 				mvprintw(y,x,"%*c",column_items[COL_SETTLEMENT].width,'-');
 			else
 				mvprintw(y,x,"%*.*f",column_items[COL_SETTLEMENT].width,vquotes[i].precision,vquotes[i].settle);
 			x+=column_items[COL_SETTLEMENT].width+1;
 			break;
-		case COL_PREV_CLOSE:		//close
+		case COL_PREV_CLOSE:		//preclose
 			if(vquotes[i].prev_close==DBL_MAX)
 				mvprintw(y,x,"%*c",column_items[COL_PREV_CLOSE].width,'-');
 			else
 				mvprintw(y,x,"%*.*f",column_items[COL_PREV_CLOSE].width,vquotes[i].precision,vquotes[i].prev_close);
 			x+=column_items[COL_PREV_CLOSE].width+1;
 			break;
-		case COL_OPENINT:		//volume
+		case COL_OPENINT:		//openint
 			mvprintw(y,x,"%*d",column_items[COL_OPENINT].width,vquotes[i].openint);
 			x+=column_items[COL_OPENINT].width+1;
 			break;
-		case COL_PREV_OPENINT:		//volume
+		case COL_PREV_OPENINT:		//previous openint
 			mvprintw(y,x,"%*d",column_items[COL_PREV_OPENINT].width,vquotes[i].prev_openint);
 			x+=column_items[COL_PREV_OPENINT].width+1;
 			break;
-		case COL_TRADINGDAY:		//volume
+		case COL_EXCHANGE:		//exchange
+			mvprintw(y, x, "%-*s", column_items[COL_EXCHANGE].width, vquotes[i].exchange_id);
+			x += column_items[COL_EXCHANGE].width + 1;
+			break;
+		case COL_TRADINGDAY:		//tradingday
 			mvprintw(y, x, "%-*s", column_items[COL_TRADINGDAY].width, vquotes[i].tradingday);
 			x += column_items[COL_TRADINGDAY].width + 1;
 			break;
@@ -1001,6 +1008,10 @@ void display_title()
 		case COL_PREV_OPENINT:		//volume
 			mvprintw(y,x,"%*s",column_items[COL_PREV_OPENINT].width,column_items[COL_PREV_OPENINT].name);
 			x+=column_items[COL_PREV_OPENINT].width+1;
+			break;
+		case COL_EXCHANGE:		//volume
+			mvprintw(y, x, "%-*s", column_items[COL_EXCHANGE].width, column_items[COL_EXCHANGE].name);
+			x += column_items[COL_EXCHANGE].width + 1;
 			break;
 		case COL_TRADINGDAY:		//volume
 			mvprintw(y, x, "%-*s", column_items[COL_TRADINGDAY].width, column_items[COL_TRADINGDAY].name);
