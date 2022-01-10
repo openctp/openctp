@@ -1,18 +1,31 @@
 ## **CTP开放平台（Powered by TTS - Tick Trading System）**
 
 Github集 1000 Star，[知乎krenx](https://www.zhihu.com/people/krenx)集 10000 收藏，将开启平台各接口源码开放进程。
-![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
 
 开放平台采用与CTPAPI完全兼容的接口，一定程度上可替代simnow等模拟平台进行功能测试。 CTP程序无需修改代码也无需重新编译，只需在这里**下载与CTP API版本号一致的交易dll**，覆盖掉自己的即可，**行情dll不用改**，行情的接入地址可使用各期货公司的实盘地址。
 
-目前已提供CTPAPI全部在用的四个版本API，提供**Win32、Win64、Linux64、Mac64及FreeBSD64**共5个平台40个动态库。
+提供CTPAPI 6.3.15、6.3.19、6.5.1、6.6.1全部在用的版本，对应支持win32、win64、linux、MacOS等多个操作系统。
+
+![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
+
+### 目录结构：
+- 6.3.15_20190220 ~ 6.6.1_P1_20210406：开放平台标准模拟环境TTS系统的CTPAPI兼容接口，替换CTP官方动态库即可连接TTS系统。
+- ctp2IB盈透：盈透证券的CTPAPI兼容接口。
+- ctp2OST东方证券：东方证券的CTPAPI兼容接口。
+- ctp2中泰证券XTP：中泰证券XTP柜台的CTPAPI兼容接口。
+- ctp2华鑫证券STP：华鑫证券奇点柜台的CTPAPI兼容接口。
+- ctp2QQ行情：腾讯行情的CTPAPI兼容接口。
+- ctp2Sina行情：新浪行情的CTPAPI兼容接口。
+- demo：CTPAPI开发相关的demo及工具源码。
+- tools：生产力工具。
+- docs：开发文档及行业资料。
 
 ### 各套环境运行状态监控：
 - 监控页面地址：http://122.51.136.165:50080/detail.html
 - 使用的技术：https://github.com/krenx1983/openctp/tree/master/tools/Ping
 - 相关源码：https://github.com/krenx1983/openctp/tree/master/demo/ctpping
 
-![1641634119(1)](https://user-images.githubusercontent.com/83346523/148639198-7ea4d3c3-ebb7-463d-b28e-4adc3596e685.png)
+![613dc093f916d1bf0764e5365f202ff](https://user-images.githubusercontent.com/83346523/148802378-2c9b3d3f-1959-4aab-851a-cf55666806d8.png)
 ### **支持品种：**
 - A股股票、债券、基金
 - 上期所等国内全品种期货、期权
@@ -31,8 +44,15 @@ Github集 1000 Star，[知乎krenx](https://www.zhihu.com/people/krenx)集 10000
 
 ### 知乎热门文章：
 - [CTP开放平台（Powered by TTS - Tick Trading System）](https://zhuanlan.zhihu.com/p/425679896)
-- [如何使用CTP开放平台提供的各项能力](https://zhuanlan.zhihu.com/p/425679896)
-- [连接CTP开放平台报错4097的解决方法](https://zhuanlan.zhihu.com/p/425679896)
+- [如何使用CTP开放平台提供的各项能力](https://zhuanlan.zhihu.com/p/451403422)
+- [连接CTP开放平台报错4097的解决方法](https://zhuanlan.zhihu.com/p/453332727)
+- [发布一批CTP链路检测工具](https://zhuanlan.zhihu.com/p/447148174)
+- [发布一批行情显示工具（命令行版）](https://zhuanlan.zhihu.com/p/446972353)
+- [CTP开放平台支撑系统（TTS）架构](https://zhuanlan.zhihu.com/p/367326886)
+- [期货交易系统架构演变](https://zhuanlan.zhihu.com/p/360872258)
+- [内存数据库交易系统架构第一篇--概览篇](https://zhuanlan.zhihu.com/p/382019469)
+- [内存数据库交易系统架构第二篇--数据恢复机制](https://zhuanlan.zhihu.com/p/399605670)
+- [交易系统的“白”（一）](https://zhuanlan.zhihu.com/p/430975046)
 
 ### 撮合方式（同时支持做市与撮合）：
 - 撮合：完全由用户之间撮合，按价格优先、时间优先撮合成交。撮合模式的合约只有三个，合约代码分别为TEST、BTC、MINUS，其它合约均为做市模式。
