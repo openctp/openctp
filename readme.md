@@ -107,9 +107,9 @@ Github集 1000 Star，[知乎krenx](https://www.zhihu.com/people/krenx)集 10000
 
 <img src="https://user-images.githubusercontent.com/83346523/146651068-3c2b3401-8c87-4ff3-beb4-a86492ea6bef.png" alt="QQ群二维码" width="300" height="300" />
 
-### **微信交流群先加这个微信（注明加群）：**
+### **微信交流群：**
 
-<img src="https://user-images.githubusercontent.com/83346523/146651159-19eb5ae9-1fef-42a8-aa30-669a77571c47.jpg" alt="krenx微信" width="300" height="300" />
+<img src="https://user-images.githubusercontent.com/83346523/149159293-1153890f-4712-4539-ae8f-b167208d7543.jpg" alt="微信群二" width="300" height="300" />
 
 ### **特别说明：**
 
