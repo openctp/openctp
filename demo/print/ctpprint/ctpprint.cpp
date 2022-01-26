@@ -216,6 +216,70 @@ public:
 		printf("OnRspOrderAction:InstrumentID:%s,ExchangeID:%s,OrderSysID:%s,FrontID:%d,SessionID:%d,OrderRef:%s,RequestID:%d,InvestUnitID:%s\n",pInputOrderAction->InstrumentID,pInputOrderAction->ExchangeID,pInputOrderAction->OrderSysID, pInputOrderAction->FrontID, pInputOrderAction->SessionID, pInputOrderAction->OrderRef,pInputOrderAction->RequestID,pInputOrderAction->InvestUnitID);
 	}
 
+	/*产品查询应答*/
+	void OnRspQryProduct(CThostFtdcProductField* pProduct, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+	{
+		if (pProduct)
+			printf("OnRspQryProduct:ProductID:%s,ProductName:%s,ProductClass:%c,ExchangeID:%s\n", pProduct->ProductID, pProduct->ProductName, pProduct->ProductClass, pProduct->ExchangeID);
+
+		if (bIsLast) {
+			_semaphore.signal();
+		}
+	}
+
+	/*交易所查询应答*/
+	void OnRspQryExchange(CThostFtdcExchangeField* pExchange, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+	{
+		if (pExchange)
+			printf("OnRspQryExchange:ExchangeID:%s,ExchangeName:%s\n", pExchange->ExchangeID, pExchange->ExchangeName);
+
+		if (bIsLast) {
+			_semaphore.signal();
+		}
+	}
+
+	/*投资者手续费率查询应答*/
+	void OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField* pInstrumentCommissionRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+	{
+		if (pInstrumentCommissionRate)
+			printf("OnRspQryInstrumentCommissionRate:ExchangeID:%s,InstrumentID:%s,OpenRatioByMoney:%lf,CloseRatioByMoney:%lf,CloseTodayRatioByMoney:%lf,OpenRatioByVolume:%lf,CloseRatioByVolume:%lf,CloseTodayRatioByVolume:%lf\n", 
+				pInstrumentCommissionRate->ExchangeID, pInstrumentCommissionRate->InstrumentID,
+				pInstrumentCommissionRate->OpenRatioByMoney, pInstrumentCommissionRate->CloseRatioByMoney, pInstrumentCommissionRate->CloseTodayRatioByMoney,
+				pInstrumentCommissionRate->OpenRatioByVolume, pInstrumentCommissionRate->CloseRatioByVolume, pInstrumentCommissionRate->CloseTodayRatioByVolume);
+
+		if (bIsLast) {
+			_semaphore.signal();
+		}
+	}
+
+	/*投资者保证金率查询应答*/
+	void OnRspQryInstrumentMarginRate(CThostFtdcInstrumentMarginRateField* pInstrumentMarginRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+	{
+		if (pInstrumentMarginRate)
+			printf("OnRspQryInstrumentMarginRate:ExchangeID:%s,InstrumentID:%s,LongMarginRatioByMoney:%lf,LongMarginRatioByVolume:%lf,ShortMarginRatioByMoney:%lf,ShortMarginRatioByVolume:%lf\n",
+				pInstrumentMarginRate->ExchangeID, pInstrumentMarginRate->InstrumentID,
+				pInstrumentMarginRate->LongMarginRatioByMoney, pInstrumentMarginRate->LongMarginRatioByVolume, pInstrumentMarginRate->ShortMarginRatioByMoney,
+				pInstrumentMarginRate->ShortMarginRatioByVolume);
+
+		if (bIsLast) {
+			_semaphore.signal();
+		}
+	}
+
+	///请求查询交易所保证金率响应
+	void OnRspQryExchangeMarginRate(CThostFtdcExchangeMarginRateField* pExchangeMarginRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+	{
+		if (pExchangeMarginRate)
+			printf("OnRspQryExchangeMarginRate:ExchangeID:%s,InstrumentID:%s,LongMarginRatioByMoney:%lf,LongMarginRatioByVolume:%lf,ShortMarginRatioByMoney:%lf,ShortMarginRatioByVolume:%lf\n",
+				pExchangeMarginRate->ExchangeID, pExchangeMarginRate->InstrumentID,
+				pExchangeMarginRate->LongMarginRatioByMoney, pExchangeMarginRate->LongMarginRatioByVolume, pExchangeMarginRate->ShortMarginRatioByMoney,
+				pExchangeMarginRate->ShortMarginRatioByVolume);
+
+		if (bIsLast) {
+			_semaphore.signal();
+		}
+	}
+
 	// 查询合约列表
 	void OnRspQryInstrument(CThostFtdcInstrumentField* pInstrument, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 	{
@@ -391,7 +455,9 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	CApplication Spi(argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+	std::string host(argv[1]), broker(argv[2]), user(argv[3]), password(argv[4]), appid(argv[5]), authcode(argv[6]);
+
+	CApplication Spi(host, broker, user, password, appid, authcode);
 
 	// 启动
 	if (Spi.Run() < 0)
@@ -400,7 +466,54 @@ int main(int argc, char* argv[])
 	// 等待登录完成
 	_semaphore.wait();
 
+	// 查询交易所
+	printf("查询交易所 ...\n");
+	CThostFtdcQryExchangeField QryExchange = { 0 };
+	Spi.m_pUserApi->ReqQryExchange(&QryExchange, 0);
+	_semaphore.wait();
+
+	// 查询品种
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询品种 ...\n");
+	CThostFtdcQryProductField QryProduct = { 0 };
+	Spi.m_pUserApi->ReqQryProduct(&QryProduct, 0);
+	_semaphore.wait();
+
+	// 查询投资者手续费率
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询投资者手续费率 ...\n");
+	CThostFtdcQryInstrumentCommissionRateField QryInstrumentCommissionRate = { 0 };
+	strncpy(QryInstrumentCommissionRate.BrokerID, broker.c_str(), sizeof(QryInstrumentCommissionRate.BrokerID) - 1);
+	strncpy(QryInstrumentCommissionRate.InvestorID, user.c_str(), sizeof(QryInstrumentCommissionRate.InvestorID) - 1);
+	strncpy(QryInstrumentCommissionRate.ExchangeID, "SHFE", sizeof(QryInstrumentCommissionRate.ExchangeID) - 1);
+	strncpy(QryInstrumentCommissionRate.InstrumentID, "au2203", sizeof(QryInstrumentCommissionRate) - 1);
+	Spi.m_pUserApi->ReqQryInstrumentCommissionRate(&QryInstrumentCommissionRate, 0);
+	_semaphore.wait();
+
+	// 查询投资者保证金率
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询投资者保证金率 ...\n");
+	CThostFtdcQryInstrumentMarginRateField QryInstrumentMarginRate = { 0 };
+	strncpy(QryInstrumentCommissionRate.BrokerID, broker.c_str(), sizeof(QryInstrumentCommissionRate.BrokerID) - 1);
+	strncpy(QryInstrumentCommissionRate.InvestorID, user.c_str(), sizeof(QryInstrumentCommissionRate.InvestorID) - 1);
+	strncpy(QryInstrumentMarginRate.ExchangeID, "SHFE", sizeof(QryInstrumentMarginRate.ExchangeID) - 1);
+	strncpy(QryInstrumentMarginRate.InstrumentID, "au2203", sizeof(QryInstrumentMarginRate.InstrumentID) - 1);
+	Spi.m_pUserApi->ReqQryInstrumentMarginRate(&QryInstrumentMarginRate, 0);
+	_semaphore.wait();
+
+	// 查询交易所保证金率
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询交易所保证金率 ...\n");
+	CThostFtdcQryExchangeMarginRateField QryExchangeMarginRate = { 0 };
+	strncpy(QryInstrumentCommissionRate.BrokerID, broker.c_str(), sizeof(QryInstrumentCommissionRate.BrokerID) - 1);
+	strncpy(QryInstrumentCommissionRate.InvestorID, user.c_str(), sizeof(QryInstrumentCommissionRate.InvestorID) - 1);
+	//strncpy(QryExchangeMarginRate.ExchangeID, "SHFE", sizeof(QryExchangeMarginRate.ExchangeID) - 1);
+	//strncpy(QryExchangeMarginRate.InstrumentID, "au2203", sizeof(QryExchangeMarginRate.InstrumentID) - 1);
+	Spi.m_pUserApi->ReqQryExchangeMarginRate(&QryExchangeMarginRate, 0);
+	_semaphore.wait();
+
 	// 查询合约
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	printf("查询合约 ...\n");
 	CThostFtdcQryInstrumentField QryInstrument = { 0 };
 	Spi.m_pUserApi->ReqQryInstrument(&QryInstrument, 0);
