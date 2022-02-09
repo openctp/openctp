@@ -72,17 +72,6 @@ public:
 	{
 		if (error_info && error_info->error_id != 0)
 		{
-			if (error_info->error_id == 11000350) {
-				// 没有记录
-				printf("Query Trade ...\n");
-				EMTQueryTraderReq Req = { 0 };
-				if (m_pUserApi->QueryTrades(&Req, m_session_id, 0)) {
-					OnError(m_pUserApi->GetApiLastError());
-					return;
-				}
-
-				return;
-			}
 			OnError(error_info);
 			return;
 		}
@@ -104,14 +93,6 @@ public:
 	{
 		if (error_info && error_info->error_id != 0)
 		{
-			if (error_info->error_id == 11000350) {
-				// 没有记录
-				printf("Query Position ...\n");
-				if (m_pUserApi->QueryPosition(NULL, m_session_id, 0)) {
-					OnError(m_pUserApi->GetApiLastError());
-					return;
-				}
-			}
 			OnError(error_info);
 			return;
 		}
@@ -131,14 +112,6 @@ public:
 	{
 		if (error_info && error_info->error_id != 0)
 		{
-			if (error_info->error_id == 11000350) {
-				// 没有记录
-				printf("Query Asset ...\n");
-				if (m_pUserApi->QueryAsset(m_session_id, 0)) {
-					OnError(m_pUserApi->GetApiLastError());
-					return;
-				}
-			}
 			OnError(error_info);
 			return;
 		}
@@ -158,11 +131,6 @@ public:
 	{
 		if (error_info && error_info->error_id != 0)
 		{
-			if (error_info->error_id == 11000350) {
-				// 没有记录
-				printf("Query completed.\n");
-				return;
-			}
 			OnError(error_info);
 			return;
 		}
@@ -236,8 +204,8 @@ private:
 
 void display_usage()
 {
-	printf("usage:emtprint host user password authcode\n");
-	printf("example:emtprint 122.112.139.0:6101 000001 888888 b8aa7173bba3470e390d787219b2112e\n");
+	printf("usage:emtprint host user password key\n");
+	printf("example:emtprint 61.152.230.41:19088 000001 888888 b8aa7173bba3470e390d787219b2112e\n");
 }
 
 
@@ -248,7 +216,12 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	CApplication Spi(argv[1], argv[2], argv[3], argv[4]);
+	std::string host = argv[1];
+	std::string user = argv[2];
+	std::string password = argv[3];
+	std::string key = argv[4];
+
+	CApplication Spi(host,user,password,key);
 
 	// 启动
 	if (Spi.Run() < 0)
