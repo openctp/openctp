@@ -5,14 +5,12 @@
 #include <vector>
 #include <locale>
 #include <codecvt>
-#include "nlohmann/json.hpp"
 #include "XTP/xtp_quote_api.h"
 #pragma comment(lib,"XTP/xtpquoteapi.lib")
 
 #define XTP_CLIENT_ID 82
 
 using namespace XTP::API;
-using nlohmann::json;
 
 class CApplication : public QuoteSpi
 {
@@ -47,11 +45,10 @@ public:
 			// 深圳查完dump到文件
 			printf("%u Instruments received.\n", m_vInstruments.size());
 
-			json js;
-			json instruments;
-			json instrument;
 			std::wstring_convert<std::codecvt_utf8<wchar_t> > conv;
 			std::wstring_convert<std::codecvt_byname<wchar_t, char, mbstate_t>> convert(new std::codecvt_byname<wchar_t, char, mbstate_t>(".936"));
+			std::ofstream outfile;
+			outfile.open("dict.csv", std::ios::out | std::ios::trunc);
 			for (auto iter = m_vInstruments.begin(); iter != m_vInstruments.end(); iter++) {
 				switch (iter->ticker_type) {
 				case XTP_TICKER_TYPE_STOCK:
@@ -66,21 +63,10 @@ public:
 				default:
 					continue;
 				}
-				instrument["InstrumentID"] = iter->ticker;
 				std::string InstrumentName = convert.to_bytes(conv.from_bytes(iter->ticker_name));
-				instrument["InstrumentName"] = iter->ticker_name;
-				instrument["PriceTick"] = iter->price_tick;
-				instrument["PreClosePrice"] = iter->pre_close_price;
-				instrument["ExchangeID"] = GetExchangeID(iter->exchange_id);
-				instrument["ProductClass"] = GetProductClass(iter->ticker_type);
-				instruments.push_back(instrument);
+				outfile << GetExchangeID(iter->exchange_id) << "," << GetProductClass(iter->ticker_type) << "," << iter->ticker << "," << InstrumentName << "," << iter->price_tick << "," << iter->pre_close_price << std::endl;
 			}
-			js["Instruments"] = instruments;
 			
-			std::string str=js.dump();
-			std::ofstream outfile;
-			outfile.open("dict.json", std::ios::out | std::ios::trunc);
-			outfile << str;
 			outfile.close();
 			printf("Dump completed.\n");
 			//exit(0);
