@@ -99,6 +99,8 @@ Github集 1000 Star，[知乎krenx](https://www.zhihu.com/people/krenx)集 10000
 <img src="https://user-images.githubusercontent.com/83346523/148678947-b2a7ed9c-f77f-43d6-8e85-74b2c9ca4c44.png" alt="快期V2" width="700" height="400" />
 - [TBTerminalCTP（交易开拓者）](https://zhuanlan.zhihu.com/p/437818698)
 <img src="https://user-images.githubusercontent.com/83346523/149624377-01c97148-9e34-4f2b-8bb3-c43b57340284.png" alt="TBTerminal" width="700" height="400" />
+- [WonderTrader](https://dumengru.github.io/docs_wondertrader/wtcpp/folder02/file02.html)
+<img src="https://user-images.githubusercontent.com/83346523/183711253-0cb71eed-016a-40c8-9415-c40e74aa0bca.jpg" alt="WonderTrader" width="700" height="400" />
 
 ### **QQ交流群：564385877**
 
