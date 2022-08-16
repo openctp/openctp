@@ -1,5 +1,13 @@
 ## **CTP开放平台（Powered by TTS - Tick Trading System）**
 
+### Github集 1000 Star，[知乎krenx](https://www.zhihu.com/people/krenx)集 10000 收藏，将开启平台各接口源码开放进程。
+
+开放平台采用与CTPAPI完全兼容的接口，一定程度上可替代simnow等模拟平台进行功能测试。 CTP程序无需修改代码也无需重新编译，只需在这里**下载与CTP API版本号一致的动态库**，覆盖掉自己的即可。
+
+提供CTPAPI 6.3.15、6.3.19、6.5.1、6.6.1全部在用的版本，对应支持win32、win64、linux、MacOS等多个操作系统。
+
+![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
+
 ### openctp培训计划
 openctp准备从9月份开始办4期培训，培训时间为每个周六晚19:00～20:00，培训方式暂定为腾讯会议，课后可无限回看，课后可无限时间交流，报名费为每期2000元，25号前报名享优惠只要1800元，报名请在openctp公众号回复“培训”两个字，培训完成可帮推荐工作，可长期跟同学们沟通交流，培训内容是我个人从业近二十年的技术精华，希望报名的同学能有一定的C/C++语言基础，完成四期培训，在金融交易领域的工作应该会得心应手。
 
@@ -15,14 +23,6 @@ openctp准备从9月份开始办4期培训，培训时间为每个周六晚19:00
 - 第三节课：讲解使用共享内存及信号量技术实现共享内存队列（Think shmqueue），并对比System V消息队列。
 - 第四节课：BML语言（TTS系统各模块之间及对外API的通讯语言）的讲解与实践，可连接openctp环境的TTS系统进行实操，讲解Think库中的BML语言接口实现Think GL。
 - 第五节课：Think库重要工具讲解，讲解netpeek代码（tcp通讯拦截并显示字节流）及讲解glpeek代码（BML通讯拦截并格式化显示报文），讲解udprecv、udpsend工具代码，都是极其实用的通用工具。
-
-Github集 1000 Star，[知乎krenx](https://www.zhihu.com/people/krenx)集 10000 收藏，将开启平台各接口源码开放进程。
-
-开放平台采用与CTPAPI完全兼容的接口，一定程度上可替代simnow等模拟平台进行功能测试。 CTP程序无需修改代码也无需重新编译，只需在这里**下载与CTP API版本号一致的动态库**，覆盖掉自己的即可。
-
-提供CTPAPI 6.3.15、6.3.19、6.5.1、6.6.1全部在用的版本，对应支持win32、win64、linux、MacOS等多个操作系统。
-
-![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
 
 ### 目录结构：
 - 6.3.15_20190220 ~ 6.6.1_P1_20210406：开放平台标准模拟环境TTS系统的CTPAPI兼容接口，替换CTP官方动态库即可连接TTS系统。
