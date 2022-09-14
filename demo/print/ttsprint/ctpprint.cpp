@@ -284,7 +284,9 @@ public:
 	void OnRspQryInstrument(CThostFtdcInstrumentField* pInstrument, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 	{
 		if (pInstrument)
-			printf("OnRspQryInstrument:InstrumentID:%s,InstrumentName:%s,ProductID:%s,PriceTick:%lf,UnderlyingInstrID:%s,StrikePrice:%lf,ExchangeID:%s\n", pInstrument->InstrumentID, pInstrument->InstrumentName, pInstrument->ProductID, pInstrument->PriceTick, pInstrument->UnderlyingInstrID, pInstrument->StrikePrice, pInstrument->ExchangeID);
+			printf("OnRspQryInstrument:InstrumentID:%s,InstrumentName:%s,ProductID:%s,PriceTick:%lf,UnderlyingInstrID:%s,StrikePrice:%lf,ExchangeID:%s,LongMarginRatio:%lf,ShortMarginRatio:%lf\n",
+				pInstrument->InstrumentID, pInstrument->InstrumentName, pInstrument->ProductID, pInstrument->PriceTick, pInstrument->UnderlyingInstrID, 
+				pInstrument->StrikePrice, pInstrument->ExchangeID,pInstrument->LongMarginRatio,pInstrument->ShortMarginRatio);
 
 		if (bIsLast) {
 			_semaphore.signal();
@@ -336,8 +338,8 @@ public:
 		}
 
 		if(pTrade)
-			printf("OnRspQryTrade:BrokerID:%s,BrokerOrderSeq:%d,OrderLocalID:%s,InstrumentID:%s,Direction:%s,Volume:%d,Price:%lf,OrderSysID:%s,OrderRef:%s,ExchangeID:%s,TradeTime:%s,ClientID:%s,InvestUnitID:%s\n",
-				pTrade->BrokerID, pTrade->BrokerOrderSeq, pTrade->OrderLocalID, pTrade->InstrumentID, direction_to_string(pTrade->Direction).c_str(), pTrade->Volume, pTrade->Price, pTrade->OrderSysID, pTrade->OrderRef, pTrade->ExchangeID, pTrade->TradeTime,pTrade->ClientID,pTrade->InvestUnitID);
+			printf("OnRspQryTrade:BrokerID:%s,BrokerOrderSeq:%d,OrderLocalID:%s,InstrumentID:%s,Direction:%s,Volume:%d,Price:%lf,OrderSysID:%s,OrderRef:%s,ExchangeID:%s,TradeTime:%s,ClientID:%s,InvestUnitID:%s,Offset='%c'\n",
+				pTrade->BrokerID, pTrade->BrokerOrderSeq, pTrade->OrderLocalID, pTrade->InstrumentID, direction_to_string(pTrade->Direction).c_str(), pTrade->Volume, pTrade->Price, pTrade->OrderSysID, pTrade->OrderRef, pTrade->ExchangeID, pTrade->TradeTime,pTrade->ClientID,pTrade->InvestUnitID,pTrade->OffsetFlag);
 
 		if (bIsLast) {
 			_semaphore.signal();
@@ -401,8 +403,8 @@ public:
 	// 成交回报
 	void OnRtnTrade(CThostFtdcTradeField* pTrade)
 	{
-		printf("OnRtnTrade:BrokerID:%s,BrokerOrderSeq:%d,OrderLocalID:%s,InstrumentID:%s,Direction:%s,Volume:%d,Price:%lf,OrderSysID:%s,OrderRef:%s,ExchangeID:%s,TradeTime:%s,ClientID:%s,InvestUnitID:%s\n",
-			pTrade->BrokerID, pTrade->BrokerOrderSeq, pTrade->OrderLocalID, pTrade->InstrumentID, direction_to_string(pTrade->Direction).c_str(), pTrade->Volume, pTrade->Price, pTrade->OrderSysID, pTrade->OrderRef, pTrade->ExchangeID, pTrade->TradeTime,pTrade->ClientID,pTrade->InvestUnitID);
+		printf("OnRtnTrade:BrokerID:%s,BrokerOrderSeq:%d,OrderLocalID:%s,InstrumentID:%s,Direction:%s,Volume:%d,Price:%lf,OrderSysID:%s,OrderRef:%s,ExchangeID:%s,TradeTime:%s,ClientID:%s,InvestUnitID:%s,OffsetFlag='%c'\n",
+			pTrade->BrokerID, pTrade->BrokerOrderSeq, pTrade->OrderLocalID, pTrade->InstrumentID, direction_to_string(pTrade->Direction).c_str(), pTrade->Volume, pTrade->Price, pTrade->OrderSysID, pTrade->OrderRef, pTrade->ExchangeID, pTrade->TradeTime,pTrade->ClientID,pTrade->InvestUnitID, pTrade->OffsetFlag);
 	}
 
 	// 报单错误
@@ -485,8 +487,8 @@ int main(int argc, char* argv[])
 	CThostFtdcQryInstrumentCommissionRateField QryInstrumentCommissionRate = { 0 };
 	strncpy(QryInstrumentCommissionRate.BrokerID, broker.c_str(), sizeof(QryInstrumentCommissionRate.BrokerID) - 1);
 	strncpy(QryInstrumentCommissionRate.InvestorID, user.c_str(), sizeof(QryInstrumentCommissionRate.InvestorID) - 1);
-	strncpy(QryInstrumentCommissionRate.ExchangeID, "SHFE", sizeof(QryInstrumentCommissionRate.ExchangeID) - 1);
-	strncpy(QryInstrumentCommissionRate.InstrumentID, "au2203", sizeof(QryInstrumentCommissionRate) - 1);
+	strncpy(QryInstrumentCommissionRate.ExchangeID, "CZCE", sizeof(QryInstrumentCommissionRate.ExchangeID) - 1);
+	strncpy(QryInstrumentCommissionRate.InstrumentID, "MA209", sizeof(QryInstrumentCommissionRate) - 1);
 	Spi.m_pUserApi->ReqQryInstrumentCommissionRate(&QryInstrumentCommissionRate, 0);
 	_semaphore.wait();
 
@@ -496,8 +498,8 @@ int main(int argc, char* argv[])
 	CThostFtdcQryInstrumentMarginRateField QryInstrumentMarginRate = { 0 };
 	strncpy(QryInstrumentCommissionRate.BrokerID, broker.c_str(), sizeof(QryInstrumentCommissionRate.BrokerID) - 1);
 	strncpy(QryInstrumentCommissionRate.InvestorID, user.c_str(), sizeof(QryInstrumentCommissionRate.InvestorID) - 1);
-	strncpy(QryInstrumentMarginRate.ExchangeID, "SHFE", sizeof(QryInstrumentMarginRate.ExchangeID) - 1);
-	strncpy(QryInstrumentMarginRate.InstrumentID, "au2203", sizeof(QryInstrumentMarginRate.InstrumentID) - 1);
+	strncpy(QryInstrumentMarginRate.ExchangeID, "CZCE", sizeof(QryInstrumentMarginRate.ExchangeID) - 1);
+	strncpy(QryInstrumentMarginRate.InstrumentID, "MA209", sizeof(QryInstrumentMarginRate.InstrumentID) - 1);
 	Spi.m_pUserApi->ReqQryInstrumentMarginRate(&QryInstrumentMarginRate, 0);
 	_semaphore.wait();
 
@@ -507,8 +509,8 @@ int main(int argc, char* argv[])
 	CThostFtdcQryExchangeMarginRateField QryExchangeMarginRate = { 0 };
 	strncpy(QryInstrumentCommissionRate.BrokerID, broker.c_str(), sizeof(QryInstrumentCommissionRate.BrokerID) - 1);
 	strncpy(QryInstrumentCommissionRate.InvestorID, user.c_str(), sizeof(QryInstrumentCommissionRate.InvestorID) - 1);
-	//strncpy(QryExchangeMarginRate.ExchangeID, "SHFE", sizeof(QryExchangeMarginRate.ExchangeID) - 1);
-	//strncpy(QryExchangeMarginRate.InstrumentID, "au2203", sizeof(QryExchangeMarginRate.InstrumentID) - 1);
+	strncpy(QryExchangeMarginRate.ExchangeID, "CZCE", sizeof(QryExchangeMarginRate.ExchangeID) - 1);
+	strncpy(QryExchangeMarginRate.InstrumentID, "MA209", sizeof(QryExchangeMarginRate.InstrumentID) - 1);
 	Spi.m_pUserApi->ReqQryExchangeMarginRate(&QryExchangeMarginRate, 0);
 	_semaphore.wait();
 
@@ -561,10 +563,10 @@ int main(int argc, char* argv[])
 	Spi.m_pUserApi->ReqQryTradingAccount(&QryTradingAccount, 0);
 
 	// 如需下单、撤单，放开下面的代码即可
-	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	//printf("按任意键下单 ...\n");
-	//getchar();
-	//Spi.OrderInsert("SHFE", "au2206", THOST_FTDC_D_Buy, THOST_FTDC_OF_Open, 380.0, 3);
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("按任意键下单 ...\n");
+	getchar();
+	Spi.OrderInsert("", "v2209", THOST_FTDC_D_Buy, THOST_FTDC_OF_Open, 6500, 3);
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	//printf("按任意键下单 ...\n");
