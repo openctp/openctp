@@ -4,7 +4,7 @@
 
 开放平台采用与CTPAPI完全兼容的接口，一定程度上可替代simnow等模拟平台进行功能测试。 CTP程序无需修改代码也无需重新编译，只需在这里**下载与CTP API版本号一致的动态库**，覆盖掉自己的即可。
 
-提供CTPAPI 6.3.15、6.3.19、6.5.1、6.6.1全部在用的版本，对应支持win32、win64、linux、MacOS等多个操作系统。
+提供CTPAPI 6.3.15、6.3.19、6.5.1、6.6.1、6.6.7全部在用的版本，对应支持win32、win64、linux、MacOS等多个操作系统。
 
 ![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
 
@@ -38,7 +38,7 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 - 第四节课：讲解风险控制，结合历史上典型的案例带你了解交易中的风险，也从我自己的交易经验谈谈我对风控的理解。
 
 ### 目录结构：
-- 6.3.15_20190220 ~ 6.6.1_P1_20210406：开放平台标准模拟环境TTS系统的CTPAPI兼容接口，替换CTP官方动态库即可连接TTS系统。
+- 6.3.15 ~ 6.6.7：开放平台标准模拟环境TTS系统的CTPAPI兼容接口，替换CTP官方动态库即可连接TTS系统。
 - ctp2IB盈透：盈透证券的CTPAPI兼容接口。
 - ctp2OST东方证券：东方证券的CTPAPI兼容接口。
 - ctp2中泰证券XTP：中泰证券XTP柜台的CTPAPI兼容接口。
@@ -119,7 +119,7 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 - [vn.py（知名Python量化交易客户端，支持全球市场交易）](https://www.vnpy.com/)
 <img src="https://user-images.githubusercontent.com/83346523/136988918-1159fc88-073e-4b6f-a8d6-3f33991e8a72.png" alt="vnpy" width="700" height="400" />
 
-- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易）](https://www.zhihu.com/people/mt5ctp)
+- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ：967352413）](https://www.zhihu.com/people/mt5ctp)
 <img src="https://user-images.githubusercontent.com/83346523/136989596-b12d91e8-48a0-4b26-bcaf-fdfca52d962c.png" alt="mt5ctp" width="700" height="400" />
 
 - [TextTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/krenx1983/TextTrader)
@@ -146,5 +146,12 @@ AuthCode、AppID认证信息任意填，不作校验
 
 Broker任意填，填什么就回什么
 
-
+### **咨询服务：**
+需要C/C++、Python、Java、Go、CTPAPI、交易系统等相关技术咨询服务的，请在openctp公众号回复”咨询“两个字。
+### **招聘咨询：**
+需要C/C++、量化交易、互联网等方面的人才或职位请在openctp公众号回复“找工作”三个字，通过openctp推荐工作将免费得到openctp咨询服务（价值1000元/年）。
+### **活动：**
+openctp每个月至少会有一次粉丝线下活动，可以是吃饭、喝茶、徒步等等，想参加的请在openctp公众号回复“活动”两个字。
+### **培训：**
+年轻时投资自己是最划算的，因为时间比任何东西都值钱，借别人的力量充实自己，在很短的时间内获得别人的经验值。openctp培训旨在为行业培养高端人才，目前已设计了五期培训课程，分别是C语言0基础课程、C/C++高级编程、CTPAPI接口开发、交易系统开发、金融交易业务，每期四节课，每节课1小时，上课时间为每周日晚8点～9点。
 <u>*本模拟平台不对模拟结果作任何保证，依据本平台测试结果进行实盘交易的后果完全由使用者自己承担。*</u>
