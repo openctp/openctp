@@ -9,7 +9,7 @@
 ![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
 
 ### openctp培训与咨询服务
-openctp现已推出培训与技术咨询服务，**培训服务**共准备了四期培训课程，培训时间为每个周日晚20:00～21:30，培训方式为腾讯会议，课后可无限回看，课后可无限时间交流，现在推广期报名费为每期2000元，10月1号开始每月上调500元，直至5000元/期，一次性购买四期培训只需交三期的钱，报名请在openctp公众号回复“培训”两个字，培训完成可帮推荐工作，可长期跟同学们沟通交流，培训内容是我个人从业近二十年的技术精华，希望报名的同学能有一定的C/C++语言基础，完成四期培训，在金融交易领域的工作应该会得心应手。
+openctp现已推出培训与技术咨询服务，**培训服务**共准备了四期培训课程，培训时间为每个周日晚20:00～21:30，培训方式为腾讯会议，课后可无限回看，课后可无限时间交流，详情请在openctp公众号回复“培训”两个字，培训完成可帮推荐工作，可长期跟同学们沟通交流，培训内容是我个人从业近二十年的技术精华，希望报名的同学能有一定的C/C++语言基础，完成四期培训，在金融交易领域的工作应该会得心应手。
 
 **咨询服务**为零散问题解答服务，如果你在CTP技术群等等地方问问题没人理你，你可以来咨询我们，纯编程技术问题也可以，涵盖各主流语言：C/C++、Java、Python、Go等，Linux环境编程问题也可以，这项服务我们是以团队的形式对外进行服务，由各项技术的大厂专家组成，对技术都有丰富的经验和极高的追求，服务收费推广期只收1000元/年，不限次，报名请在openctp公众号回复“咨询”两个字。
 
@@ -18,24 +18,6 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 - 第二期：CTP技术开发（大概以openctp相关技术为基准进行讲解，含CTPAPI底层逻辑、CTPAPI各种注意事项、开源CTP客户端TextTrader源码讲解等）
 - 第三期：交易系统开发（大概以TTS交易系统为基准进行讲解，含内存数据库架构技术、双机热备技术、重演技术、业务表结构设计、关键业务处理等）
 - 第四期：金融交易业务（通讲全球股票、期货、期权交易发展历程、交易规则以及交易中的风险）
-
-### 第一期的安排大致如下：
-- 第一节课：Think库概览，讲解文件数据库（Think DB）、进程间通讯（共享内存、消息队列、信号量、文件映射等）、网络通讯（TCP、UDP、IP等）等跨平台开发技术（Windows、Linux、UNIX、MacOS等）。
-- 第二节课：讲解Think NetCenter通讯框架（融合select、poll、epoll、kevent等各项IO复用技术）
-- 第三节课：讲解使用共享内存及信号量技术实现共享内存队列（Think shmqueue），并对比System V消息队列。
-- 第四节课：BML语言（TTS系统各模块之间及对外API的通讯语言）的讲解与实践，可连接openctp环境的TTS系统进行实操。Think库重要工具讲解，讲解netpeek代码（tcp通讯拦截并显示字节流），讲解udprecv、udpsend工具代码，都是极其实用的通用工具，Think库重要服务器程序讲解，讲解logserver日志服务器代码。
-
-### 第二期的安排大致如下：
-- 第一节课：通过[开源客户端TextTrader](https://github.com/krenx1983/TextTrader)源码带你对CTPAPI应用程序有个直观的体验，也通过TextTrader调用了的CTPAPI接口带你了解开发CTP程序大概需要用到哪些CTPAPI接口。
-- 第二节课：系统性讲解CTPAPI各常用接口。
-- 第三节课：以openctp的CTPAPI封装技术讲解CTPAPI的底层逻辑，让你知其然也知其所以然，从而更能够更准确高效地使用CTPAPI。
-- 第四节课：讲解CTPAPI应用开发的各个特别注意事项，CTP系统很复杂，有许多需要特别注意的点，我们尽可能多地把踩过的坑都总结给你。
-
-### 第四期的安排大致如下：
-- 第一节课：通讲股票、期货、期权、A股、港美股、海外期货等各种投资品种的知识，有个全局性的认识，从而对自己能够和适合做什么样的投资有个大概的了解。
-- 第二节课：详细讲解A股、国内期货的主要交易规则。
-- 第三节课：详细讲解期权交易规则及基本投资策略。
-- 第四节课：讲解风险控制，结合历史上典型的案例带你了解交易中的风险，也从我自己的交易经验谈谈我对风控的理解。
 
 ### 目录结构：
 - 6.3.15 ~ 6.6.7：开放平台标准模拟环境TTS系统的CTPAPI兼容接口，替换CTP官方动态库即可连接TTS系统。
@@ -98,7 +80,7 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 - 交易前置 - tcp://122.51.136.165:20002
 - 行情前置 - tcp://122.51.136.165:20004
 
-### **开放平台VIP环境（需要付费申请，具体[点这里](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484339&idx=1&sn=3c56cb0b201d3635a67f40b78dd7ae98&chksm=c36bd81af41c510c8d8e2ab43396a2de2fc73432f23b3cdff46debb85ec1170856903717a23b&token=1217034697&lang=zh_CN#rd)）：**
+### **开放平台VIP仿真环境（需要付费申请，具体[点这里](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484339&idx=1&sn=3c56cb0b201d3635a67f40b78dd7ae98&chksm=c36bd81af41c510c8d8e2ab43396a2de2fc73432f23b3cdff46debb85ec1170856903717a23b&token=1217034697&lang=zh_CN#rd)）：**
 - 交易前置 - tcp://42.192.226.242:20002
 - 行情前置 - 无（行情需要直连相应通道）
 
@@ -119,13 +101,13 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 - [vn.py（知名Python量化交易客户端，支持全球市场交易）](https://www.vnpy.com/)
 <img src="https://user-images.githubusercontent.com/83346523/136988918-1159fc88-073e-4b6f-a8d6-3f33991e8a72.png" alt="vnpy" width="700" height="400" />
 
-- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ：967352413）](https://www.zhihu.com/people/mt5ctp)
+- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ群：967352413）](https://www.zhihu.com/people/mt5ctp)
 <img src="https://user-images.githubusercontent.com/83346523/136989596-b12d91e8-48a0-4b26-bcaf-fdfca52d962c.png" alt="mt5ctp" width="700" height="400" />
 
 - [TextTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/krenx1983/TextTrader)
 <img src="https://user-images.githubusercontent.com/83346523/136989754-1f0130e6-5d75-427f-bbf3-7ed084b6eae1.png" alt="texttrader" width="700" height="400" />
 
-- [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架）](https://dumengru.github.io/docs_wondertrader/wtcpp/folder02/file02.html)
+- [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架，QQ群：610730738）](https://www.zhihu.com/column/c_1338797723131740161)
 <img src="https://user-images.githubusercontent.com/83346523/183711253-0cb71eed-016a-40c8-9415-c40e74aa0bca.jpg" alt="WonderTrader" width="700" height="400" />
 
 ### **通过自己替换dll可接入TTS通道（CTP开放平台）的产品：**
