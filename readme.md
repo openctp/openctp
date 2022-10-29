@@ -108,7 +108,7 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 <img src="https://user-images.githubusercontent.com/83346523/136989754-1f0130e6-5d75-427f-bbf3-7ed084b6eae1.png" alt="texttrader" width="700" height="400" />
 
 - [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架，QQ群：610730738）](https://www.zhihu.com/column/c_1338797723131740161)
-<img src="https://user-images.githubusercontent.com/83346523/183711253-0cb71eed-016a-40c8-9415-c40e74aa0bca.jpg" alt="WonderTrader" width="700" height="400" />
+<img src="https://user-images.githubusercontent.com/83346523/198839414-d72614d8-9752-497a-b9a9-19b38d3da326.png" alt="WonderTrader" width="700" height="400" />
 
 ### **通过自己替换dll可接入TTS通道（CTP开放平台）的产品：**
 - [快期V3（CTP期货交易客户端）](https://zhuanlan.zhihu.com/p/376482285)
