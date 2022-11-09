@@ -90,7 +90,7 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 - 交易前置 - tcp://121.37.80.177:20002
 - 行情前置 - tcp://121.37.80.177:20004
 
-### **开放平台VIP仿真环境（需要付费申请，具体[点这里](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484339&idx=1&sn=3c56cb0b201d3635a67f40b78dd7ae98&chksm=c36bd81af41c510c8d8e2ab43396a2de2fc73432f23b3cdff46debb85ec1170856903717a23b&token=1217034697&lang=zh_CN#rd)）：**
+### **开放平台VIP仿真环境（需要付费申请，提供更快的速度、更全的品种，具体[点这里](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484339&idx=1&sn=3c56cb0b201d3635a67f40b78dd7ae98&chksm=c36bd81af41c510c8d8e2ab43396a2de2fc73432f23b3cdff46debb85ec1170856903717a23b&token=1217034697&lang=zh_CN#rd)）：**
 - 交易前置 - tcp://42.192.226.242:20002
 - 行情前置 - 无（行情需要直连相应通道）
 
