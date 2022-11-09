@@ -65,15 +65,14 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 ### 热门文章：
 - [openctp欢迎你](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484484&idx=1&sn=61385fada56d0e4ff620ce15b5dac864&chksm=c36bdfedf41c56fb52d5a200d01cf96be2f3c6578ede02571346717c821c769f192dae4f6a25&token=1790747698&lang=zh_CN#rd)
 - [openctp私募成长计划](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484581&idx=1&sn=c8858fdabf575675d6af6eec363c5fa8&chksm=c36bdf0cf41c561a5185e2d5a8f2e69e33f031395afb3c9f9780e6f73f7b1f755eba142c4737&token=1790747698&lang=zh_CN#rd)
-- [CTP开放平台（Powered by TTS - Tick Trading System）](https://zhuanlan.zhihu.com/p/425679896)
-- [如何使用CTP开放平台提供的各项能力](https://zhuanlan.zhihu.com/p/451403422)
+- [如何使用CTP开放平台提供的各项能力](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484094&idx=1&sn=97bd791622333886260bf767bea40db1&chksm=c36bd917f41c50016b676b5f5b11f899aea889cd9b10e6724c7fee0ad443f31351f87ff5a4d2&token=1790747698&lang=zh_CN#rd)
 - [连接CTP开放平台报错4097的解决方法](https://zhuanlan.zhihu.com/p/453332727)
-- [发布一批CTP链路检测工具](https://zhuanlan.zhihu.com/p/447148174)
-- [发布一批行情显示工具（命令行版）](https://zhuanlan.zhihu.com/p/446972353)
+- [发布一批CTP链路检测工具](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484049&idx=1&sn=ae3b799bc8097750b9bb50f4e1461c07&chksm=c36bd938f41c502e194d7135844db328694c9f791797de5dfc72f5290924359309114d4881e2&token=1790747698&lang=zh_CN#rd)
+- [发布一批行情显示工具（命令行版）](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484039&idx=1&sn=794a13777cb358e01c175439e022d99b&chksm=c36bd92ef41c5038224f3b38740b001ef3b36bec89b0ccede51a446039fd1fa679ff7b4bc3b5&token=1790747698&lang=zh_CN#rd)
 - [CTP开放平台支撑系统（TTS）架构](https://zhuanlan.zhihu.com/p/367326886)
 - [期货交易系统架构演变](https://zhuanlan.zhihu.com/p/360872258)
-- [内存数据库交易系统架构第一篇--概览篇](https://zhuanlan.zhihu.com/p/382019469)
-- [内存数据库交易系统架构第二篇--数据恢复机制](https://zhuanlan.zhihu.com/p/399605670)
+- [内存数据库交易系统架构第一篇--概览篇](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247483745&idx=1&sn=555d1c26d66f5888f9f043f15335929c&chksm=c36bdac8f41c53de648bb55ae139d6f205827937872a74d6781e55162a7aaae3a1a6ad5acd2c&token=1790747698&lang=zh_CN#rd)
+- [内存数据库交易系统架构第二篇--数据恢复机制](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247483797&idx=1&sn=29bba0e8b654ae6db1fc9723e740e88f&chksm=c36bda3cf41c532ae906599a609e6c16dd4700f2a880ab3249e92bf718587f0fced40de47b78&token=1790747698&lang=zh_CN#rd)
 - [交易系统的“白”（一）](https://zhuanlan.zhihu.com/p/430975046)
 
 ### 撮合方式（同时支持做市与撮合）：
