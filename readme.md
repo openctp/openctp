@@ -9,33 +9,27 @@
 ![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
 
 ### openctp培训与咨询服务
-openctp现已推出培训与技术咨询服务，**培训服务**共准备了四期培训课程，培训时间为每个周日晚20:00～21:30，培训方式为腾讯会议，课后可无限回看，课后可无限时间交流，现在推广期报名费为每期2000元，10月1号开始每月上调500元，直至5000元/期，一次性购买四期培训只需交三期的钱，报名请在openctp公众号回复“培训”两个字，培训完成可帮推荐工作，可长期跟同学们沟通交流，培训内容是我个人从业近二十年的技术精华，希望报名的同学能有一定的C/C++语言基础，完成四期培训，在金融交易领域的工作应该会得心应手。
+openctp现已推出培训与技术咨询服务，**培训服务**共准备了五期付费培训课程和六期免费公开课，付费培训时间为每个周日晚20:00～21:30，培训方式为腾讯会议，课后可无限回看，课后可无限时间交流，详情请在openctp公众号回复“培训”两个字，培训完成可帮推荐工作，可长期跟同学们沟通交流，培训内容是我个人从业近二十年的技术精华，付费课程需要有一定的C/C++语言基础，完成五期付费课程培训，在金融交易领域的工作应该会得心应手。免费课程时间不确定，请关注openctp公众号了解相关动态。
 
-**咨询服务**为零散问题解答服务，如果你在CTP技术群等等地方问问题没人理你，你可以来咨询我们，纯编程技术问题也可以，涵盖各主流语言：C/C++、Java、Python、Go等，Linux环境编程问题也可以，这项服务我们是以团队的形式对外进行服务，由各项技术的大厂专家组成，对技术都有丰富的经验和极高的追求，服务收费推广期只收1000元/年，不限次，报名请在openctp公众号回复“咨询”两个字。
+**咨询服务**为零散问题解答服务，如果你在CTP技术群、编程语言群等等地方问问题没人理你，你可以来咨询我们，这项服务我们是以团队的形式对外进行服务，由各项技术的大厂专家组成，对技术都有丰富的经验和极高的追求，现推广阶段咨询费也很便宜，报名请在openctp公众号回复“咨询”两个字。请注意，咨询不是培训，如果你需要的是系统性的学习，请报相应的培训课程。
+- CTP接口与业务咨询：1000/年，针对官方技术服务不够的地方作为补充，官方得不到回复或者得不到及时回复的，可以咨询我们。
+- 一般技术咨询：3000/年，C/C++、Java、Python、Go等语言基础编程技术咨询，可以作为各语言0基础课程的补充，0基础课程均为免费课程，课程安排请关注openctp公众号了解。
+- 高级技术咨询：5000/年，可以咨询编程框架、系统架构、业务规划等高阶内容。
 
-### 各期培训内容安排：
-- 第一期：C/C++高级编程（大概以Think库为基准进行讲解，含socket网络编程、IPC进程通讯等）
-- 第二期：CTP技术开发（大概以openctp相关技术为基准进行讲解，含CTPAPI底层逻辑、CTPAPI各种注意事项、开源CTP客户端TextTrader源码讲解等）
-- 第三期：交易系统开发（大概以TTS交易系统为基准进行讲解，含内存数据库架构技术、双机热备技术、重演技术、业务表结构设计、关键业务处理等）
-- 第四期：金融交易业务（通讲全球股票、期货、期权交易发展历程、交易规则以及交易中的风险）
+### 各期培训内容安排（已完成的课程可至[B站](https://space.bilibili.com/549478063/video)及[西瓜](https://www.ixigua.com/home/4388848858576499/?source=pgc_author_profile&list_entrance=anyVideo)试看）：
+- 第一期：[C/C++高级编程](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484363&idx=1&sn=0d74fb1a61e1c595d36527b23eb23323&chksm=c36bd862f41c51749f9490a2b0027fb6a8df53d22c9768b73353a995d7a879171e9fea4d03b4&token=1790747698&lang=zh_CN#rd)，3000元，以Think库为基准进行讲解，含socket网络编程、IPC进程通讯等，已完成一次培训，可直接回看视频。
+- 第二期：[CTP技术开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484422&idx=1&sn=0165c1b7b5f964ce32c34445d8230f25&chksm=c36bdfaff41c56b9d05870e0d54880a7c62b9dea092372c074b786bc390e5d665fe5e9ef5f84&token=1790747698&lang=zh_CN#rd)，3000元，以openctp相关技术为基准进行讲解，含CTPAPI底层逻辑、CTPAPI各种注意事项、开源CTP客户端TextTrader源码讲解等，已完成一次培训，可直接回看视频。
+- 第三期：[交易系统开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484574&idx=1&sn=4ff8d92d1f810ad456ac3eda9b3736f7&chksm=c36bdf37f41c5621d1ba8eed48b5ba46a674b57b66ce8e312d364bedec32913b5eb00413fbc4&token=1790747698&lang=zh_CN#rd)，3000元，以TTS交易系统为基准进行讲解，含内存数据库架构技术、双机热备技术、重演技术、业务表结构设计、关键业务处理等，11月20号开讲。
+- 第四期：金融交易业务，3000元，通讲全球股票、期货、期权交易发展历程、交易规则、风险控制及产品设计。
+- 第五期：内存数据库架构开发技术，5000元，通过TTS的总线架构技术讲解CTP那样的总线开发技术，包括重演、热备、负载均衡、最短路由等技术。
 
-### 第一期的安排大致如下：
-- 第一节课：Think库概览，讲解文件数据库（Think DB）、进程间通讯（共享内存、消息队列、信号量、文件映射等）、网络通讯（TCP、UDP、IP等）等跨平台开发技术（Windows、Linux、UNIX、MacOS等）。
-- 第二节课：讲解Think NetCenter通讯框架（融合select、poll、epoll、kevent等各项IO复用技术）
-- 第三节课：讲解使用共享内存及信号量技术实现共享内存队列（Think shmqueue），并对比System V消息队列。
-- 第四节课：BML语言（TTS系统各模块之间及对外API的通讯语言）的讲解与实践，可连接openctp环境的TTS系统进行实操。Think库重要工具讲解，讲解netpeek代码（tcp通讯拦截并显示字节流），讲解udprecv、udpsend工具代码，都是极其实用的通用工具，Think库重要服务器程序讲解，讲解logserver日志服务器代码。
-
-### 第二期的安排大致如下：
-- 第一节课：通过[开源客户端TextTrader](https://github.com/krenx1983/TextTrader)源码带你对CTPAPI应用程序有个直观的体验，也通过TextTrader调用了的CTPAPI接口带你了解开发CTP程序大概需要用到哪些CTPAPI接口。
-- 第二节课：系统性讲解CTPAPI各常用接口。
-- 第三节课：以openctp的CTPAPI封装技术讲解CTPAPI的底层逻辑，让你知其然也知其所以然，从而更能够更准确高效地使用CTPAPI。
-- 第四节课：讲解CTPAPI应用开发的各个特别注意事项，CTP系统很复杂，有许多需要特别注意的点，我们尽可能多地把踩过的坑都总结给你。
-
-### 第四期的安排大致如下：
-- 第一节课：通讲股票、期货、期权、A股、港美股、海外期货等各种投资品种的知识，有个全局性的认识，从而对自己能够和适合做什么样的投资有个大概的了解。
-- 第二节课：详细讲解A股、国内期货的主要交易规则。
-- 第三节课：详细讲解期权交易规则及基本投资策略。
-- 第四节课：讲解风险控制，结合历史上典型的案例带你了解交易中的风险，也从我自己的交易经验谈谈我对风控的理解。
+### openctp公开课：
+- C语言0基础：以生动有趣的方式讲C语言基础性编程技术，重在兴趣培养和信心建立，11月13号开讲，通过腾讯会议开放式直播，课后会将录制视频放到[B站](https://space.bilibili.com/549478063/video)及[西瓜](https://www.ixigua.com/home/4388848858576499/?source=pgc_author_profile&list_entrance=anyVideo)上。
+- C++语言0基础：以生动有趣的方式讲C++语言基础性编程技术。
+- Python语言0基础：以生动有趣的方式讲Python语言基础性编程技术。
+- Java语言0基础：以生动有趣的方式讲Java语言基础性编程技术。
+- Go语言0基础：以生动有趣的方式讲Go语言基础性编程技术。
+- 金融业务、产品设计、软件测试0基础：这期课程主要为女生设计，相比编程，女生在金融领域可能更适合业务、产品与测试层面的工作，将来的职业发展空间也比较大。
 
 ### 目录结构：
 - 6.3.15 ~ 6.6.7：开放平台标准模拟环境TTS系统的CTPAPI兼容接口，替换CTP官方动态库即可连接TTS系统。
@@ -50,7 +44,7 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 - docs：开发文档及行业资料。
 
 ### 各套环境运行状态监控：
-- 监控页面地址：http://122.51.136.165:50080/detail.html
+- 监控页面地址：http://121.37.80.177:50080/detail.html
 - 使用的技术：https://github.com/krenx1983/openctp/tree/master/tools/Ping
 - 相关源码：https://github.com/krenx1983/openctp/tree/master/demo/ctpping
 
@@ -58,29 +52,30 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 ### **支持品种：**
 - A股股票、债券、基金
 - 上期所等国内全品种期货、期权
-- 港股、美股（支持00700（腾讯）、03690（美团）、AAPL（苹果）、MSFT（微软）、GOOG、AMZN、BABA（阿里巴巴）等主流港美股合约模拟交易）
+- 港股、美股全部股票合约模拟交易
 - CME等外盘期货品种（即将上线）
 
 ### 相对Simnow优点：
 - 支持负价交易（负价合约的合约号为MINUS，仅在7x24环境提供）。
 - 支持部分撮合、部分撤消。
 - 提供各交易所全商品模拟交易。
-- 关注“CTP开放平台”公众号即可自动得到一个模拟号，回复注册可再注册多个模拟号，且即时在两套环境同时生效。
+- 关注“CTP开放平台”公众号即可自动得到一个7x24测试账号及仿真账号，回复“注册仿真”可再注册多个仿真账号，回复“注册24”可再注册多个7x24测试账号，且立即生效。
 - QQ群546977604有问必答，解答CTP及各交易相关问题。
 - 真正的7x24，1秒钟都不停。
 - 除国内期货及期权外，还提供A股股票、债券、基金及港美股、外盘期货等全球市场模拟交易。
 - 支持市价单。
 
-### 知乎热门文章：
-- [CTP开放平台（Powered by TTS - Tick Trading System）](https://zhuanlan.zhihu.com/p/425679896)
-- [如何使用CTP开放平台提供的各项能力](https://zhuanlan.zhihu.com/p/451403422)
+### 热门文章：
+- [openctp欢迎你](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484484&idx=1&sn=61385fada56d0e4ff620ce15b5dac864&chksm=c36bdfedf41c56fb52d5a200d01cf96be2f3c6578ede02571346717c821c769f192dae4f6a25&token=1790747698&lang=zh_CN#rd)
+- [openctp私募成长计划](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484581&idx=1&sn=c8858fdabf575675d6af6eec363c5fa8&chksm=c36bdf0cf41c561a5185e2d5a8f2e69e33f031395afb3c9f9780e6f73f7b1f755eba142c4737&token=1790747698&lang=zh_CN#rd)
+- [如何使用CTP开放平台提供的各项能力](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484094&idx=1&sn=97bd791622333886260bf767bea40db1&chksm=c36bd917f41c50016b676b5f5b11f899aea889cd9b10e6724c7fee0ad443f31351f87ff5a4d2&token=1790747698&lang=zh_CN#rd)
 - [连接CTP开放平台报错4097的解决方法](https://zhuanlan.zhihu.com/p/453332727)
-- [发布一批CTP链路检测工具](https://zhuanlan.zhihu.com/p/447148174)
-- [发布一批行情显示工具（命令行版）](https://zhuanlan.zhihu.com/p/446972353)
+- [发布一批CTP链路检测工具](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484049&idx=1&sn=ae3b799bc8097750b9bb50f4e1461c07&chksm=c36bd938f41c502e194d7135844db328694c9f791797de5dfc72f5290924359309114d4881e2&token=1790747698&lang=zh_CN#rd)
+- [发布一批行情显示工具（命令行版）](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484039&idx=1&sn=794a13777cb358e01c175439e022d99b&chksm=c36bd92ef41c5038224f3b38740b001ef3b36bec89b0ccede51a446039fd1fa679ff7b4bc3b5&token=1790747698&lang=zh_CN#rd)
 - [CTP开放平台支撑系统（TTS）架构](https://zhuanlan.zhihu.com/p/367326886)
 - [期货交易系统架构演变](https://zhuanlan.zhihu.com/p/360872258)
-- [内存数据库交易系统架构第一篇--概览篇](https://zhuanlan.zhihu.com/p/382019469)
-- [内存数据库交易系统架构第二篇--数据恢复机制](https://zhuanlan.zhihu.com/p/399605670)
+- [内存数据库交易系统架构第一篇--概览篇](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247483745&idx=1&sn=555d1c26d66f5888f9f043f15335929c&chksm=c36bdac8f41c53de648bb55ae139d6f205827937872a74d6781e55162a7aaae3a1a6ad5acd2c&token=1790747698&lang=zh_CN#rd)
+- [内存数据库交易系统架构第二篇--数据恢复机制](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247483797&idx=1&sn=29bba0e8b654ae6db1fc9723e740e88f&chksm=c36bda3cf41c532ae906599a609e6c16dd4700f2a880ab3249e92bf718587f0fced40de47b78&token=1790747698&lang=zh_CN#rd)
 - [交易系统的“白”（一）](https://zhuanlan.zhihu.com/p/430975046)
 
 ### 撮合方式（同时支持做市与撮合）：
@@ -95,15 +90,15 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 - 行情前置 - tcp://121.36.146.182:20004（建议直接使用CTP实盘行情前置，行情前置均不校验密码）
 
 ### **开放平台7x24环境（不间断轮播某天行情）：**
-- 交易前置 - tcp://122.51.136.165:20002
-- 行情前置 - tcp://122.51.136.165:20004
+- 交易前置 - tcp://121.37.80.177:20002
+- 行情前置 - tcp://121.37.80.177:20004
 
-### **开放平台VIP环境（需要付费申请，具体[点这里](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484339&idx=1&sn=3c56cb0b201d3635a67f40b78dd7ae98&chksm=c36bd81af41c510c8d8e2ab43396a2de2fc73432f23b3cdff46debb85ec1170856903717a23b&token=1217034697&lang=zh_CN#rd)）：**
+### **开放平台VIP仿真环境（需要付费申请，提供更快的速度、更全的品种，具体[点这里](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484339&idx=1&sn=3c56cb0b201d3635a67f40b78dd7ae98&chksm=c36bd81af41c510c8d8e2ab43396a2de2fc73432f23b3cdff46debb85ec1170856903717a23b&token=1217034697&lang=zh_CN#rd)）：**
 - 交易前置 - tcp://42.192.226.242:20002
 - 行情前置 - 无（行情需要直连相应通道）
 
 ### **模拟账号：** 
-扫扫下面的二维码，关注开放平台公众号，即可获得一个模拟账号，也可以回复"注册"再申请新的模拟号，一个微信号最多可以申请3个模拟账号，可以回复"查询"得到已注册的模拟账号列表。注册的模拟账号都可以在以上两个环境使用，两套环境独立结算，但是账号相同。
+扫扫下面的二维码，关注开放平台公众号，即可获得一个7x24账号及一个仿真账号，也可以回复"注册24"或"注册仿真"再申请新的模拟号，一个微信号最多可以申请3个7x24测试账号及3个仿真模拟账号，可以回复"查询"得到已注册的模拟账号列表。7x24与仿真环境独立结算，账号也是独立的，但是密码是同一个，包括vip环境的密码也是同一个，也就是一个微信号申请的所有账号都共用一个密码，可以使用快期等支持修改密码的软件修改任何一个模拟号密码即可。
 
 ![qrcode_for_gh_564e4bf4668c_258](https://user-images.githubusercontent.com/83346523/120095274-ad600a00-c157-11eb-8496-7d680bd1f39b.jpg)
 
@@ -119,14 +114,14 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了四
 - [vn.py（知名Python量化交易客户端，支持全球市场交易）](https://www.vnpy.com/)
 <img src="https://user-images.githubusercontent.com/83346523/136988918-1159fc88-073e-4b6f-a8d6-3f33991e8a72.png" alt="vnpy" width="700" height="400" />
 
-- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ：967352413）](https://www.zhihu.com/people/mt5ctp)
+- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ群：967352413）](https://www.zhihu.com/people/mt5ctp)
 <img src="https://user-images.githubusercontent.com/83346523/136989596-b12d91e8-48a0-4b26-bcaf-fdfca52d962c.png" alt="mt5ctp" width="700" height="400" />
 
 - [TextTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/krenx1983/TextTrader)
 <img src="https://user-images.githubusercontent.com/83346523/136989754-1f0130e6-5d75-427f-bbf3-7ed084b6eae1.png" alt="texttrader" width="700" height="400" />
 
-- [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架）](https://dumengru.github.io/docs_wondertrader/wtcpp/folder02/file02.html)
-<img src="https://user-images.githubusercontent.com/83346523/183711253-0cb71eed-016a-40c8-9415-c40e74aa0bca.jpg" alt="WonderTrader" width="700" height="400" />
+- [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架，QQ群：610730738）](https://www.zhihu.com/column/c_1338797723131740161)
+<img src="https://user-images.githubusercontent.com/83346523/198839414-d72614d8-9752-497a-b9a9-19b38d3da326.png" alt="WonderTrader" width="700" height="400" />
 
 ### **通过自己替换dll可接入TTS通道（CTP开放平台）的产品：**
 - [快期V3（CTP期货交易客户端）](https://zhuanlan.zhihu.com/p/376482285)
@@ -153,6 +148,6 @@ Broker任意填，填什么就回什么
 ### **活动：**
 openctp每个月至少会有一次粉丝线下活动，可以是吃饭、喝茶、徒步等等，想参加的请在openctp公众号回复“活动”两个字。
 ### **培训：**
-年轻时投资自己是最划算的，因为时间比任何东西都值钱，借别人的力量充实自己，在很短的时间内获得别人的经验值。openctp培训旨在为行业培养高端人才，目前已设计了五期培训课程，分别是C语言0基础课程、C/C++高级编程、CTPAPI接口开发、交易系统开发、金融交易业务，每期四节课，每节课1小时，上课时间为每周日晚8点～9点。
+年轻时投资自己是最划算的，因为时间比任何东西都值钱，借别人的力量充实自己，在很短的时间内获得别人的经验值。
 
 <u>*本模拟平台不对模拟结果作任何保证，依据本平台测试结果进行实盘交易的后果完全由使用者自己承担。*</u>
