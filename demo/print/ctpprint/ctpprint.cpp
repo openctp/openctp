@@ -561,10 +561,10 @@ int main(int argc, char* argv[])
 	Spi.m_pUserApi->ReqQryTradingAccount(&QryTradingAccount, 0);
 
 	// 如需下单、撤单，放开下面的代码即可
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	printf("按任意键下单 ...\n");
-	getchar();
-	Spi.OrderInsert("SHFE", "au2206", THOST_FTDC_D_Buy, THOST_FTDC_OF_Open, 380.0, 3);
+	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	//printf("按任意键下单 ...\n");
+	//getchar();
+	//Spi.OrderInsert("SHFE", "au2206", THOST_FTDC_D_Buy, THOST_FTDC_OF_Open, 380.0, 3);
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	//printf("按任意键下单 ...\n");
