@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 2.8)
+
+set(mdapi thostmduserapi_se_6.3.15_20190220)
+project(${mdapi})
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+  add_definitions(-D ISLIB -D LIB_MD_API_EXPORT)
+else()
+  add_compile_options(-std=c++11 -pthread)
+endif()
+
+include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/..)
+link_directories(${PROJECT_SOURCE_DIR}/..)
+
+add_library(${mdapi} SHARED ../FtdcMdApiImpl.cpp)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  target_link_libraries(${mdapi} xfastmdapi.lib)
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  target_link_libraries(${mdapi} -lxfastmdapi)
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  target_link_libraries(${mdapi} -lxfastmdapi -lpthread -lboost_system -lboost_thread)
+endif()
+set_target_properties(${mdapi} PROPERTIES OUTPUT_NAME "thostmduserapi_se")
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
