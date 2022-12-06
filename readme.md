@@ -68,6 +68,7 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了五
 
 ### 热门文章：
 - [openctp欢迎你](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484484&idx=1&sn=61385fada56d0e4ff620ce15b5dac864&chksm=c36bdfedf41c56fb52d5a200d01cf96be2f3c6578ede02571346717c821c769f192dae4f6a25&token=1790747698&lang=zh_CN#rd)
+- [CTP接口开发“葵花宝典”](https://zhuanlan.zhihu.com/p/397359483)
 - [openctp私募成长计划](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484581&idx=1&sn=c8858fdabf575675d6af6eec363c5fa8&chksm=c36bdf0cf41c561a5185e2d5a8f2e69e33f031395afb3c9f9780e6f73f7b1f755eba142c4737&token=1790747698&lang=zh_CN#rd)
 - [openctp培训与咨询服务](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484610&idx=1&sn=b7317eb127d22fd52958a41e40121b06&chksm=c36bdf6bf41c567d4f3c16454fc1f5ff2a22f567d893ea35a2135c082b78ce5d01d944b086e4&token=55513683&lang=zh_CN#rd)
 - [开放腾讯行情CTPAPI接口源码](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484606&idx=1&sn=270ba6034d9e45334642236dc315b16e&chksm=c36bdf17f41c56011a5a3bf974022c13f53b21b0cad35d43ea85130748152b4f0739e02f7a0e&token=55513683&lang=zh_CN#rd)
