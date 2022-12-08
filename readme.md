@@ -1,6 +1,6 @@
 ## **CTP开放平台（Powered by TTS - Tick Trading System）**
 
-###     [知乎krenx](https://www.zhihu.com/people/krenx)     [公众号](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484484&idx=1&sn=61385fada56d0e4ff620ce15b5dac864&chksm=c36bdfedf41c56fb52d5a200d01cf96be2f3c6578ede02571346717c821c769f192dae4f6a25&token=1790747698&lang=zh_CN#rd)     [B站](https://space.bilibili.com/549478063/video)     [西瓜](https://www.ixigua.com/home/4388848858576499/?source=pgc_author_profile&list_entrance=UserPlayList)。
+###     [知乎](https://www.zhihu.com/people/krenx)     [公众号](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484484&idx=1&sn=61385fada56d0e4ff620ce15b5dac864&chksm=c36bdfedf41c56fb52d5a200d01cf96be2f3c6578ede02571346717c821c769f192dae4f6a25&token=1790747698&lang=zh_CN#rd)     [B站](https://space.bilibili.com/549478063/video)     [西瓜](https://www.ixigua.com/home/4388848858576499/?source=pgc_author_profile&list_entrance=UserPlayList) [镜像ftpserver](http://121.37.80.177:8000)
 
 开放平台采用与CTPAPI完全兼容的接口，一定程度上可替代simnow等模拟平台进行功能测试。 CTP程序无需修改代码也无需重新编译，只需在这里**下载与CTP API版本号一致的动态库**，覆盖掉自己的即可。
 
