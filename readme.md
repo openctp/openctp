@@ -17,10 +17,10 @@ openctp现已推出培训与技术咨询服务，**培训服务**共准备了五
 - 高级技术咨询：5000/年，可以咨询编程框架、系统架构、业务规划等高阶内容。
 
 ### 各期培训内容安排（已完成的课程可至[B站](https://space.bilibili.com/549478063/video)及[西瓜](https://www.ixigua.com/home/4388848858576499/?source=pgc_author_profile&list_entrance=anyVideo)试看）：
-- 第一期：[C/C++高级编程](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484363&idx=1&sn=0d74fb1a61e1c595d36527b23eb23323&chksm=c36bd862f41c51749f9490a2b0027fb6a8df53d22c9768b73353a995d7a879171e9fea4d03b4&token=1790747698&lang=zh_CN#rd)，3500元，以Think库为基准进行讲解，含socket网络编程、IPC进程通讯等，已完成一次培训，可直接回看视频。
-- 第二期：[CTP技术开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484422&idx=1&sn=0165c1b7b5f964ce32c34445d8230f25&chksm=c36bdfaff41c56b9d05870e0d54880a7c62b9dea092372c074b786bc390e5d665fe5e9ef5f84&token=1790747698&lang=zh_CN#rd)，3500元，以openctp相关技术为基准进行讲解，含CTPAPI底层逻辑、CTPAPI各种注意事项、开源CTP客户端TextTrader源码讲解等，已完成一次培训，可直接回看视频。
-- 第三期：[交易系统开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484574&idx=1&sn=4ff8d92d1f810ad456ac3eda9b3736f7&chksm=c36bdf37f41c5621d1ba8eed48b5ba46a674b57b66ce8e312d364bedec32913b5eb00413fbc4&token=1790747698&lang=zh_CN#rd)，3500元，以TTS交易系统为基准进行讲解，含内存数据库架构技术、业务表结构设计、关键业务处理等。
-- 第四期：金融交易业务，3500元，通讲全球股票、期货、期权交易发展历程、交易规则、风险控制及产品设计。
+- 第一期：[C/C++高级编程](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484363&idx=1&sn=0d74fb1a61e1c595d36527b23eb23323&chksm=c36bd862f41c51749f9490a2b0027fb6a8df53d22c9768b73353a995d7a879171e9fea4d03b4&token=1790747698&lang=zh_CN#rd)，5000元，以Think库为基准进行讲解，含socket网络编程、IPC进程通讯等，已完成一次培训，可直接回看视频。
+- 第二期：[CTP技术开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484422&idx=1&sn=0165c1b7b5f964ce32c34445d8230f25&chksm=c36bdfaff41c56b9d05870e0d54880a7c62b9dea092372c074b786bc390e5d665fe5e9ef5f84&token=1790747698&lang=zh_CN#rd)，5000元，以openctp相关技术为基准进行讲解，含CTPAPI底层逻辑、CTPAPI各种注意事项、开源CTP客户端TextTrader源码讲解等，已完成一次培训，可直接回看视频。
+- 第三期：[交易系统开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484574&idx=1&sn=4ff8d92d1f810ad456ac3eda9b3736f7&chksm=c36bdf37f41c5621d1ba8eed48b5ba46a674b57b66ce8e312d364bedec32913b5eb00413fbc4&token=1790747698&lang=zh_CN#rd)，5000元，以TTS交易系统为基准进行讲解，含内存数据库架构技术、业务表结构设计、关键业务处理等。
+- 第四期：金融交易业务，5000元，通讲全球股票、期货、期权交易发展历程、交易规则、风险控制及产品设计。
 - 第五期：内存数据库架构开发技术，10000元，通过TTS的总线架构技术讲解CTP那样的总线开发技术，包括重演、热备、负载均衡、最短路由等技术，内存计算架构在各行业的高性能通讯方面都可以应用，远不止金融交易领域。
 
 ### openctp公开课：
