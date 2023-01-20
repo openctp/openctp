@@ -1,106 +1,119 @@
-# -*- coding: utf-8 -*-
-import thosttraderapi
-import sys
-
-'''
+"""
 written by krenx on 2023-1-10.
 published in openctp@github: https://github.com/krenx1983/openctp/tree/master/ctpapi-python
-'''
+"""
+
+import sys
+
+import thosttraderapi as api
 
 
-class CTdSpiImpl(thosttraderapi.CThostFtdcTraderSpi):
-    def __init__(self, api):
-        thosttraderapi.CThostFtdcTraderSpi.__init__(self)
-        self.api = api
+class CTdSpiImpl(api.CThostFtdcTraderSpi):
+    def __init__(self, tdapi):
+        super().__init__()
+        self.tdapi = tdapi
 
-    def OnFrontConnected(self) -> "void":
+    def OnFrontConnected(self):
+        """ 前置连接成功 """
         print("OnFrontConnected")
-        req = thosttraderapi.CThostFtdcReqAuthenticateField()
+        req = api.CThostFtdcReqAuthenticateField()
         req.BrokerID = brokerid
         req.UserID = user
         req.AppID = appid
         req.AuthCode = authcode
-        self.api.ReqAuthenticate(req, 0)
+        self.tdapi.ReqAuthenticate(req, 0)
 
-    def OnFrontDisconnected(self, nReason: 'int') -> "void":
+    def OnFrontDisconnected(self, nReason: int):
+        """ 前置断开 """
         print("OnFrontDisconnected: nReason=", nReason)
 
-    def OnRspAuthenticate(self, pRspAuthenticateField: 'CThostFtdcRspAuthenticateField',
-                          pRspInfo: 'CThostFtdcRspInfoField', nRequestID: 'int', bIsLast: 'bool') -> "void":
+    def OnRspAuthenticate(self, pRspAuthenticateField: api.CThostFtdcRspAuthenticateField,
+                          pRspInfo: api.CThostFtdcRspInfoField, nRequestID: int, bIsLast: bool):
+        """ 客户端认证应答 """
         if pRspInfo is not None:
             print(f"OnRspAuthenticate: ErrorID={pRspInfo.ErrorID}, ErrorMsg={pRspInfo.ErrorMsg}")
 
         if pRspInfo is None or pRspInfo.ErrorID == 0:
-            req = thosttraderapi.CThostFtdcReqUserLoginField()
+            req = api.CThostFtdcReqUserLoginField()
             req.BrokerID = brokerid
             req.UserID = user
             req.Password = password
             req.UserProductInfo = "openctp"
-            self.api.ReqUserLogin(req, 0)
+            self.tdapi.ReqUserLogin(req, 0)
 
-    def OnRspUserLogin(self, pRspUserLogin: 'CThostFtdcRspUserLoginField', pRspInfo: 'CThostFtdcRspInfoField',
-                       nRequestID: 'int', bIsLast: 'bool') -> "void":
-        print(
-            f"OnRspUserLogin: ErrorID={pRspInfo.ErrorID}, ErrorMsg={pRspInfo.ErrorMsg}, TradingDay={pRspUserLogin.TradingDay}")
+    def OnRspUserLogin(self, pRspUserLogin: api.CThostFtdcRspUserLoginField,
+                       pRspInfo: api.CThostFtdcRspInfoField, nRequestID: int, bIsLast: bool):
+        """ 登录应答 """
+        print(f"OnRspUserLogin: ErrorID={pRspInfo.ErrorID}, ErrorMsg={pRspInfo.ErrorMsg}, "
+              f"TradingDay={pRspUserLogin.TradingDay}")
 
-        req = thosttraderapi.CThostFtdcSettlementInfoConfirmField()
+        req = api.CThostFtdcSettlementInfoConfirmField()
         req.BrokerID = brokerid
         req.InvestorID = user
-        self.api.ReqSettlementInfoConfirm(req, 0)
+        self.tdapi.ReqSettlementInfoConfirm(req, 0)
 
-    def OnRspSettlementInfoConfirm(self, pSettlementInfoConfirm: 'CThostFtdcSettlementInfoConfirmField',
-                                   pRspInfo: 'CThostFtdcRspInfoField', nRequestID: 'int', bIsLast: 'bool') -> "void":
+    def OnRspSettlementInfoConfirm(self, pSettlementInfoConfirm: api.CThostFtdcSettlementInfoConfirmField,
+                                   pRspInfo: api.CThostFtdcRspInfoField, nRequestID: int, bIsLast: bool):
+        """ 确认投资者结算结果应答 """
         if pRspInfo is not None:
             print(f"OnRspSettlementInfoConfirm: ErrorID={pRspInfo.ErrorID}, ErrorMsg={pRspInfo.ErrorMsg}")
 
-        req = thosttraderapi.CThostFtdcQryInstrumentField()
+        req = api.CThostFtdcQryInstrumentField()
         req.BrokerID = brokerid
         req.InvestorID = user
-        self.api.ReqQryInstrument(req, 0)
+        self.tdapi.ReqQryInstrument(req, 0)
 
-    def OnRspQryInstrument(self, pInstrument: 'CThostFtdcInstrumentField',
-                                   pRspInfo: 'CThostFtdcRspInfoField', nRequestID: 'int', bIsLast: 'bool') -> "void":
+    def OnRspQryInstrument(self, pInstrument: api.CThostFtdcInstrumentField,
+                           pRspInfo: api.CThostFtdcRspInfoField, nRequestID: int, bIsLast: bool):
+        """ 查询合约应答 """
         if pRspInfo is not None:
             print(f"OnRspQryInstrument: ErrorID={pRspInfo.ErrorID}, ErrorMsg={pRspInfo.ErrorMsg}")
 
-        print(f"OnRspQryInstrument: InstrumentID={pInstrument.InstrumentID}, ExchangeID={pInstrument.ExchangeID}, PriceTick={pInstrument.PriceTick}, ProductID={pInstrument.ProductID}, ExpireDate={pInstrument.ExpireDate}")
+        print(f"OnRspQryInstrument: InstrumentID={pInstrument.InstrumentID}, "
+              f"ExchangeID={pInstrument.ExchangeID}, PriceTick={pInstrument.PriceTick}, "
+              f"ProductID={pInstrument.ProductID}, ExpireDate={pInstrument.ExpireDate}")
 
-    def OnRtnOrder(self, pOrder: 'CThostFtdcOrderField') -> "void":
-        print(
-            f"OnRtnOrder: InstrumentID={pOrder.InstrumentID}, ExchangeID={pOrder.ExchangeID}, VolumeTotalOriginal={pOrder.VolumeTotalOriginal}, VolumeTraded={pOrder.VolumeTraded}, LimitPrice={pOrder.LimitPrice}, OrderStatus={pOrder.OrderStatus}, OrderSysID={pOrder.OrderSysID}, FrontID={pOrder.FrontID}, SessionID={pOrder.SessionID}, OrderRef={pOrder.OrderRef}")
+    def OnRtnOrder(self, pOrder: api.CThostFtdcOrderField):
+        """ 报单回报 """
+        print(f"OnRtnOrder: InstrumentID={pOrder.InstrumentID}, ExchangeID={pOrder.ExchangeID}, "
+              f"VolumeTotalOriginal={pOrder.VolumeTotalOriginal}, VolumeTraded={pOrder.VolumeTraded}, "
+              f"LimitPrice={pOrder.LimitPrice}, OrderStatus={pOrder.OrderStatus}, OrderSysID={pOrder.OrderSysID}, "
+              f"FrontID={pOrder.FrontID}, SessionID={pOrder.SessionID}, OrderRef={pOrder.OrderRef}")
 
-    def OnRtnTrade(self, pTrade: 'CThostFtdcTradeField') -> "void":
-        print(
-            f"OnRtnTrade: InstrumentID={pTrade.InstrumentID}, ExchangeID={pTrade.ExchangeID}, Volume={pTrade.Volume}, Price={pTrade.Price}, OrderSysID={pTrade.OrderSysID}, OrderRef={pTrade.OrderRef}")
+    def OnRtnTrade(self, pTrade: api.CThostFtdcTradeField):
+        """ 成交回报 """
+        print(f"OnRtnTrade: InstrumentID={pTrade.InstrumentID}, ExchangeID={pTrade.ExchangeID}, "
+              f"Volume={pTrade.Volume}, Price={pTrade.Price}, OrderSysID={pTrade.OrderSysID}, "
+              f"OrderRef={pTrade.OrderRef}")
 
-    def OnRspOrderInsert(self, pInputOrder: 'CThostFtdcInputOrderField', pRspInfo: 'CThostFtdcRspInfoField',
-                         nRequestID: 'int', bIsLast: 'bool') -> "void":
+    def OnRspOrderInsert(self, pInputOrder: api.CThostFtdcInputOrderField,
+                         pRspInfo: api.CThostFtdcRspInfoField, nRequestID: int, bIsLast: bool):
+        """ 报单响应 """
         if pRspInfo is not None:
             print(f"OnRspOrderInsert: ErrorID={pRspInfo.ErrorID}, ErrorMsg={pRspInfo.ErrorMsg}")
 
 
 if __name__ == '__main__':
-    usage = "ctpprint tcp://180.168.146.187:10130 9999 0000000000000000 simnow_client_test 000001 123456 ..."
-    if len(sys.argv) != 7:
-        print(usage)
+    if len(sys.argv) != 4:
+        print("Usage:\n\tpython ctpprint.py <front_addr> <investorId> <password>")
         sys.exit(1)
 
-    tdfront = sys.argv[1]
-    brokerid = sys.argv[2]
-    authcode = sys.argv[3]
-    appid = sys.argv[4]
-    user = sys.argv[5]
-    password = sys.argv[6]
+    tdfront = 'tcp://' + sys.argv[1]
+    user = sys.argv[2]
+    password = sys.argv[3]
 
-    tdapi = thosttraderapi.CThostFtdcTraderApi.CreateFtdcTraderApi(user)
+    brokerid = '9999'
+    authcode = '0000000000000000'
+    appid = 'simnow_client_test'
+
+    tdapi = api.CThostFtdcTraderApi.CreateFtdcTraderApi(user)
     print("ApiVersion: ", tdapi.GetApiVersion())
     tdspi = CTdSpiImpl(tdapi)
     tdapi.RegisterSpi(tdspi)
-    tdapi.SubscribePrivateTopic(thosttraderapi.THOST_TERT_QUICK)
-    tdapi.SubscribePublicTopic(thosttraderapi.THOST_TERT_QUICK)
+    tdapi.SubscribePrivateTopic(api.THOST_TERT_QUICK)
+    tdapi.SubscribePublicTopic(api.THOST_TERT_QUICK)
     tdapi.RegisterFront(tdfront)
     tdapi.Init()
 
     print("press Enter key to exit ...")
     input()
-
