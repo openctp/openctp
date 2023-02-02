@@ -3,7 +3,7 @@
 - ctpapi-python 是通过 swig 将 c++ 版本 ctpapi 转换为 python 版本，命名和使用方法与 c++ 一致。
 - 分为 Linux64/Win64/Mac 三个版本
 - Windows 下, Python 3.7/3.8/3.9/3.10/3.11... 等版本编译的 api 又互不兼容，不可串用。
-- 3.7 < Supported Python <3.11
+- 3.7 < Supported Python < 3.11
 
 ## 使用方法
 
@@ -38,11 +38,11 @@
    ```
 
 3. Mac:
-  ```text
-  _thostmduserapi.so
-  thostmduserapi.py
-  prices.py
-  ```
+    ```text
+    _thostmduserapi.so
+    thostmduserapi.py
+    prices.py
+    ```
 
 ## Demo
 
