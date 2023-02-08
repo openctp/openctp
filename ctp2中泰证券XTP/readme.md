@@ -14,6 +14,10 @@ CTP开放平台已经发布了中泰证券XTP柜台的CTP兼容接口，以CTP�
 
 中泰证券XTP模拟平台是跟simnow类似的证券模拟平台，采用与CTP类似的开放式API，更多信息请至官网了解：https://xtp.zts.com.cn/
 
+**<u>注意：openctp封装的中泰证券CTPAPI基于XTP接口2.2.33.5版本封装，也将随着XTP接口的更新而更新。</u>**
+
+**<u>注意：openctp的linux封装接口对应的libc版本是libc-2.17。</u>**
+
 **<u>注意：由于XTP的原生交易API不提供查询合约接口，且因接口设计限制不便在交易接口中整合行情接口，因此提供了一个合约字典文件，在仿CTPAPI的合约查询中，会通过读取该文件来响应合约查询应答，该文件（dict.csv）需要放在程序的运行目录下，基本与dll放在同一目录即可。</u>**
 
 **<u>注意：由于XTP的授权码较长，超出了CTP的AppID和AuthCode两个字段，因此你的CTP程序要先赋值AppID后赋值AuthCode，以免AuthCode超出部分被后赋值的AppID覆盖掉一部分，记得赋值AuthCode时要允许越界。</u>**
