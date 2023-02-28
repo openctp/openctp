@@ -486,4 +486,6 @@ if __name__ == "__main__":
     else:
         parser = SettlementParser()
         parsed = parser.parse(settlementInfoText)
+        # There is no BrokerID in settlement info, add the BrokerID to parsed result.
+        parsed['BrokerID'] = brokerId
         print(json.dumps(parsed, indent=2, ensure_ascii=False))

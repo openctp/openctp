@@ -19,6 +19,7 @@ options
 -b          指定BrokerID，也可以通过CTP_BROKER环境变量进行指定，默认9999
 -u          指定用户ID，也可以通过CTP_USER环境变量进行指定
 -p          指定密码，也可以通过CTP_PASSWORD环境变量进行指定
+-d          指定查询日期，默认前一天(不是交易日)
 --appid     指定App ID，也可以通过CTP_APP_ID环境变量进行指定，默认simnow_client_test
 --authcode  指定Auth Code, 也可以通过CTP_AUTH_CODE环境变量进行指定，默认0000000000000000
 -v          打印详细日志
