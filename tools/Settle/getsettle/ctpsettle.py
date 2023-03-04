@@ -216,6 +216,50 @@ class TableHandler(SectionHandler):
     TOTAL_KEY = "Total"
     COMMENT_KEY = "Comment"
 
+    # Direction
+    DIRECTION_MAP = {
+        "买": '0',
+        "卖": '1'
+    }
+
+    # HedgeFlag
+    HEDGE_FLAG_MAP = {
+        "投机": '1',
+        "套利": '2',
+        "套保": '3',
+        "做市商": '5',
+        "一般": None,         # not found
+        "交易": None,         # not found
+    }
+
+    # OffsetFlag
+    OFFSET_FLAG_MAP = {
+        "开": '0',
+        "平": '1',
+        "强平": '2',
+        "平今": '3',
+        "平昨": '4',
+        "强减": '5',
+        "本地强平": '6'
+    }
+
+    # ExchangeID
+    EXCHANGE_ID_MAP = {
+        "能源中心": "INE",
+        "上期所": "SHFE",
+        "中金所": "CFFEX",
+        "大商所": "DCE",
+        "郑交所": "CZCE",
+        "广期所": "GFEX"
+    }
+
+    ENUM_VALUE_MAP = {
+        "Direction": DIRECTION_MAP,
+        "HedgeFlag": HEDGE_FLAG_MAP,
+        "OffsetFlag": OFFSET_FLAG_MAP,
+        "ExchangeID": EXCHANGE_ID_MAP,
+    }
+
     def __init__(self) -> None:
         super().__init__()
     
@@ -229,7 +273,16 @@ class TableHandler(SectionHandler):
                 continue
             elif currentStatus in self.handlers:
                 self.handlers[currentStatus](contents[i])
+        self.update_enum_value()
         return self.result
+
+    def update_enum_value(self):
+        for key, enumMap in self.ENUM_VALUE_MAP.items():
+            for resultKey in self.result.keys():
+                for record in self.result[resultKey]:
+                    if key in record:
+                        textValue = record[key]
+                        record[key] = enumMap.get(textValue)
 
     def parse_header(self, line: str):
         pass
