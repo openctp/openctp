@@ -42,6 +42,10 @@ class CTdClient(api.CThostFtdcTraderSpi):
         self.__ready: bool = False
         self.__today: str = ""
         self.__queue: queue.Queue = queue.Queue()
+        self.__instruments = []
+        self.__instrumentsMap = {}
+        self.__products = []
+        self.__productsMap = {}
 
     @property
     def reqId(self) -> int:
@@ -118,7 +122,6 @@ class CTdClient(api.CThostFtdcTraderSpi):
         self.tdapi.ReqQrySettlementInfo(req, self.reqId)
 
         content: str = ""
-        chunks: list[api.CThostFtdcSettlementInfoField] = []
         last = False
         while not last:
             chunk, last = self.__queue.get()
@@ -322,7 +325,7 @@ class TransactionsHandler(TableHandler):
             "InvestUnitID": cells[1],
             "ExchangeID": cells[2],
             "ClientID": cells[3],                       # TradingCode=ClientId
-            "ProductID": cells[4],
+            # "ProductID": cells[4],
             "InstrumentID": cells[5],
             "Direction": cells[6],
             "HedgeFlag": cells[7],
@@ -364,7 +367,7 @@ class PositionsClosedHandler(TableHandler):
             "InvestUnitID": cells[1],
             "ExchangeID": cells[2],
             "ClientID": cells[3],                # not sure TradingCode=TradeID
-            "ProductID": cells[4],
+            # "ProductID": cells[4],
             "InstrumentID": cells[5],
             "OpenDate": cells[6],
             "HedgeFlag": cells[7],
@@ -399,7 +402,7 @@ class PositionsDetailHandler(TableHandler):
             "InvestUnitID": cells[0],
             "ExchangeID": cells[1],
             # "ClientID": cells[2],            # not used in position details
-            "ProductID": cells[3],
+            # "ProductID": cells[3],
             "InstrumentID": cells[4],
             "OpenDate": cells[5],
             "HedgeFlag": cells[6],
@@ -439,7 +442,7 @@ class PositionsHandler(TableHandler):
         detail = {
             "InvestUnitID": cells[0],
             # "ClientID": cells[1],        # not used in position
-            "ProductID": cells[2],
+            # "ProductID": cells[2],
             "InstrumentID": cells[3],
             "LongFrozen": int(cells[4]),
             "AvgBuyPrice": float(cells[5]),

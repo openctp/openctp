@@ -9,7 +9,6 @@
       "InvestUnitID": "123456",
       "ExchangeID": "SHFE",
       "ClientID": "9999203177",
-      "ProductID": "白银",
       "InstrumentID": "ag2306",
       "Direction": "1",
       "HedgeFlag": "1",
@@ -25,7 +24,6 @@
       "InvestUnitID": "123456",
       "ExchangeID": "SHFE",
       "ClientID": "9999203177",
-      "ProductID": "白银",
       "InstrumentID": "ag2306",
       "Direction": "0",
       "HedgeFlag": "1",
@@ -41,7 +39,6 @@
       "InvestUnitID": "123456",
       "ExchangeID": "SHFE",
       "ClientID": "9999203177",
-      "ProductID": "白银",
       "InstrumentID": "ag2306",
       "Direction": "0",
       "HedgeFlag": "1",
@@ -57,7 +54,6 @@
       "InvestUnitID": "123456",
       "ExchangeID": "SHFE",
       "ClientID": "9999203177",
-      "ProductID": "白银",
       "InstrumentID": "ag2306",
       "Direction": "1",
       "HedgeFlag": "1",
@@ -73,7 +69,6 @@
       "InvestUnitID": "123456",
       "ExchangeID": "SHFE",
       "ClientID": "9999203177",
-      "ProductID": "黄金",
       "InstrumentID": "au2308",
       "Direction": "1",
       "HedgeFlag": "1",
@@ -89,7 +84,6 @@
     {
       "InvestUnitID": "123456",
       "ExchangeID": "SHFE",
-      "ProductID": "白银",
       "InstrumentID": "ag2306",
       "OpenDate": "20230215",
       "HedgeFlag": "1",
@@ -104,7 +98,6 @@
     {
       "InvestUnitID": "123456",
       "ExchangeID": "SHFE",
-      "ProductID": "白银",
       "InstrumentID": "ag2306",
       "OpenDate": "20230215",
       "HedgeFlag": "1",
@@ -119,7 +112,6 @@
     {
       "InvestUnitID": "123456",
       "ExchangeID": "SHFE",
-      "ProductID": "黄金",
       "InstrumentID": "au2308",
       "OpenDate": "20230215",
       "HedgeFlag": "1",
@@ -135,7 +127,6 @@
   "Positions": [
     {
       "InvestUnitID": "123456",
-      "ProductID": "白银",
       "InstrumentID": "ag2306",
       "LongFrozen": 4,
       "AvgBuyPrice": 4927.0,
@@ -151,7 +142,6 @@
     },
     {
       "InvestUnitID": "123456",
-      "ProductID": "黄金",
       "InstrumentID": "au2308",
       "LongFrozen": 0,
       "AvgBuyPrice": 0.0,
