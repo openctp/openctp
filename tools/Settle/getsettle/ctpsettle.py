@@ -40,12 +40,7 @@ class CTdClient(api.CThostFtdcTraderSpi):
         self.front: str = front
         self.__reqId: int = 0
         self.__ready: bool = False
-        self.__today: str = ""
         self.__queue: queue.Queue = queue.Queue()
-        self.__instruments = []
-        self.__instrumentsMap = {}
-        self.__products = []
-        self.__productsMap = {}
 
     @property
     def reqId(self) -> int:
