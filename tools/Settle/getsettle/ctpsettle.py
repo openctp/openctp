@@ -40,7 +40,6 @@ class CTdClient(api.CThostFtdcTraderSpi):
         self.front: str = front
         self.__reqId: int = 0
         self.__ready: bool = False
-        self.__today: str = ""
         self.__queue: queue.Queue = queue.Queue()
 
     @property
@@ -118,7 +117,6 @@ class CTdClient(api.CThostFtdcTraderSpi):
         self.tdapi.ReqQrySettlementInfo(req, self.reqId)
 
         content: str = ""
-        chunks: list[api.CThostFtdcSettlementInfoField] = []
         last = False
         while not last:
             chunk, last = self.__queue.get()
@@ -150,6 +148,7 @@ class SettlementStatementHandler(SectionHandler):
     TITLE = "交易结算单"
 
     CLIENT_ID_KEY = "ClientID"
+    USER_ID_KEY = "UserID"
     DATE_KEY = "Date"
     DETAILS_KEY = "SettlementStatement"
 
@@ -178,7 +177,8 @@ class SettlementStatementHandler(SectionHandler):
     def parse_client_id(self, line: str):
         match = self.client_id_pattern.search(line)
         if match:
-            self.result[self.CLIENT_ID_KEY] = match.group(self.CLIENT_ID_KEY)
+            # The client id in settlement information means user id
+            self.result[self.USER_ID_KEY] = match.group(self.CLIENT_ID_KEY)
     
     def parse_date(self, line: str):
         match = self.date_pattern.search(line)
@@ -192,6 +192,7 @@ class SettlementStatementHandler(SectionHandler):
                 compactMatch = match.replace(" ", "")    # Aaa Bbb:  95.2 -> AaaBbb:95.2
                 kv = compactMatch.split("：")            # AaaBbb:95.2 -> ['AaaBbb', '95.2']
                 self.result[self.DETAILS_KEY][kv[0]] = float(kv[1])
+
 
 class TableStatus(object):
     NONE = "None"
@@ -216,6 +217,50 @@ class TableHandler(SectionHandler):
     TOTAL_KEY = "Total"
     COMMENT_KEY = "Comment"
 
+    # Direction
+    DIRECTION_MAP = {
+        "买": '0',
+        "卖": '1'
+    }
+
+    # HedgeFlag
+    HEDGE_FLAG_MAP = {
+        "投机": '1',
+        "套利": '2',
+        "套保": '3',
+        "做市商": '5',
+        "一般": None,         # not found
+        "交易": None,         # not found
+    }
+
+    # OffsetFlag
+    OFFSET_FLAG_MAP = {
+        "开": '0',
+        "平": '1',
+        "强平": '2',
+        "平今": '3',
+        "平昨": '4',
+        "强减": '5',
+        "本地强平": '6'
+    }
+
+    # ExchangeID
+    EXCHANGE_ID_MAP = {
+        "能源中心": "INE",
+        "上期所": "SHFE",
+        "中金所": "CFFEX",
+        "大商所": "DCE",
+        "郑交所": "CZCE",
+        "广期所": "GFEX"
+    }
+
+    ENUM_VALUE_MAP = {
+        "Direction": DIRECTION_MAP,
+        "HedgeFlag": HEDGE_FLAG_MAP,
+        "OffsetFlag": OFFSET_FLAG_MAP,
+        "ExchangeID": EXCHANGE_ID_MAP,
+    }
+
     def __init__(self) -> None:
         super().__init__()
     
@@ -229,7 +274,16 @@ class TableHandler(SectionHandler):
                 continue
             elif currentStatus in self.handlers:
                 self.handlers[currentStatus](contents[i])
+        self.update_enum_value()
         return self.result
+
+    def update_enum_value(self):
+        for key, enumMap in self.ENUM_VALUE_MAP.items():
+            for resultKey in self.result.keys():
+                for record in self.result[resultKey]:
+                    if key in record:
+                        textValue = record[key]
+                        record[key] = enumMap.get(textValue)
 
     def parse_header(self, line: str):
         pass
@@ -262,23 +316,23 @@ class TransactionsHandler(TableHandler):
         compactLine = line.replace(" ", "")[1:-1]
         cells = compactLine.split("|")
         self.result[self.KEY].append({
-            "Date": cells[0],
-            "InvestUnit": cells[1],
-            "Exchange": cells[2],
-            "TradingCode": cells[3],
-            "Product": cells[4],
-            "Instrument": cells[5],
-            "B/S": cells[6],
-            "S/H": cells[7],
+            "TradeDate": cells[0],
+            "InvestUnitID": cells[1],
+            "ExchangeID": cells[2],
+            "ClientID": cells[3],                       # TradingCode=ClientId
+            # "ProductID": cells[4],
+            "InstrumentID": cells[5],
+            "Direction": cells[6],
+            "HedgeFlag": cells[7],
             "Price": float(cells[8]),
-            "Lots": int(cells[9]),
+            "Volume": int(cells[9]),
             "Turnover": float(cells[10]),
-            "O/C": cells[11],
-            "Fee": float(cells[12]),
-            "RealizedP/L": float(cells[13]),
-            "PremiumReceived/Paid": float(cells[14]),
-            "TransactionNo": cells[15],
-            "AccountID": cells[16]
+            "OffsetFlag": cells[11],
+            # "Fee": float(cells[12]),                    # not used
+            # "RealizedP/L": float(cells[13]),            # not used
+            # "PremiumReceived/Paid": float(cells[14]),   # not used
+            "TradeID": cells[15],                         # Trans.No. = TradeID
+            "AccountID": cells[16]                      
         })
 
 
@@ -296,25 +350,29 @@ class PositionsClosedHandler(TableHandler):
             self.KEY: []
         }
     
+    def parse(self, contents: list[str]) -> dict[str, any]:
+        """PostionsClosed information not needed"""
+        return {}
+    
     def parse_detail(self, line: str) -> dict[str, any]:
         compactLine = line.replace(" ", "")[1:-1]
         cells = compactLine.split("|")
         self.result[self.KEY].append({
-            "Date": cells[0],
-            "InvestUnit": cells[1],
-            "Exchange": cells[2],
-            "TradingCode": cells[3],
-            "Product": cells[4],
-            "Instrument": cells[5],
+            # "CloseDate": cells[0],             
+            "InvestUnitID": cells[1],
+            "ExchangeID": cells[2],
+            "ClientID": cells[3],                # not sure TradingCode=TradeID
+            # "ProductID": cells[4],
+            "InstrumentID": cells[5],
             "OpenDate": cells[6],
-            "S/H": cells[7],
-            "B/S": cells[8],
-            "Lots": int(cells[9]),
-            "PosOpenPrice": float(cells[10]),
-            "PrevSettle": float(cells[11]),
-            "TransPrice": float(cells[12]),
-            "RealizedP/L": float(cells[13]),
-            "PremiumReceived/Paid": float(cells[14]),
+            "HedgeFlag": cells[7],
+            "Direction": cells[8],
+            "Volume": int(cells[9]),
+            "OpenPrice": float(cells[10]),
+            "LastSettlementPrice": float(cells[11]),
+            "Price": float(cells[12]),
+            # "RealizedP/L": float(cells[13]),    # not found
+            # "PremiumReceived/Paid": float(cells[14]),   # not found
             "AccountID": cells[15]
         })
 
@@ -336,22 +394,22 @@ class PositionsDetailHandler(TableHandler):
         compactLine = line.replace(" ", "")[1:-1]
         cells = compactLine.split("|")
         self.result[self.KEY].append({
-            "InvestUnit": cells[0],
-            "Exchange": cells[1],
-            "TradingCode": cells[2],
-            "Product": cells[3],
-            "Instrument": cells[4],
+            "InvestUnitID": cells[0],
+            "ExchangeID": cells[1],
+            # "ClientID": cells[2],            # not used in position details
+            # "ProductID": cells[3],
+            "InstrumentID": cells[4],
             "OpenDate": cells[5],
-            "S/H": cells[6],
-            "B/S": cells[7],
-            "Position": int(cells[8]),
-            "PosOpenPrice": float(cells[9]),
-            "PrevSettle": float(cells[10]),
+            "HedgeFlag": cells[6],
+            "Direction": cells[7],
+            "Volume": int(cells[8]),
+            "OpenPrice": float(cells[9]),
+            "LastSettlementPrice": float(cells[10]),
             "SettlementPrice": float(cells[11]),
-            "AccumP/L": float(cells[12]),
-            "MTMP/L": float(cells[13]),
+            # "AccumP/L": float(cells[12]),   # not used
+            # "MTMP/L": float(cells[13]),     # not used
             "Margin": float(cells[14]),
-            "MarketValueOptions": float(cells[15]),
+            # "MarketValueOptions": float(cells[15]),   # no used
             "AccountID": cells[16]
         })
 
@@ -359,6 +417,10 @@ class PositionsHandler(TableHandler):
 
     TITLE = "持仓汇总"
     KEY = "Positions"
+
+    POSITION_NET = "1"
+    POSITION_LONG = "2"
+    POSITION_SHORT = "3"
 
     def __init__(self) -> None:
         super().__init__()
@@ -372,24 +434,36 @@ class PositionsHandler(TableHandler):
     def parse_detail(self, line: str) -> dict[str, any]:
         compactLine = line.replace(" ", "")[1:-1]
         cells = compactLine.split("|")
-        self.result[self.KEY].append({
-            "InvestUnit": cells[0],
-            "TradingCode": cells[1],
-            "Product": cells[2],
-            "Instrument": cells[3],
-            "LongPos": int(cells[4]),
+        detail = {
+            "InvestUnitID": cells[0],
+            # "ClientID": cells[1],        # not used in position
+            # "ProductID": cells[2],
+            "InstrumentID": cells[3],
+            "LongFrozen": int(cells[4]),
             "AvgBuyPrice": float(cells[5]),
-            "ShortPos": int(cells[6]),
-            "AvgCellPrice": float(cells[7]),
-            "PrevSettle": float(cells[8]),
-            "SettleToday": float(cells[9]),
-            "MTMP/L": float(cells[10]),
-            "MarginOccupied": float(cells[11]),
-            "S/H": cells[12],
-            "MarketValue(Long)": float(cells[13]),
-            "MarketValue(Short)": float(cells[14]),
+            "ShortFrozen": int(cells[6]),
+            "AvgSellPrice": float(cells[7]),
+            "PreSettlementPrice": float(cells[8]),
+            "SettlementPrice": float(cells[9]),
+            # "MTMP/L": float(cells[10]),         # not found
+            "UseMargin": float(cells[11]),
+            "HedgeFlag": cells[12],
+            # "MarketValue(Long)": float(cells[13]),      # not found
+            # "MarketValue(Short)": float(cells[14]),     # not found
             "AccountID": cells[15],
-        })
+        }
+        net_position = detail['LongFrozen'] - detail['ShortFrozen']
+        position_direction = self.POSITION_NET
+        if net_position > 0:
+            position_direction = self.POSITION_LONG
+        elif net_position < 0:
+            position_direction = self.POSITION_SHORT
+        else:
+            position_direction = self.POSITION_NET
+        detail["PosiDirection"] = position_direction
+        detail["Position"] = abs(net_position)
+        self.result[self.KEY].append(detail)
+        # TODO: add PositionCost
 
 
 class SettlementParser(object):
@@ -486,4 +560,6 @@ if __name__ == "__main__":
     else:
         parser = SettlementParser()
         parsed = parser.parse(settlementInfoText)
+        # There is no BrokerID in settlement info, add the BrokerID to parsed result.
+        parsed['BrokerID'] = brokerId
         print(json.dumps(parsed, indent=2, ensure_ascii=False))
