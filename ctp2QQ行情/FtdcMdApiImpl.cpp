@@ -247,7 +247,7 @@ void CFtdcMdApiImpl::HandleMarketData(std::vector<std::string>& data)
                 // 时间
                 sprintf(DepthMarketData.ActionDay, "%4.4s%2.2s%2.2s", vFields[30].c_str(), vFields[30].c_str() + 4, vFields[30].c_str() + 6);
                 sprintf(DepthMarketData.UpdateTime, "%2.2s:%2.2s:%2.2s", vFields[30].c_str() + 8, vFields[30].c_str() + 10, vFields[30].c_str() + 12);
-                sprintf(DepthMarketData.TradingDay, "%4.4s%2.2s%2.2s", vFields[30].c_str(), vFields[30].c_str() + 5, vFields[30].c_str() + 8);
+                sprintf(DepthMarketData.TradingDay, "%4.4s%2.2s%2.2s", vFields[30].c_str(), vFields[30].c_str() + 4, vFields[30].c_str() + 6);
 
                 // 除科创板外数量要乘以100
                 if (strncmp(DepthMarketData.InstrumentID, "688", 3) != 0) {
