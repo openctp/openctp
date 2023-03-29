@@ -8,7 +8,8 @@ xxxprint系列工具已发布CTP、XTP、恒生等8个柜台版本，只是查�
 - ibprint - 盈透证券TWS
 - xtpprint - 中泰证券XTP系统
 - ufxprint -  恒生UFX柜台（股票）
-- stpprint - 华鑫证券奇点柜台
+- stpprint - 华鑫证券奇点股票柜台
+- stpoptprint - 华鑫证券奇点股票期权柜台
 - ostprint - 东方证券雨燕系统
 - emtprint - 东方财富证券EMT柜台
 
