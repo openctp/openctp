@@ -1,18 +1,17 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(mdapi thostmduserapi_se_6.3.19_P1_20200106)
+set(mdapi thostmduserapi_se_6.6.9_20220920)
 project(${mdapi})
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-  add_definitions(-D ISLIB -D LIB_MD_API_EXPORT -D V6_3_19)
+  add_definitions(-D ISLIB -D LIB_MD_API_EXPORT -D V6_6_9)
 else()
-  add_definitions(-D V6_3_19)
   add_compile_options(-std=c++11 -pthread)
 endif()
 
 include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/..)
-link_directories(xfastmdapi.lib)
+link_directories(${PROJECT_SOURCE_DIR}/..)
 
 add_library(${mdapi} SHARED ../FtdcMdApiImpl.cpp)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")

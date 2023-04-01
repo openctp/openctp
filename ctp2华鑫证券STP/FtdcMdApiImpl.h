@@ -93,7 +93,7 @@ public:
 	///@remark 
 	virtual int UnSubscribeForQuoteRsp(char* ppInstrumentID[], int nCount) { return -3; }
 
-#if defined(V6_3_19) || defined(V6_5_1) || defined(V6_6_1_P1) || defined(V6_6_7)
+#if defined(V6_3_19) || defined(V6_5_1) || defined(V6_6_1_P1) || defined(V6_6_7) || defined(V6_6_9)
 	///请求查询组播合约
 	virtual int ReqQryMulticastInstrument(CThostFtdcQryMulticastInstrumentField *pQryMulticastInstrument, int nRequestID) { return -3; }
 #endif
@@ -126,6 +126,14 @@ private:
 	/*行情通知*/
 	virtual void OnRtnMarketData(CTORATstpMarketDataField* pDepthMarketData);
 
+	///订阅期权行情应答
+	virtual void OnRspSubSPMarketData(CTORATstpSpecificSecurityField* pSpecificSecurityField, CTORATstpRspInfoField* pRspInfoField);
+
+	///退订期权行情应答
+	virtual void OnRspUnSubSPMarketData(CTORATstpSpecificSecurityField* pSpecificSecurityField, CTORATstpRspInfoField* pRspInfoField);
+
+	///期权行情通知
+	virtual void OnRtnSPMarketData(CTORATstpMarketDataField* pMarketDataField);
 public:
 	CTORATstpXMdApi*m_pUserApi;
 	CThostFtdcMdSpi *m_pSpi;

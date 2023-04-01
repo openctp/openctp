@@ -16,10 +16,12 @@ CThostFtdcMdApi* CThostFtdcMdApi::CreateFtdcMdApi(const char* pszFlowPath, const
 
 const char *CThostFtdcMdApi::GetApiVersion()
 {
-#ifdef V6_6_7
+#ifdef V6_6_9
+	return "V6_6_9";
+#elif V6_6_7
 	return "V6_6_7";
-#elif V6_6_1_P1
-	return "V6_6_1_P1";
+#elif V6_6_5_P1
+	return "V6_6_5_P1";
 #elif V6_5_1
 	return "6.5.1";
 #elif V6_3_19
@@ -114,6 +116,10 @@ int CFtdcMdApiImpl::SubscribeMarketData(char* ppInstrumentID[], int nCount)
 			|| memcmp(InstrumentID[0], "87", 2) == 0
 			|| memcmp(InstrumentID[0], "88", 2) == 0)
 			m_pUserApi->SubscribeMarketData(InstrumentID, 1, TORA_TSTP_EXD_BSE);
+		else if (memcmp(InstrumentID[0], "10", 2) == 0)
+			m_pUserApi->SubscribeSPMarketData(InstrumentID, 1, TORA_TSTP_EXD_SSE);
+		else if (memcmp(InstrumentID[0], "90", 2) == 0)
+			m_pUserApi->SubscribeSPMarketData(InstrumentID, 1, TORA_TSTP_EXD_SZSE);
 		else
 			m_pUserApi->SubscribeMarketData(InstrumentID, 1, TORA_TSTP_EXD_HK);
 	}
@@ -146,6 +152,10 @@ int CFtdcMdApiImpl::UnSubscribeMarketData(char* ppInstrumentID[], int nCount)
 			|| memcmp(InstrumentID[0], "87", 2) == 0
 			|| memcmp(InstrumentID[0], "88", 2) == 0)
 			m_pUserApi->UnSubscribeMarketData(InstrumentID, 1, TORA_TSTP_EXD_BSE);
+		else if (memcmp(InstrumentID[0], "10", 2) == 0)
+			m_pUserApi->UnSubscribeSPMarketData(InstrumentID, 1, TORA_TSTP_EXD_SSE);
+		else if (memcmp(InstrumentID[0], "90", 2) == 0)
+			m_pUserApi->UnSubscribeSPMarketData(InstrumentID, 1, TORA_TSTP_EXD_SZSE);
 		else
 			m_pUserApi->UnSubscribeMarketData(InstrumentID, 1, TORA_TSTP_EXD_HK);
 	}
@@ -260,23 +270,15 @@ void CFtdcMdApiImpl::OnRspSubMarketData(CTORATstpSpecificSecurityField* pSpecifi
 {
 	if(m_pSpi)
 	{
-
 		CThostFtdcRspInfoField*  pThostRspInfo=NULL;
 		CThostFtdcRspInfoField  ThostRspInfo;
 
 		if(pRspInfo)
 		{
-			//CTP正确的订阅不回响应
-			if (0 == pRspInfo->ErrorID)
-			{
-				return;
-			}
-			memset(&ThostRspInfo,0,sizeof(CThostFtdcRspInfoField));
+			memset(&ThostRspInfo,0,sizeof(ThostRspInfo));
 			ThostRspInfo.ErrorID = pRspInfo->ErrorID;
 			strncpy(ThostRspInfo.ErrorMsg,pRspInfo->ErrorMsg,sizeof(ThostRspInfo.ErrorMsg)-1);
 			pThostRspInfo = &ThostRspInfo;
-		}else{
-			return;
 		}
 
 		CThostFtdcSpecificInstrumentField*  pThostSpecificInstrument =NULL;
@@ -297,24 +299,15 @@ void CFtdcMdApiImpl::OnRspUnSubMarketData(CTORATstpSpecificSecurityField* pSpeci
 {
 	if (m_pSpi)
 	{
-
 		CThostFtdcRspInfoField* pThostRspInfo = NULL;
 		CThostFtdcRspInfoField  ThostRspInfo;
 
 		if (pRspInfo)
 		{
-			//CTP正确的订阅不回响应
-			if (0 == pRspInfo->ErrorID)
-			{
-				return;
-			}
-			memset(&ThostRspInfo, 0, sizeof(CThostFtdcRspInfoField));
+			memset(&ThostRspInfo, 0, sizeof(ThostRspInfo));
 			ThostRspInfo.ErrorID = pRspInfo->ErrorID;
 			strncpy(ThostRspInfo.ErrorMsg, pRspInfo->ErrorMsg, sizeof(ThostRspInfo.ErrorMsg) - 1);
 			pThostRspInfo = &ThostRspInfo;
-		}
-		else {
-			return;
 		}
 
 		CThostFtdcSpecificInstrumentField* pThostSpecificInstrument = NULL;
@@ -367,6 +360,122 @@ void CFtdcMdApiImpl::OnRtnMarketData(CTORATstpMarketDataField* pDepthMarketData)
 		ThostDepthMarketData.AskVolume1 = pDepthMarketData->AskVolume1;
 		strncpy(ThostDepthMarketData.ActionDay, pDepthMarketData->TradingDay, sizeof(ThostDepthMarketData.ActionDay) - 1);
 		strncpy(ThostDepthMarketData.UpdateTime, pDepthMarketData->UpdateTime, sizeof(ThostDepthMarketData.UpdateTime)-1);
+		strncpy(ThostDepthMarketData.TradingDay, pDepthMarketData->TradingDay, sizeof(ThostDepthMarketData.TradingDay) - 1);
+		ThostDepthMarketData.BidPrice2 = pDepthMarketData->BidPrice2;
+		ThostDepthMarketData.BidVolume2 = pDepthMarketData->BidVolume2;
+		ThostDepthMarketData.AskPrice2 = pDepthMarketData->AskPrice2;
+		ThostDepthMarketData.AskVolume2 = pDepthMarketData->AskVolume2;
+		ThostDepthMarketData.BidPrice3 = pDepthMarketData->BidPrice3;
+		ThostDepthMarketData.BidVolume3 = pDepthMarketData->BidVolume3;
+		ThostDepthMarketData.AskPrice3 = pDepthMarketData->AskPrice3;
+		ThostDepthMarketData.AskVolume3 = pDepthMarketData->AskVolume3;
+		ThostDepthMarketData.BidPrice4 = pDepthMarketData->BidPrice4;
+		ThostDepthMarketData.BidVolume4 = pDepthMarketData->BidVolume4;
+		ThostDepthMarketData.AskPrice4 = pDepthMarketData->AskPrice4;
+		ThostDepthMarketData.AskVolume4 = pDepthMarketData->AskVolume4;
+		ThostDepthMarketData.BidPrice5 = pDepthMarketData->BidPrice5;
+		ThostDepthMarketData.BidVolume5 = pDepthMarketData->BidVolume5;
+		ThostDepthMarketData.AskPrice5 = pDepthMarketData->AskPrice5;
+		ThostDepthMarketData.AskVolume5 = pDepthMarketData->AskVolume5;
+		m_pSpi->OnRtnDepthMarketData(&ThostDepthMarketData);
+	}
+}
+
+///订阅期权行情应答
+void CFtdcMdApiImpl::OnRspSubSPMarketData(CTORATstpSpecificSecurityField* pSpecificSecurityField, CTORATstpRspInfoField* pRspInfoField)
+{
+	if (m_pSpi)
+	{
+		CThostFtdcRspInfoField* pThostRspInfo = NULL;
+		CThostFtdcRspInfoField  ThostRspInfo;
+
+		if (pRspInfoField)
+		{
+			memset(&ThostRspInfo, 0, sizeof(ThostRspInfo));
+			ThostRspInfo.ErrorID = pRspInfoField->ErrorID;
+			strncpy(ThostRspInfo.ErrorMsg, pRspInfoField->ErrorMsg, sizeof(ThostRspInfo.ErrorMsg) - 1);
+			pThostRspInfo = &ThostRspInfo;
+		}
+
+		CThostFtdcSpecificInstrumentField* pThostSpecificInstrument = NULL;
+		CThostFtdcSpecificInstrumentField  ThostSpecificInstrument;
+		if (pSpecificSecurityField)
+		{
+			memset(&ThostSpecificInstrument, 0, sizeof(ThostSpecificInstrument));
+			strncpy(ThostSpecificInstrument.InstrumentID, pSpecificSecurityField->SecurityID, sizeof(ThostSpecificInstrument.InstrumentID) - 1);
+			pThostSpecificInstrument = &ThostSpecificInstrument;
+		}
+
+		m_pSpi->OnRspSubMarketData(pThostSpecificInstrument, pThostRspInfo, 0, true);
+	}
+}
+
+///退订期权行情应答
+void CFtdcMdApiImpl::OnRspUnSubSPMarketData(CTORATstpSpecificSecurityField* pSpecificSecurityField, CTORATstpRspInfoField* pRspInfoField)
+{
+	if (m_pSpi)
+	{
+		CThostFtdcRspInfoField* pThostRspInfo = NULL;
+		CThostFtdcRspInfoField  ThostRspInfo;
+
+		if (pRspInfoField)
+		{
+			memset(&ThostRspInfo, 0, sizeof(ThostRspInfo));
+			ThostRspInfo.ErrorID = pRspInfoField->ErrorID;
+			strncpy(ThostRspInfo.ErrorMsg, pRspInfoField->ErrorMsg, sizeof(ThostRspInfo.ErrorMsg) - 1);
+			pThostRspInfo = &ThostRspInfo;
+		}
+
+		CThostFtdcSpecificInstrumentField* pThostSpecificInstrument = NULL;
+		CThostFtdcSpecificInstrumentField  ThostSpecificInstrument;
+		if (pSpecificSecurityField)
+		{
+			memset(&ThostSpecificInstrument, 0, sizeof(ThostSpecificInstrument));
+			strncpy(ThostSpecificInstrument.InstrumentID, pSpecificSecurityField->SecurityID, sizeof(ThostSpecificInstrument.InstrumentID) - 1);
+			pThostSpecificInstrument = &ThostSpecificInstrument;
+		}
+
+		m_pSpi->OnRspUnSubMarketData(pThostSpecificInstrument, pThostRspInfo, 0, true);
+	}
+}
+
+///期权行情通知
+void CFtdcMdApiImpl::OnRtnSPMarketData(CTORATstpMarketDataField* pDepthMarketData)
+{
+	if (m_pSpi)
+	{
+		CThostFtdcDepthMarketDataField  ThostDepthMarketData;
+		memset(&ThostDepthMarketData, 0, sizeof(ThostDepthMarketData));
+		strncpy(ThostDepthMarketData.InstrumentID, pDepthMarketData->SecurityID, sizeof(ThostDepthMarketData.InstrumentID) - 1);
+		if (pDepthMarketData->ExchangeID == TORA_TSTP_EXD_SSE)
+			strncpy(ThostDepthMarketData.ExchangeID, EXCHANGE_SH, sizeof(ThostDepthMarketData.ExchangeID) - 1);
+		else if (pDepthMarketData->ExchangeID == TORA_TSTP_EXD_SZSE)
+			strncpy(ThostDepthMarketData.ExchangeID, EXCHANGE_SZ, sizeof(ThostDepthMarketData.ExchangeID) - 1);
+		else if (pDepthMarketData->ExchangeID == TORA_TSTP_EXD_BSE)
+			strncpy(ThostDepthMarketData.ExchangeID, EXCHANGE_BSE, sizeof(ThostDepthMarketData.ExchangeID) - 1);
+		else if (pDepthMarketData->ExchangeID == TORA_TSTP_EXD_HK)
+			strncpy(ThostDepthMarketData.ExchangeID, EXCHANGE_HKEX, sizeof(ThostDepthMarketData.ExchangeID) - 1);
+		ThostDepthMarketData.LastPrice = pDepthMarketData->LastPrice;
+		ThostDepthMarketData.Volume = pDepthMarketData->Volume;
+		ThostDepthMarketData.Turnover = pDepthMarketData->Turnover;
+		ThostDepthMarketData.OpenPrice = pDepthMarketData->OpenPrice;
+		ThostDepthMarketData.HighestPrice = pDepthMarketData->HighestPrice;
+		ThostDepthMarketData.LowestPrice = pDepthMarketData->LowestPrice;
+		ThostDepthMarketData.UpperLimitPrice = pDepthMarketData->UpperLimitPrice;
+		ThostDepthMarketData.LowerLimitPrice = pDepthMarketData->LowerLimitPrice;
+		ThostDepthMarketData.OpenInterest = pDepthMarketData->OpenInterest;
+		ThostDepthMarketData.PreClosePrice = pDepthMarketData->PreClosePrice;
+		ThostDepthMarketData.SettlementPrice = 0;
+		ThostDepthMarketData.PreSettlementPrice = 0;
+		ThostDepthMarketData.PreOpenInterest = pDepthMarketData->OpenInterest;
+		ThostDepthMarketData.ClosePrice = pDepthMarketData->ClosePrice;
+		ThostDepthMarketData.AveragePrice = 0;
+		ThostDepthMarketData.BidPrice1 = pDepthMarketData->BidPrice1;
+		ThostDepthMarketData.BidVolume1 = pDepthMarketData->BidVolume1;
+		ThostDepthMarketData.AskPrice1 = pDepthMarketData->AskPrice1;
+		ThostDepthMarketData.AskVolume1 = pDepthMarketData->AskVolume1;
+		strncpy(ThostDepthMarketData.ActionDay, pDepthMarketData->TradingDay, sizeof(ThostDepthMarketData.ActionDay) - 1);
+		strncpy(ThostDepthMarketData.UpdateTime, pDepthMarketData->UpdateTime, sizeof(ThostDepthMarketData.UpdateTime) - 1);
 		strncpy(ThostDepthMarketData.TradingDay, pDepthMarketData->TradingDay, sizeof(ThostDepthMarketData.TradingDay) - 1);
 		ThostDepthMarketData.BidPrice2 = pDepthMarketData->BidPrice2;
 		ThostDepthMarketData.BidVolume2 = pDepthMarketData->BidVolume2;
