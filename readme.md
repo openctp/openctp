@@ -20,6 +20,15 @@
 - tools：生产力工具。
 - docs：开发文档及行业资料。
 
+### **培训：**
+openctp的支撑系统TTS（Tick Trading System）采用与CTP柜台同样的设计，均为内存数据库总线架构，openctp的各柜台CTPAPI兼容接口也与CTP接口完全兼容，基于这样的核心技术，我们做了五期培训课程，帮助量化开发者及从业人员，既能够更精准掌握CTP接口的使用，也能够提升工作技能，让自己更加自信和从容。培训方式为视频回看+答疑交流，报名请在openctp公众号回复“培训”两个字，培训完成可帮推荐工作，可长期在群内跟同学们沟通交流，群内也有业内各位大佬。
+### 各期培训内容安排（已完成的课程可至[B站](https://space.bilibili.com/549478063/video)及[西瓜](https://www.ixigua.com/home/4388848858576499/?source=pgc_author_profile&list_entrance=anyVideo)试看）：
+- 第一期：[C/C++高级编程](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484363&idx=1&sn=0d74fb1a61e1c595d36527b23eb23323&chksm=c36bd862f41c51749f9490a2b0027fb6a8df53d22c9768b73353a995d7a879171e9fea4d03b4&token=1790747698&lang=zh_CN#rd)，3000元，以Think库为基准进行讲解，含socket网络编程、IPC进程通讯等，已完成一次培训，可直接回看视频。
+- 第二期：[CTP技术开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484422&idx=1&sn=0165c1b7b5f964ce32c34445d8230f25&chksm=c36bdfaff41c56b9d05870e0d54880a7c62b9dea092372c074b786bc390e5d665fe5e9ef5f84&token=1790747698&lang=zh_CN#rd)，5000元，以openctp相关技术为基准进行讲解，含CTPAPI底层逻辑、CTPAPI各种注意事项、开源CTP客户端TextTrader源码讲解等，已完成一次培训，可直接回看视频。
+- 第三期：[交易系统开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484574&idx=1&sn=4ff8d92d1f810ad456ac3eda9b3736f7&chksm=c36bdf37f41c5621d1ba8eed48b5ba46a674b57b66ce8e312d364bedec32913b5eb00413fbc4&token=1790747698&lang=zh_CN#rd)，5000元，以TTS交易系统为基准进行讲解，含内存数据库架构技术、业务表结构设计、关键业务处理等，已完成一次培训，可直接回看视频。
+- 第四期：[金融交易业务与产品设计](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484661&idx=1&sn=b7bc4c5141fc36f1aa395a644ffa586b&chksm=c36bdf5cf41c564ad6b2395e01553372d9ea93375e63e81fb60e2a78178b2419d4864ab548aa&token=798261616&lang=zh_CN#rd)，5000元，通讲全球股票、期货、期权交易发展历程、交易规则、计算公式、风险控制及产品设计，提供一份CTP全部常用字段的详细说明，已完成一次培训，可直接回看视频。
+- 第五期：[内存数据库架构交易系统总线开发技术](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484747&idx=1&sn=21b2d57102daa4305860d61f844784fe&chksm=c36bdee2f41c57f4db3fa23bb41c21cfa5b909843590f179b4761f24aad385fbccfde5ae5002&token=798261616&lang=zh_CN#rd)，8000元，通过TTS的总线架构技术讲解CTP那样的总线开发技术，包括重演、热备、负载均衡、最短路由等技术，内存计算架构在各行业的高性能通讯方面都可以应用，远不止金融交易领域，已完成一次培训，可直接回看视频。
+
 ### 各套环境运行状态监控：
 - 监控页面地址：http://121.37.80.177:50080/detail.html
 - 使用的技术：https://github.com/krenx1983/openctp/tree/master/tools/Ping
@@ -140,14 +149,6 @@ Broker任意填，填什么就回什么
 需要C/C++、量化交易、互联网等方面的人才或职位请在openctp公众号回复“找工作”三个字。
 ### **活动：**
 openctp每个月至少会有一次粉丝线下活动，可以是吃饭、喝茶、徒步等等，想参加的请在openctp公众号回复“活动”两个字。
-### **培训：**
-共准备了五期付费培训课程和多期免费公开课，付费培训时间为每个周日晚20:00～21:00，培训方式为腾讯会议，课后可无限回看，课后可无限时间交流，详情请在openctp公众号回复“培训”两个字，培训完成可帮推荐工作，可长期跟同学们沟通交流，培训内容是我个人从业近二十年的技术精华，付费课程需要有一定的C/C++语言基础，完成五期付费课程培训，在金融交易领域的工作应该会得心应手。免费课程时间不确定，请关注openctp公众号了解相关动态。
-### 各期培训内容安排（已完成的课程可至[B站](https://space.bilibili.com/549478063/video)及[西瓜](https://www.ixigua.com/home/4388848858576499/?source=pgc_author_profile&list_entrance=anyVideo)试看）：
-- 第一期：[C/C++高级编程](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484363&idx=1&sn=0d74fb1a61e1c595d36527b23eb23323&chksm=c36bd862f41c51749f9490a2b0027fb6a8df53d22c9768b73353a995d7a879171e9fea4d03b4&token=1790747698&lang=zh_CN#rd)，3000元，以Think库为基准进行讲解，含socket网络编程、IPC进程通讯等，已完成一次培训，可直接回看视频。
-- 第二期：[CTP技术开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484422&idx=1&sn=0165c1b7b5f964ce32c34445d8230f25&chksm=c36bdfaff41c56b9d05870e0d54880a7c62b9dea092372c074b786bc390e5d665fe5e9ef5f84&token=1790747698&lang=zh_CN#rd)，5000元，以openctp相关技术为基准进行讲解，含CTPAPI底层逻辑、CTPAPI各种注意事项、开源CTP客户端TextTrader源码讲解等，已完成一次培训，可直接回看视频。
-- 第三期：[交易系统开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484574&idx=1&sn=4ff8d92d1f810ad456ac3eda9b3736f7&chksm=c36bdf37f41c5621d1ba8eed48b5ba46a674b57b66ce8e312d364bedec32913b5eb00413fbc4&token=1790747698&lang=zh_CN#rd)，5000元，以TTS交易系统为基准进行讲解，含内存数据库架构技术、业务表结构设计、关键业务处理等。
-- 第四期：[金融交易业务与产品设计](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484661&idx=1&sn=b7bc4c5141fc36f1aa395a644ffa586b&chksm=c36bdf5cf41c564ad6b2395e01553372d9ea93375e63e81fb60e2a78178b2419d4864ab548aa&token=798261616&lang=zh_CN#rd)，5000元，通讲全球股票、期货、期权交易发展历程、交易规则、计算公式、风险控制及产品设计，提供一份CTP全部常用字段的详细说明。
-- 第五期：[内存数据库架构交易系统总线开发技术](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484747&idx=1&sn=21b2d57102daa4305860d61f844784fe&chksm=c36bdee2f41c57f4db3fa23bb41c21cfa5b909843590f179b4761f24aad385fbccfde5ae5002&token=798261616&lang=zh_CN#rd)，8000元，通过TTS的总线架构技术讲解CTP那样的总线开发技术，包括重演、热备、负载均衡、最短路由等技术，内存计算架构在各行业的高性能通讯方面都可以应用，远不止金融交易领域。
 
 ### openctp公开课：
 - [C语言0基础](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484592&idx=1&sn=7b0caf96f497461a45f5940dfa6c5361&chksm=c36bdf19f41c560f8a9ebcf7b7031820414d997a7c151e520c006423cf6f9c6f6d890adcda7b&token=798261616&lang=zh_CN#rd)：以生动有趣的方式讲C语言基础性编程技术，重在兴趣培养和信心建立。
