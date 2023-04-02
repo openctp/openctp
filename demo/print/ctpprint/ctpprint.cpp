@@ -252,6 +252,19 @@ public:
 		}
 	}
 
+	/*申报手续费率查询应答*/
+	void OnRspQryInstrumentOrderCommRate(CThostFtdcInstrumentOrderCommRateField* pInstrumentOrderCommRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+	{
+		if (pInstrumentOrderCommRate)
+			printf("OnRspQryInstrumentOrderCommRate:ExchangeID:%s,InstrumentID:%s,OrderCommByVolume:%lf,OrderActionCommByVolume:%lf\n",
+				pInstrumentOrderCommRate->ExchangeID, pInstrumentOrderCommRate->InstrumentID,
+				pInstrumentOrderCommRate->OrderCommByVolume, pInstrumentOrderCommRate->OrderActionCommByVolume);
+
+		if (bIsLast) {
+			_semaphore.signal();
+		}
+	}
+
 	/*投资者保证金率查询应答*/
 	void OnRspQryInstrumentMarginRate(CThostFtdcInstrumentMarginRateField* pInstrumentMarginRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 	{
@@ -299,11 +312,12 @@ public:
 			return;
 		}
 
-		printf("OnRspQryDepthMarketData:InstrumentID:%s,LastPrice:%lf,Volume:%d,Turnover:%lf,OpenPrice:%lf,HighestPrice:%lf,LowestPrice:%lf,UpperLimitPrice:%lf,LowerLimitPrice:%lf,OpenInterest:%lf,PreClosePrice:%lf,PreSettlementPrice:%lf,SettlementPrice:%lf,UpdateTime:%s,ActionDay:%s,TradingDay:%s,ExchangeID:%s\n",
-			pDepthMarketData->InstrumentID, double_format(pDepthMarketData->LastPrice), pDepthMarketData->Volume, double_format(pDepthMarketData->Turnover), double_format(pDepthMarketData->OpenPrice),
-			double_format(pDepthMarketData->HighestPrice), double_format(pDepthMarketData->LowestPrice), double_format(pDepthMarketData->UpperLimitPrice), double_format(pDepthMarketData->LowerLimitPrice),
-			double_format(pDepthMarketData->OpenInterest), double_format(pDepthMarketData->PreClosePrice), double_format(pDepthMarketData->PreSettlementPrice),
-			double_format(pDepthMarketData->SettlementPrice), pDepthMarketData->UpdateTime, pDepthMarketData->ActionDay, pDepthMarketData->TradingDay, pDepthMarketData->ExchangeID);
+		if(pDepthMarketData)
+			printf("OnRspQryDepthMarketData:InstrumentID:%s,LastPrice:%lf,Volume:%d,Turnover:%lf,OpenPrice:%lf,HighestPrice:%lf,LowestPrice:%lf,UpperLimitPrice:%lf,LowerLimitPrice:%lf,OpenInterest:%lf,PreClosePrice:%lf,PreSettlementPrice:%lf,SettlementPrice:%lf,UpdateTime:%s,ActionDay:%s,TradingDay:%s,ExchangeID:%s\n",
+				pDepthMarketData->InstrumentID, double_format(pDepthMarketData->LastPrice), pDepthMarketData->Volume, double_format(pDepthMarketData->Turnover), double_format(pDepthMarketData->OpenPrice),
+				double_format(pDepthMarketData->HighestPrice), double_format(pDepthMarketData->LowestPrice), double_format(pDepthMarketData->UpperLimitPrice), double_format(pDepthMarketData->LowerLimitPrice),
+				double_format(pDepthMarketData->OpenInterest), double_format(pDepthMarketData->PreClosePrice), double_format(pDepthMarketData->PreSettlementPrice),
+				double_format(pDepthMarketData->SettlementPrice), pDepthMarketData->UpdateTime, pDepthMarketData->ActionDay, pDepthMarketData->TradingDay, pDepthMarketData->ExchangeID);
 
 		if (bIsLast) {
 			_semaphore.signal();
@@ -517,6 +531,16 @@ int main(int argc, char* argv[])
 	printf("查询合约 ...\n");
 	CThostFtdcQryInstrumentField QryInstrument = { 0 };
 	Spi.m_pUserApi->ReqQryInstrument(&QryInstrument, 0);
+	_semaphore.wait();
+
+	// 查询申报手续费率（报撤单费率，主要是中金所有此项费用，大连好像要报撤单笔数达到5000笔之上才收）
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询申报手续费率 ...\n");
+	CThostFtdcQryInstrumentOrderCommRateField QryInstrumentOrderCommRate = { 0 };
+	strncpy(QryInstrumentOrderCommRate.BrokerID, broker.c_str(), sizeof(QryInstrumentOrderCommRate.BrokerID) - 1);
+	strncpy(QryInstrumentOrderCommRate.InvestorID, user.c_str(), sizeof(QryInstrumentOrderCommRate.InvestorID) - 1);
+	strncpy(QryInstrumentOrderCommRate.InstrumentID, "IF2301", sizeof(QryInstrumentOrderCommRate) - 1);
+	Spi.m_pUserApi->ReqQryInstrumentOrderCommRate(&QryInstrumentOrderCommRate, 0);
 	_semaphore.wait();
 
 	// 查询行情
