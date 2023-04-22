@@ -107,19 +107,19 @@ vip权限申请方法：关注openctp公众号并回复“注册vip”。
 - **华鑫证券**，模拟账号申请地址：http://www.n-sight.com.cn
 - **中泰证券**，模拟账号申请地址：https://xtp.zts.com.cn
 
-**股票柜台接口与接入问题请加QQ群127235179咨询。**
+**股票柜台接口与接入问题请加QQ群 127235179 咨询。**
 
 ### **已官方支持TTS通道（CTP开放平台）的产品：**
 - [vn.py（知名Python量化交易客户端，支持全球市场交易）](https://www.vnpy.com/)
 <img src="https://user-images.githubusercontent.com/83346523/136988918-1159fc88-073e-4b6f-a8d6-3f33991e8a72.png" alt="vnpy" width="700" height="400" />
 
-- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ群：967352413）](https://www.zhihu.com/people/mt5ctp)
+- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ群：967352413，备注openctp。）](https://www.zhihu.com/people/mt5ctp)
 <img src="https://user-images.githubusercontent.com/83346523/136989596-b12d91e8-48a0-4b26-bcaf-fdfca52d962c.png" alt="mt5ctp" width="700" height="400" />
 
 - [TextTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/krenx1983/TextTrader)
 <img src="https://user-images.githubusercontent.com/83346523/136989754-1f0130e6-5d75-427f-bbf3-7ed084b6eae1.png" alt="texttrader" width="700" height="400" />
 
-- [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架，QQ群：610730738）](https://www.zhihu.com/column/c_1338797723131740161)
+- [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架，QQ群：610730738，备注openctp。）](https://www.zhihu.com/column/c_1338797723131740161)
 <img src="https://user-images.githubusercontent.com/83346523/198839414-d72614d8-9752-497a-b9a9-19b38d3da326.png" alt="WonderTrader" width="700" height="400" />
 
 ### **通过自己替换dll可接入TTS通道（CTP开放平台）的产品：**
@@ -143,8 +143,8 @@ Broker任意填，填什么就回什么
 
 ### **咨询服务：**
 为零散问题解答服务，如果你在CTP技术群、编程语言群等等地方问问题没人理你，你可以来咨询我们，这项服务我们是以团队的形式对外进行服务，由各项技术的大厂专家组成，对技术都有丰富的经验和极高的追求，现推广阶段咨询费也很便宜，报名请在openctp公众号回复“咨询”两个字。请注意，咨询不是培训，如果你需要的是系统性的学习，请报相应的培训课程，咨询也不会帮忙写代码，只问诊不开药，也不作任何保证，如果你对自己所提出的问题价值没有概念又很较真，请不要来骚扰。
-- CTP接口与业务咨询：1000/年，针对官方技术服务不够的地方作为补充，官方得不到回复或者得不到及时回复的，可以咨询我们。
-- 一般技术咨询：3000/年，C/C++、Java、Python、Go等语言基础编程技术咨询，可以作为各语言0基础课程的补充，帮助你更快掌握一门语言。0基础课程均为免费课程，课程安排请关注openctp公众号了解。
+- CTP接口与业务咨询：1000，针对官方技术服务不够的地方作为补充，官方得不到回复或者得不到及时回复的，可以咨询我们。
+- 一般技术咨询：3000，C/C++、Java、Python、Go等语言基础编程技术咨询，可以作为各语言0基础课程的补充，帮助你更快掌握一门语言。0基础课程均为免费课程，课程安排请关注openctp公众号了解。
 - 高级技术咨询：5000/年，可以咨询编程框架、系统架构、业务规划等高阶内容。
 ### **招聘服务：**
 需要C/C++、量化交易、互联网等方面的人才或职位请在openctp公众号回复“工作”两个字。
