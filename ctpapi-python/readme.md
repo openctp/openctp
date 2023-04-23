@@ -5,7 +5,10 @@
 - Windows 下, Python 3.7/3.8/3.9/3.10/3.11... 等版本编译的 api 又互不兼容，不可串用。
 - 3.7 <= Supported Python <= 3.11
 
+
 ## 使用方法
+
+[最新使用方法参考](https://github.com/Jedore/openctp-ctp-python)
 
 将需要的文件放在同一个目录下
 
