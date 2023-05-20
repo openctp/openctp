@@ -19,6 +19,10 @@ openctp的动态库（dll、so等文件）只是对华鑫证券接口的简单�
 
 华鑫证券N视界模拟平台是跟simnow类似的证券模拟平台，采用与CTP类似的开放式API，更多信息请至官网了解：http://www.n-sight.com.cn/
 
+## 实盘接入
+实盘接入请加微信krenx1983咨询。
+
+## TextTrader
 [CTP开源客户端TextTrader](https://github.com/openctp/TextTrader/tree/master/Releases/Linux/TextTraderSTPOPT)的接入效果：
 ![image](https://user-images.githubusercontent.com/83346523/229337753-f0a7da00-4074-4ed2-99f7-1e82554eb9f3.png)
 ![image](https://user-images.githubusercontent.com/83346523/229337761-f0e483d8-0914-4a58-aac8-b9fddc1f4f17.png)
