@@ -21,6 +21,9 @@ API_C++_交易_v4.0.6_20221213
 
 华鑫证券N视界模拟平台是跟simnow类似的证券模拟平台，采用与CTP类似的开放式API，更多信息请至官网了解：http://www.n-sight.com.cn/
 
+## 实盘接入
+实盘接入请加微信krenx1983咨询。
+
 [CTP开源客户端TextTrader](https://github.com/krenx1983/TextTrader)的接入效果：
 ![M8$B1FGSOB 3A) T7%PUP P](https://user-images.githubusercontent.com/83346523/128633288-e70f2af9-7106-46a8-bda1-4859c61adf5b.png)
 ![KLU1WTF~M{{K2VGA28TX VL](https://user-images.githubusercontent.com/83346523/128633135-5173ffa0-762f-40a6-8cbd-74eae4105e06.png)
