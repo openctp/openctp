@@ -24,6 +24,11 @@ API_C++_交易_v4.0.6_20221213
 ## 实盘接入
 实盘接入请加微信krenx1983咨询。
 
+## 注意事项
+- 华鑫的下单与撤单共用一个OrderRef机制，即下单请求的OrderRef与撤单请求的OrderRef都要保持同一个序列，或者都填0让柜台自动赋值，可以参照TextTrader中的代码。
+- 如果使用域名访问，华鑫的RegisterFensUserInfo接口需要一些额外信息，我们把这些信息组织到名字服务器的地址中了，地址要这样写：tcp://ip:port/EnvID/NodeID，如果你的服务器是部署在18号柜，地址就是这样：tcp://10.166.32.37:42370/stock/18
+- 我们封装的时候借用了Login请求中的一些字段，如将硬盘序列号填在了LoginRemark字段，赋值给华鑫接口的TerminalInfo是这么写的：snprintf(LoginReq.TerminalInfo,sizeof(LoginReq.TerminalInfo),"PC;IIP=NA;IPORT=NA;LIP=%s;MAC=%s;HD=%s;@%s", pReqUserLogin->ClientIPAddress,pReqUserLogin->MacAddress,pReqUserLogin->LoginRemark,pReqUserLogin->UserProductInfo);
+
 ## TextTrader
 [CTP开源客户端TextTrader](https://github.com/krenx1983/TextTrader)的接入效果：
 ![M8$B1FGSOB 3A) T7%PUP P](https://user-images.githubusercontent.com/83346523/128633288-e70f2af9-7106-46a8-bda1-4859c61adf5b.png)
