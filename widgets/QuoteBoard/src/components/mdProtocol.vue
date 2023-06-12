@@ -4,7 +4,7 @@
     <vxe-button @click="handleCusMarketData">订阅</vxe-button>
     <vxe-button
       v-if="!isLogin"
-      @click="websocketonopen"
+      @click="hadleLogin"
     >登陆</vxe-button>
   </div>
   <div class="cell-color">
@@ -36,6 +36,7 @@
 // const { dialog } = require('electron')
 // import { dialog } from 'electron'
 import { errMessage } from "../dialog.js"
+import { readConfig } from "@/utils/getBaseUrl.js";
 export default {
   data() {
     return {
@@ -124,18 +125,29 @@ export default {
       marketData: [],
       list: [],
       isLogin: false,
+      wsPath: "",
+      account: "",
+      password: "",
     }
   },
   mounted() {
-    !this.isLogin && this.initWebSocket();
+    readConfig((res) => {
+      const { baseURL, account, password } = res;
+      this.wsPath = `ws://${baseURL}`;
+      this.account = account;
+      this.password = password;
+      console.log("wsPath", this.wsPath)
+      !this.isLogin && this.initWebSocket();
+      // ... 执行其他操作即可
+    });
+
   },
   onBeforeUnmount() {
     this.websock.close();
   },
   methods: {
     initWebSocket() { //初始化weosocket
-      const wsuri = "ws://121.37.86.17:15000/md/";
-      this.websock = new WebSocket(wsuri);
+      this.websock = new WebSocket(this.wsPath);
       this.websock.onmessage = this.websocketonmessage;
       this.websock.onopen = this.websocketonopen;
       this.websock.onerror = this.websocketonerror;
@@ -155,7 +167,7 @@ export default {
       // 当通知被点击时
       hhwNotication.onclick = function () {
         // TODO something...
-        this.websocketonopen()
+        // this.websocketonopen()
       }
 
       // this.initWebSocket();
@@ -174,7 +186,6 @@ export default {
             }
           })
         } else {
-          // this.list = this.list.filter(item => item.InstrumentID != redata.DepthMarketData.InstrumentID)
           this.list.push(redata.DepthMarketData)
         }
 
@@ -186,6 +197,7 @@ export default {
       }
     },
     websocketsend(Data) {//数据发送
+
       this.websock.send(Data);
     },
     websocketclose(e) {  //关闭
@@ -204,15 +216,20 @@ export default {
       }
     },
     websocketonopen() { //连接建立之后执行send方法发送数据
-      let actions = {
-        "MsgType": "ReqUserLogin",
-        "ReqUserLogin": {
-          "UserID": "1014",
-          "Password": "123456"
+      if (this.websock.readyState === this.websock.OPEN) { // websock.OPEN = 1 
+        // 发给后端的数据需要字符串化
+        let actions = {
+          "MsgType": "ReqUserLogin",
+          "ReqUserLogin": {
+            "UserID": this.account,
+            "Password": this.password
+          }
         }
+        this.websocketsend(JSON.stringify(actions));
+      } else if (this.websock.readyState === 0) {
+        errMessage("链接断开啦")
       }
-      console.log("111111")
-      this.websocketsend(JSON.stringify(actions));
+
     },
     handleMarketData() {
       let actions = {
@@ -244,6 +261,19 @@ export default {
     },
     handleClose() {
       this.websock.close()
+    },
+    hadleLogin() {
+      if (this.websock.readyState === this.websock.CLOSED) { // websock.CLOSED = 3 
+        errMessage("服务器关闭啦")
+      }
+      if (this.websock.readyState === 0) { // websock.CLOSED = 3 
+        errMessage("重新链接")
+        this.initWebSocket();
+      }
+      if (this.websock.readyState === this.websock.OPEN) { // websock.OPEN = 1 
+        // 发给后端的数据需要字符串化
+        this.websocketonopen()
+      }
     }
   }
 }

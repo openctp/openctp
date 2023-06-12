@@ -3,43 +3,22 @@ module.exports = defineConfig({
   transpileDependencies: true,
   pluginOptions: {
     electronBuilder: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      builderOptions: {
+        // extraFiles: ["config.json"],
+        extraResources: [{ from: "./config.json", to: "../" }],
+      },
+      nsis: {
+        allowToChangeInstallationDirectory: true,
+        oneClick: false
+      },
+      win: {
+        icon: './public/favicon.ico'
+      },
+      mac: {
+        icon: './public/favicon.ico'
+      },
+      productName: 'QuoteBoard'
     }
   }
-  
-  // configureWebpack: {
-  //   resolve: {
-  //     fallback: {
-  //       path: require.resolve("path-browserify"),
-  //       fs: false
-  //     },
-  //   },
-  // },
-
-
-  // electronBuilder: {
-  //   appId: "com.zcy.test",
-  //   productName: "DAS",
-  //   icon: "./app.ico",
-  //   files: ["**/*", "static/*"],
-  //   asar: true,
-  //   win: {
-  //     icon: "./app.ico",
-  //     target: ["nsis"],
-  //     extraResources: {
-  //       from: "./core/",
-  //       to: "./core/",
-  //       filter: ["**/*"]
-  //     }
-  //   },
-  //   mac: {
-  //     icon: "./app.ico",
-  //     target: ["nsis"],
-  //     extraResources: {
-  //       from: "./core/",
-  //       to: "./core/",
-  //       filter: ["**/*"]
-  //     }
-  //   }
-  // }
 })

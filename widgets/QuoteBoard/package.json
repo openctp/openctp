@@ -1,7 +1,9 @@
 {
-  "name": "das-app",
+  "name": "quoteboard",
   "version": "0.1.0",
   "private": true,
+  "author": "zcy",
+  "description": "订阅合约",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
