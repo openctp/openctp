@@ -5,6 +5,7 @@
     <button @click="handleMarketData">查询行情</button>
     <button @click="handleInstrument">查询合约</button>
     <button @click="handleClose">断开链接</button>
+    
   </div>
 </template>
 
