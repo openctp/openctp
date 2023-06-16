@@ -45,6 +45,8 @@
    | CTPAPI | JsonSchema |
    | --- | --- |
    | char | string |
+   | char [] | string |
+   | char *  | string |
    | bool | boolean |
    | int | integer |
    | short | integer |
@@ -52,5 +54,5 @@
 
    其中 `string` 参照CTPAPI做了最大长度的限制
 
-2. 未对接口方法的返回值进行定义（CTPAPI中只有个别接口方法有返回值）。
-3. 使用的接口文件是 Windows/Linux 平台的
+3. 未对接口方法的返回值进行定义（CTPAPI中只有个别接口方法有返回值）。
+4. 使用的接口文件是 Windows/Linux 平台的
