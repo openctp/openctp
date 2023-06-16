@@ -2852,7 +2852,7 @@
           "type": "object",
           "properties": {
             "nResumeType": {
-              "$ref": "types.json#definitionsTHOST_TE_RESUME_TYPE"
+              "$ref": "types.json#definitions/THOST_TE_RESUME_TYPE"
             }
           },
           "required": [
@@ -2864,7 +2864,7 @@
           "type": "object",
           "properties": {
             "nResumeType": {
-              "$ref": "types.json#definitionsTHOST_TE_RESUME_TYPE"
+              "$ref": "types.json#definitions/THOST_TE_RESUME_TYPE"
             }
           },
           "required": [
