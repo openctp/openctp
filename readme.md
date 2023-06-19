@@ -87,7 +87,7 @@ openctp的支撑系统TTS（Tick Trading System）采用与CTP柜台同样的设
 - 行情前置 - 无（订阅行情需要直连相应行情通道）
 
 ### **开放平台VIP仿真环境（需要付费申请，提供更快的速度、更全的品种，具体[点这里](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484339&idx=1&sn=3c56cb0b201d3635a67f40b78dd7ae98&chksm=c36bd81af41c510c8d8e2ab43396a2de2fc73432f23b3cdff46debb85ec1170856903717a23b&token=1217034697&lang=zh_CN#rd)）：**
-- 交易前置 - tcp://42.192.226.242:20002
+- 交易前置 - 需先申请vip
 - 行情前置 - 无（订阅行情需要直连相应行情通道）
 
 ### **模拟账号：** 
