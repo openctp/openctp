@@ -25,8 +25,8 @@
 openctp的支撑系统TTS（Tick Trading System）采用与CTP柜台同样的设计，均为内存数据库总线架构，也是金融交易领域最高级别的架构技术，openctp的各柜台CTPAPI兼容接口也与CTP接口完全兼容，基于这样的核心技术，我们做了五期培训课程，帮助量化开发者及从业人员，既能够更精准掌握CTP接口的使用，也能够提升工作技能，让自己更加自信和从容。培训方式为视频回看+答疑交流，报名请在openctp公众号回复“培训”两个字，培训完成可帮推荐工作，可长期在群内跟同学们沟通交流，群内也有业内各位大佬。培训内容也会不断迭代，可一直在群内学习提升，也会适当安排线下学习交流。已有数十名同学参与了培训，早培训早受益，要学会站在别人的肩膀上，正值找工作换工作的黄金时期，花一点钱学习行业最好的技术，值。
 ### 各期培训内容安排（已完成的课程可至[B站](https://space.bilibili.com/549478063/video)及[西瓜](https://www.ixigua.com/home/4388848858576499/?source=pgc_author_profile&list_entrance=anyVideo)试看）：
 - 第一期：[C/C++高级编程](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484363&idx=1&sn=0d74fb1a61e1c595d36527b23eb23323&chksm=c36bd862f41c51749f9490a2b0027fb6a8df53d22c9768b73353a995d7a879171e9fea4d03b4&token=1790747698&lang=zh_CN#rd)，3000元，以krenx开发的C语言跨平台开发框架[Think库](https://github.com/krenx1983/think)为基准进行讲解，含socket网络编程、IPC进程通讯等，有众多实用的工具，可立即应用到工作中。另外还有boost.asio异步网络通讯框架等开发技术的讲解，也提供相应的实例源码。
-- 第二期：[CTP技术开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484422&idx=1&sn=0165c1b7b5f964ce32c34445d8230f25&chksm=c36bdfaff41c56b9d05870e0d54880a7c62b9dea092372c074b786bc390e5d665fe5e9ef5f84&token=1790747698&lang=zh_CN#rd)，5000元，以openctp相关技术为基准进行讲解，含CTPAPI底层逻辑、CTPAPI各种注意事项、开源CTP客户端TextTrader源码讲解等，提供一份高质量的轻量级量化交易框架源码（Python开发）。
-- 第三期：[交易系统开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484574&idx=1&sn=4ff8d92d1f810ad456ac3eda9b3736f7&chksm=c36bdf37f41c5621d1ba8eed48b5ba46a674b57b66ce8e312d364bedec32913b5eb00413fbc4&token=1790747698&lang=zh_CN#rd)，5000元，以TTS交易系统为基准进行讲解，含交易系统结构、架构技术、业务表结构设计、关键业务处理等，提供一份同CTP表结构的交易所系统源码（Python开发）。
+- 第二期：[CTP技术开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484422&idx=1&sn=0165c1b7b5f964ce32c34445d8230f25&chksm=c36bdfaff41c56b9d05870e0d54880a7c62b9dea092372c074b786bc390e5d665fe5e9ef5f84&token=1790747698&lang=zh_CN#rd)，5000元，以openctp相关技术为基准进行讲解，含CTPAPI底层逻辑、CTPAPI各种注意事项、开源CTP客户端TextTrader源码讲解等。
+- 第三期：[交易系统开发](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484574&idx=1&sn=4ff8d92d1f810ad456ac3eda9b3736f7&chksm=c36bdf37f41c5621d1ba8eed48b5ba46a674b57b66ce8e312d364bedec32913b5eb00413fbc4&token=1790747698&lang=zh_CN#rd)，5000元，以TTS交易系统为基准进行讲解，含交易系统结构、架构技术、业务表结构设计、关键业务处理等。
 - 第四期：[金融交易业务与产品设计](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484661&idx=1&sn=b7bc4c5141fc36f1aa395a644ffa586b&chksm=c36bdf5cf41c564ad6b2395e01553372d9ea93375e63e81fb60e2a78178b2419d4864ab548aa&token=798261616&lang=zh_CN#rd)，5000元，通讲全球股票、期货、期权交易发展历程、交易规则、计算公式、风险控制及产品设计，提供一份CTP全部常用字段的详细说明。
 - 第五期：[内存数据库架构交易系统总线开发技术](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484747&idx=1&sn=21b2d57102daa4305860d61f844784fe&chksm=c36bdee2f41c57f4db3fa23bb41c21cfa5b909843590f179b4761f24aad385fbccfde5ae5002&token=798261616&lang=zh_CN#rd)，8000元，通过TTS的总线架构技术讲解CTP那样的总线开发技术，包括重演、热备、负载均衡、最短路由、分布式计算等技术，内存计算架构在各行业的高性能通讯方面都可以应用，远不止金融交易领域。
 
@@ -87,7 +87,7 @@ openctp的支撑系统TTS（Tick Trading System）采用与CTP柜台同样的设
 - 行情前置 - 无（订阅行情需要直连相应行情通道）
 
 ### **开放平台VIP仿真环境（需要付费申请，提供更快的速度、更全的品种，具体[点这里](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484339&idx=1&sn=3c56cb0b201d3635a67f40b78dd7ae98&chksm=c36bd81af41c510c8d8e2ab43396a2de2fc73432f23b3cdff46debb85ec1170856903717a23b&token=1217034697&lang=zh_CN#rd)）：**
-- 交易前置 - 需先申请vip
+- 交易前置 - tcp://42.192.226.242:20002
 - 行情前置 - 无（订阅行情需要直连相应行情通道）
 
 ### **模拟账号：** 
@@ -145,7 +145,7 @@ Broker任意填，填什么就回什么
 
 ### **咨询服务：**
 为零散问题解答服务，如果你在CTP技术群、编程语言群等等地方问问题没人理你，你可以来咨询我们，这项服务我们是以团队的形式对外进行服务，由各项技术的大厂专家组成，对技术都有丰富的经验和极高的追求，现推广阶段咨询费也很便宜，报名请在openctp公众号回复“咨询”两个字。请注意，咨询不是培训，如果你需要的是系统性的学习，请报相应的培训课程，咨询也不会帮忙写代码，也不保证能回答你的任何问题，非诚勿扰。
-- 上期技术CTP、中泰证券XTP、华鑫证券Tora、恒生等柜台接口开发咨询：1000元，永久有效，建立统一的咨询群，可永久在群内交流，群内也有更加专业、清晰的接口开发技术资料。注：目前主要以CTP接口咨询服务为主，逐步加强XTP等接口咨询服务。
+- 上期技术CTP、中泰证券XTP、华鑫证券Tora、恒生等柜台接口开发咨询：1000元，永久有效，建立统一的咨询群，可永久在群内交流，群内也有更加专业、清晰的接口开发技术资料。注：目前主要以CTP接口咨询服务为主，逐步加强华鑫证券Tora、中泰证券XTP等接口咨询服务。
 - 技术顾问：10000元/年，可以咨询编程框架、系统架构、业务规划等高阶内容。
 ### **招聘服务：**
 需要C/C++、Python、Java、量化交易、互联网、智能汽车等方面的人才或职位请在openctp公众号回复“工作”两个字。
