@@ -1,4 +1,4 @@
 all: ctpping
 ctpping:
-	g++ -std=c++11 -I. -L. -o ctpping ctpping.cpp thostmduserapi_se.so
+	g++ -std=c++11 -I. -L. -o ctpping ctpping.cpp thostmduserapi_se.so thosttraderapi_se.so
 
