@@ -2,7 +2,7 @@
 #include <chrono>
 #include <thread>
 #ifdef _WIN32
-#include "getopt.h"
+#include "win/getopt.h"
 #else
 #include <unistd.h>
 #endif
