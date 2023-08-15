@@ -14,14 +14,20 @@
 - ctp2OST东方证券：东方证券的CTPAPI兼容接口。
 - ctp2中泰证券XTP：中泰证券XTP柜台的CTPAPI兼容接口。
 - ctp2华鑫证券STP：华鑫证券奇点柜台股票的CTPAPI兼容接口。
+- ctp2EMT东方财富：东方财富EMT极速柜台的CTPAPI兼容接口。
 - ctp2STPOPT：华鑫证券奇点柜台股票期权的CTPAPI兼容接口。
-- ctp2QQ行情：腾讯行情的CTPAPI兼容接口。
-- ctp2Sina行情：新浪行情的CTPAPI兼容接口。
+- ctp2QQ行情：腾讯行情的CTPAPI兼容接口（含源码）。
+- ctp2Sina行情：新浪行情的CTPAPI兼容接口（含源码）。
 - demo：CTPAPI开发相关的demo及工具源码。
 - tools：生产力工具。
 - docs：开发文档及行业资料。
+- ctpapi-python：CTPAPI的Python接口。
+- ctpapi-java：CTPAPI的Java接口。
+- ctpapi-go：CTPAPI的Go接口。
+- ctpapi-c：CTPAPI的C语言接口。
+- widgets：图形界面小应用。
 
-### **培训：**
+### **培训（视频回放+答疑交流，随时可报名）**
 openctp的支撑系统TTS（Tick Trading System）采用与CTP柜台同样的设计，均为内存数据库总线架构，也是金融交易领域最高级别的架构技术，openctp的各柜台CTPAPI兼容接口也与CTP接口完全兼容，基于这样的核心技术，我们做了五期培训课程，帮助量化开发者及从业人员，既能够更精准掌握CTP接口的使用，也能够提升工作技能，让自己更加自信和从容。培训方式为视频回看+答疑交流，报名请在openctp公众号回复“培训”两个字，培训完成可帮推荐工作，可长期在群内跟同学们沟通交流，群内也有业内各位大佬。培训内容也会不断迭代，可一直在群内学习提升，也会适当安排线下学习交流。已有数十名同学参与了培训，早培训早受益，要学会站在别人的肩膀上，正值找工作换工作的黄金时期，花一点钱学习行业最好的技术，值。
 ### 各期培训内容安排（已完成的课程可至[B站](https://space.bilibili.com/549478063/video)及[西瓜](https://www.ixigua.com/home/4388848858576499/?source=pgc_author_profile&list_entrance=anyVideo)试看）：
 - 第一期：[C/C++高级编程](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484363&idx=1&sn=0d74fb1a61e1c595d36527b23eb23323&chksm=c36bd862f41c51749f9490a2b0027fb6a8df53d22c9768b73353a995d7a879171e9fea4d03b4&token=1790747698&lang=zh_CN#rd)，3000元，以krenx开发的C语言跨平台开发框架[Think库](https://github.com/krenx1983/think)为基准进行讲解，含socket网络编程、IPC进程通讯等，有众多实用的工具，可立即应用到工作中。另外还有boost.asio异步网络通讯框架等开发技术的讲解，也提供相应的实例源码。
@@ -32,8 +38,8 @@ openctp的支撑系统TTS（Tick Trading System）采用与CTP柜台同样的设
 
 ### 各套环境运行状态监控：
 - 监控页面地址：http://121.37.80.177:50080/detail.html
-- 使用的技术：https://github.com/krenx1983/openctp/tree/master/tools/Ping
-- 相关源码：https://github.com/krenx1983/openctp/tree/master/demo/ctpping
+- 使用的技术：https://github.com/openctp/openctp/tree/master/tools/Ping
+- 相关源码：https://github.com/openctp/openctp/tree/master/demo/ctpping
 
 ![613dc093f916d1bf0764e5365f202ff](https://user-images.githubusercontent.com/83346523/148802378-2c9b3d3f-1959-4aab-851a-cf55666806d8.png)
 ### **支持品种：**
@@ -94,9 +100,9 @@ openctp的支撑系统TTS（Tick Trading System）采用与CTP柜台同样的设
 扫扫下面的二维码，关注openctp公众号，即可获得一个7x24账号及一个仿真账号，也可以回复"注册24"或"注册仿真"再申请新的模拟号，一个微信号最多可以申请3个7x24测试账号及3个仿真模拟账号，可以回复"查询"得到已注册的模拟账号列表。7x24与仿真环境独立结算，账号也是独立的，但是密码是同一个，包括vip环境的密码也是同一个，也就是一个微信号申请的所有账号都共用一个密码，可以使用快期等支持修改密码的软件修改任何一个模拟号密码即可。
 
 openctp除免费仿真环境外，还提供了vip仿真环境，具有更高的带宽，更全的品种，更多的模拟账号，分三个级别。
-- vip1 - 300元/年，可申请10个模拟号，可交易A股股票、国内期货、期权品种。
-- vip2 - 500元/年，可申请30个模拟呈，可交易品种增加A股基金、债券、股票期权。
-- vip3 - 1000元/年，可申请100个模拟号，可交易品种增加港股、美股、外盘期货。
+- vip1 - 300元/年，可申请10个模拟号，可交易国内期货、期货期权品种。
+- vip2 - 500元/年，可申请10个模拟号，可交易品种增加A股股票、基金、债券。
+- vip3 - 1000元/年，可申请10个模拟号，可交易品种增加A股股票期权、港股、美股、外盘期货等。
 
 **vip权限申请方法：关注openctp公众号并回复“注册vip”。**
 
