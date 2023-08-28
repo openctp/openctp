@@ -95,9 +95,9 @@ struct XTPMarketDataBondExData {
     int64_t total_bid_qty;
     ///委托卖出总量(SH,SZ)
     int64_t total_ask_qty;
-    ///加权平均委买价格(SH,SZ)
+    ///加权平均委买价格(SZ)
     double ma_bid_price;
-    ///加权平均委卖价格(SH,SZ)
+    ///加权平均委卖价格(SZ)
     double ma_ask_price;
     ///债券加权平均委买价格(SH)
     double ma_bond_bid_price;
@@ -109,10 +109,10 @@ struct XTPMarketDataBondExData {
 	double match_lastpx;
     ///债券加权平均价格(SH)
     double ma_bond_price;
-    ///预留
-    double r2;
-    ///预留
-    double r3;
+    ///匹配成交成交量(SZ)
+    int64_t match_qty;
+    ///匹配成交成交金额(SZ)
+    double match_turnover;
     ///预留
     double r4;
     ///预留
@@ -410,13 +410,13 @@ typedef struct XTPQuoteFullInfo {
 	XTP_EXCHANGE_TYPE  exchange_id;							///<交易所代码
 	char               ticker[XTP_TICKER_LEN];				///<证券代码
 	char               ticker_name[XTP_TICKER_NAME_LEN];	///<证券名称
-	XTP_SECURITY_TYPE      security_type;					///<合约详细类型
-	XTP_QUALIFICATION_TYPE ticker_qualification_class;		///<合约适当性类别
-	bool is_registration;									///<是否注册制(仅适用创业板股票，创新企业股票及存托凭证)
-	bool is_VIE;											///<是否具有协议控制架构(仅适用创业板股票，创新企业股票及存托凭证)
-	bool is_noprofit;										///<是否尚未盈利(仅适用创业板股票，创新企业股票及存托凭证)
-	bool is_weighted_voting_rights;							///<是否存在投票权差异(仅适用创业板股票，创新企业股票及存托凭证)
-	bool is_have_price_limit;								///<是否有涨跌幅限制(注：不提供具体幅度，可通过涨跌停价和昨收价来计算幅度)
+    XTP_SECURITY_TYPE      security_type;					///<合约详细类型
+    XTP_QUALIFICATION_TYPE ticker_qualification_class;		///<合约适当性类别
+    bool is_registration;									///<是否注册制(仅适用创业板股票，创新企业股票及存托凭证)
+    bool is_VIE;											///<是否具有协议控制架构(仅适用创业板股票，创新企业股票及存托凭证)
+    bool is_noprofit;										///<是否尚未盈利(仅适用创业板股票，创新企业股票及存托凭证)
+    bool is_weighted_voting_rights;							///<是否存在投票权差异(仅适用创业板股票，创新企业股票及存托凭证)
+    bool is_have_price_limit;								///<是否有涨跌幅限制(注：不提供具体幅度，可通过涨跌停价和昨收价来计算幅度)
 	double upper_limit_price;								///<涨停价（仅在有涨跌幅限制时有效）
 	double lower_limit_price;								///<跌停价（仅在有涨跌幅限制时有效）
 	double pre_close_price;									///<昨收价
@@ -434,11 +434,57 @@ typedef struct XTPQuoteFullInfo {
 	int32_t market_ask_qty_lower_limit;						///<市价卖委托数量上限
 	int32_t market_ask_qty_unit;							///<市价卖数量单位
 	XTP_SECURITY_STATUS security_status;                    ///<证券状态
-	uint32_t unknown1;                                      ///<保留字段
-	uint64_t unknown[3];                                    ///<保留字段
+    uint32_t unknown1;                                      ///<保留字段
+    uint64_t unknown[3];                                    ///<保留字段
+    
 }XTPQFI;
+
+///新三板全量静态信息
+typedef struct XTPQuoteNQFullInfo {
+    XTP_EXCHANGE_TYPE  exchange_id;					    ///<交易所代码
+	char ticker[XTP_TICKER_LEN];				        ///<证券代码
+	char ticker_name[XTP_TICKER_NAME_LEN];	            ///<证券名称
+    XTP_SECURITY_TYPE      security_type;			    ///<合约详细类型
+    XTP_QUALIFICATION_TYPE ticker_qualification_class;  ///<合约适当性类别
+    char ticker_abbr_en[XTP_TICKER_NAME_LEN];           ///<英文简称
+    char base_ticker[XTP_TICKER_LEN];                   ///<基础证券
+    char industry_type[6];                              ///<行业种类
+    char currency_type[3];                              ///<货币种类
+    int32_t trade_unit;                                 ///<交易单位
+    int32_t hang_out_date;                              ///<挂牌日期
+    int32_t value_date;                                 ///<起息日期
+    int32_t maturity_date;                              ///<到期日
+    int32_t per_limit_vol;                              ///<每笔限量
+    int32_t buy_vol_unit;                               ///<买数量单位
+    int32_t sell_vol_unit;                              ///<卖数量单位
+    int32_t mini_declared_vol;                          ///<最小申报数量
+    int32_t limit_price_attr;                           ///<限价参数性质
+    int32_t market_maker_quantity;                      ///<做市商数量
+    double price_gear;                                  ///<价格档位
+    double first_limit_trans;                           ///<首笔交易限价参数
+    double subsequent_limit_trans;                      ///<后续交易限价参数
+    double limit_upper_price;                           ///<涨停价格
+    double limit_lower_price;                           ///<跌停价格
+    double block_trade_upper;                           ///<大宗交易价格上限(预留，默认0)
+    double block_trade_lower;                           ///<大宗交易价格下限(预留，默认0)
+    double convert_into_ration;                         ///<折合比例
+    XTP_TRADE_STATUS        trade_status : 8;           ///<交易状态
+    XTP_SECURITY_LEVEL      security_level : 8;         ///<证券级别
+    XTP_TRADE_TYPE          trade_type : 8;             ///<交易类型
+    XTP_SUSPEND_FLAG        suspend_flag : 8;           ///<停牌标志
+    XTP_EX_DIVIDEND_FLAG    ex_dividend_flag : 8;       ///<除权除息标志
+    XTP_SECURITY_LAYER_TYPE layer_type : 8;             ///<分层信息
+    int32_t reserved1 : 16;                             ///<保留字段
+    char trade_places[3];                               ///<交易场所 预留
+    char is_rzbd;                                       ///<是否融资标的 Y是 N否
+    char is_rqbd;                                       ///<是否融券标的 Y是 N否
+    char is_drrz;                                       ///<是否当日可融资 Y是 N否
+    char is_drrq;                                       ///<是否当日可融券 Y是 N否
+    char reserved;                                      ///<保留字段
+    uint64_t unknown[3];                                ///<保留字段  
+}XTPNQFI;
+
 
 #pragma pack()
 
 #endif
-

@@ -437,9 +437,16 @@ struct XTPQueryStkPositionRsp
 	
 	///持仓市值（此字段目前只有期权账户有值，其他类型账户为0）
 	double				market_value;
+	///义务仓占用保证金（此字段目前只有期权账户有值，其他类型账户为0）
+	double               margin;
+	
+	///昨日买入成本
+    double             last_buy_cost;
+    ///昨日盈亏成本
+    double             last_profit_cost;
 
     ///(保留字段)
-    uint64_t unknown[50 - 10];
+    uint64_t unknown[50 - 13];
 };
 
 /////////////////////////////////////////////////////////////////////////
@@ -618,6 +625,29 @@ struct XTPQueryETFComponentRsp
     double              redemption_amount;
 
 };
+
+//////////////////////////////////////////////////////////////////////////
+///查询债转股信息
+//////////////////////////////////////////////////////////////////////////
+struct XTPQueryBondSwapStockReq
+{
+    // 交易市场
+    XTP_MARKET_TYPE    market;
+    // 证券代码
+    char               ticker[XTP_TICKER_LEN];
+};
+
+typedef struct XTPQueryBondSwapStockRsp
+{
+    XTP_MARKET_TYPE    market;                  // 交易市场
+    char   ticker[XTP_TICKER_LEN];              // 债券证券代码
+    char underlying_ticker[XTP_TICKER_LEN];     // 转股后的股票证券代码
+    int32_t unit;                               // 转换数量单位（张）
+    int64_t qty_min;                            // 最小下单量（张）
+    int64_t qty_max;                            // 最大下单量（张）
+    double swap_price;                          // 转股价格
+    int32_t swap_flag;                          // 是否处于转股期；0: 不可转股；1：可转股；
+}XTPQueryBondSwapStockRsp;
 
 //////////////////////////////////////////////////////////////////////////
 ///查询当日可申购新股信息
@@ -818,7 +848,9 @@ struct XTPQueryOptCombPositionRsp {
 
     XTPOptCombPlugin        opt_comb_info;                              ///< 期权组合策略信息
 
-    uint64_t                reserved[50];                               ///< 保留字段
+	double					secu_comb_margin;							///< 组合占用保证金（公司）（目前暂未启用）
+
+    uint64_t                reserved[50 - 1];                           ///< 保留字段
 };
 
 /// 查询期权合约行权信息的响应
@@ -1048,7 +1080,15 @@ typedef struct XTPCreditDebtExtendNotice XTPCreditDebtExtendAck;
 typedef struct XTPCrdFundExtraInfo
 {
     double    mf_rs_avl_used;  ///<当前资金账户购买货币基金使用的融券卖出所得资金占用
-    char      reserve[64];     ///<预留空间
+	///证券市值
+	double security_capital;
+	///融资负债
+	double financing_debts;
+	///融券负债
+	double short_sell_debts;
+	///授信总额度
+	double contract_debts_load;
+    char      reserve[64-32];     ///<预留空间
 }XTPCrdFundExtraInfo;
 
 //////////////////////////////////////////////////////////////////////////

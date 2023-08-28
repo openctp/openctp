@@ -14,7 +14,7 @@ CTP开放平台已经发布了中泰证券XTP柜台的CTP兼容接口，以CTP�
 
 中泰证券XTP模拟平台是跟simnow类似的证券模拟平台，采用与CTP类似的开放式API，更多信息请至官网了解：https://xtp.zts.com.cn/
 
-**<u>注意：openctp封装的中泰证券CTPAPI基于XTP接口2.2.33.5版本封装，也将随着XTP接口的更新而更新。</u>**
+**<u>注意：openctp封装的中泰证券CTPAPI基于XTP接口2.2.36.1版本封装，也将随着XTP接口的更新而更新。</u>**
 
 **<u>注意：openctp的linux封装接口对应的libc版本是libc-2.17。</u>**
 

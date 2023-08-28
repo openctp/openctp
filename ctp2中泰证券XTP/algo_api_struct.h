@@ -82,6 +82,15 @@ typedef struct XTPStrategySymbolStateReportStruct
 	XTPRI						m_error_info;				///< 错误信息
 } XTPStrategySymbolStateReport;
 
+///推荐算法结构体
+typedef struct XTPStrategyRecommendationInfoStruct
+{
+	uint16_t					m_strategy_type;			///< 策略类型
+	XTP_MARKET_TYPE				m_market;					///< 交易市场
+	char						m_ticker[XTP_TICKER_LEN];	///< 证券代码
+	char						m_reserved[64];				///< 保留域
+} XTPStrategyRecommendationInfo;
+
 #pragma pack()
 
 #endif //_XTP_ALGO_API_STRUCT_H_
