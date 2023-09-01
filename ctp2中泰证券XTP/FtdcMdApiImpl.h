@@ -80,10 +80,6 @@ public:
 	///@remark 
 	virtual int UnSubscribeMarketData(char* ppInstrumentID[], int nCount);
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///暂时不实现的接口
-
 	///注册名字服务器用户信息
 	///@param pFensUserInfo：用户信息。
 	virtual void RegisterFensUserInfo(CThostFtdcFensUserInfoField * pFensUserInfo){return;};

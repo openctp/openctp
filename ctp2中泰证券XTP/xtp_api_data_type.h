@@ -87,6 +87,7 @@ typedef enum XTP_EXCHANGE_TYPE
 {
 	XTP_EXCHANGE_SH = 1,	///<上证
 	XTP_EXCHANGE_SZ,		///<深证
+	XTP_EXCHANGE_NQ,		///<新三板 全国中小企业股份转让系统
     XTP_EXCHANGE_UNKNOWN	///<不存在的交易所类型
 }XTP_EXCHANGE_TYPE;
 
@@ -98,6 +99,8 @@ typedef enum XTP_MARKET_TYPE
     XTP_MKT_INIT = 0,///<初始化值或者未知
     XTP_MKT_SZ_A = 1,///<深圳A股
     XTP_MKT_SH_A,    ///<上海A股
+    XTP_MKT_BJ_A,    ///<北京A股
+    XTP_MKT_HK,      ///<港股
     XTP_MKT_UNKNOWN   ///<未知交易市场类型
 }XTP_MARKET_TYPE;
 
@@ -310,6 +313,7 @@ typedef enum XTP_BUSINESS_TYPE
     XTP_BUSINESS_TYPE_FREEZE,              ///<锁定解锁，暂不支持
     XTP_BUSINESS_TYPE_OPTION_COMBINE,      ///<期权组合策略 组合和拆分业务
     XTP_BUSINESS_TYPE_EXECUTE_COMBINE,     ///<期权行权合并业务
+    XTP_BUSINESS_TYPE_BOND_SWAP_STOCK,     ///< 债转股业务
     XTP_BUSINESS_TYPE_UNKNOWN,             ///<未知类型
 } XTP_BUSINESS_TYPE;
 
@@ -334,6 +338,10 @@ typedef enum XTP_FUND_TRANSFER_TYPE
     XTP_FUND_TRANSFER_IN,	        ///<转入 从柜台转入XTP
     XTP_FUND_INTER_TRANSFER_OUT,    ///<跨节点转出 从本XTP节点1，转出到对端XTP节点2，XTP服务器之间划拨，只能“一账号两中心”跨节点用户使用
     XTP_FUND_INTER_TRANSFER_IN,     ///<跨节点转入 从对端XTP节点2，转入到本XTP节点1，XTP服务器之间划拨，只能“一账号两中心”跨节点用户使用
+    XTP_FUND_INTER_TRANSFER_REPAY_OUT, ///<跨节点转出 融券卖出资金 从本XTP节点1，转出到对端XTP节点2，XTP服务器之间划拨
+    XTP_FUND_INTER_TRANSFER_REPAY_IN, ///<跨节点转入 融券卖出资金 从对端XTP节点2，转入到本XTP节点1，XTP服务器之间划拨
+    XTP_FUND_INTER_TRANSFER_CONTRACT_OUT, ///<跨节点转出 授信额度 从本XTP节点1，转出到对端XTP节点2，XTP服务器之间划拨
+    XTP_FUND_INTER_TRANSFER_CONTRACT_IN, ///<跨节点转入 授信额度 从对端XTP节点2，转入到本XTP节点1，XTP服务器之间划拨
     XTP_FUND_TRANSFER_UNKNOWN		///<未知类型
 }XTP_FUND_TRANSFER_TYPE;
 
@@ -344,6 +352,8 @@ typedef enum XTP_FUND_QUERY_TYPE
 {
 	XTP_FUND_QUERY_JZ = 0,		///<查询金证主柜台可转资金
 	XTP_FUND_QUERY_INTERNAL,	///<查询一账号两中心设置时，对方节点的资金
+	XTP_FUND_QUERY_INTERNAL_REPAY,	///<查询一账号两中心设置时，对方节点的融券卖余额资金 
+	XTP_FUND_QUERY_INTERNAL_CONTRACT, ///<查询一账号两中心设置时，对方节点的授信额度
 	XTP_FUND_QUERY_UNKNOWN		///<未知类型
 }XTP_FUND_QUERY_TYPE;
 
@@ -594,7 +604,7 @@ typedef enum XTP_SECURITY_TYPE {
 	XTP_SECURITY_ETF_SINGLE_MARKET_STOCK = 14,
 	/// 跨市场股票 ETF
 	XTP_SECURITY_ETF_INTER_MARKET_STOCK,
-	// 跨境股票 ETF
+	/// 跨境股票 ETF
 	XTP_SECURITY_ETF_CROSS_BORDER_STOCK = 16,
 	/// 本市场实物债券 ETF
 	XTP_SECURITY_ETF_SINGLE_MARKET_BOND = 17,
@@ -644,6 +654,81 @@ typedef enum  XTP_SECURITY_STATUS
 	XTP_SECURITY_STATUS_DELISTING = 10, ///< 退市整理期
 	XTP_SECURITY_STATUS_OTHERS = 255    ///< 其他
 }XTP_SECURITY_STATUS;
+
+/////////////////////////////////////////////////////////////////////////
+///@brief XTP_TRADE_STATUS是一个交易状态枚举类型
+/////////////////////////////////////////////////////////////////////////
+typedef enum XTP_TRADE_STATUS 
+{
+	XTP_TRADE_STATUS_UNKNOW = 0, 		///< 未知状态
+	XTP_TRADE_STATUS_N,					///< 正常状态
+	XTP_TRADE_STATUS_Y,					///< 首日挂牌
+	XTP_TRADE_STATUS_D,					///< 新增股票挂牌交易 
+	XTP_TRADE_STATUS_I,					///< 询价
+	XTP_TRADE_STATUS_F,					///< 申购
+}XTP_TRADE_STATUS;
+
+/////////////////////////////////////////////////////////////////////////
+///@brief XTP_SECURITY_LEVEL是一个证券级别枚举类型
+/////////////////////////////////////////////////////////////////////////
+typedef enum XTP_SECURITY_LEVEL
+{
+	XTP_SECURITY_LEVEL_UNKNOW = 0, 		///< 未知类型
+	XTP_SECURITY_LEVEL_T,				///< 挂牌公司股票
+	XTP_SECURITY_LEVEL_B,				///< 两网公司及退市股票
+	XTP_SECURITY_LEVEL_O,				///< 仅提供行权功能的期权
+	XTP_SECURITY_LEVEL_P,				///< 持有人数存在200人限制的证券
+	XTP_SECURITY_LEVEL_R,				///< 其他类型的业务
+	XTP_SECURITY_LEVEL_F,				///< 发行业务
+}XTP_SECURITY_LEVEL;
+
+/////////////////////////////////////////////////////////////////////////
+///@brief XTP_TRADE_TYPE是一个交易类型枚举类型
+/////////////////////////////////////////////////////////////////////////
+typedef enum XTP_TRADE_TYPE 
+{
+	XTP_TRADE_TYPE_UNKNOW = 0,			///< 未知类型
+	XTP_TRADE_TYPE_T,					///< 协议交易方式
+	XTP_TRADE_TYPE_M,					///< 做市交易方式
+	XTP_TRADE_TYPE_B,					///< 集合竞价+连续交易方式
+	XTP_TRADE_TYPE_C,					///< 集合竞价交易方式
+	XTP_TRADE_TYPE_P,					///< 发行方式
+	XTP_TRADE_TYPE_O,					///< 其他类型
+}XTP_TRADE_TYPE;
+
+/////////////////////////////////////////////////////////////////////////
+///@brief XTP_SUSPEND_FLAG是一个停牌标志枚举类型
+/////////////////////////////////////////////////////////////////////////
+typedef enum XTP_SUSPEND_FLAG 
+{
+	XTP_SUSPEND_FLAG_UNKNOW = 0,		///< 未知状态
+	XTP_SUSPEND_FLAG_F,					///< 正常交易
+	XTP_SUSPEND_FLAG_T,					///< 停牌，不接受申报
+	XTP_SUSPEND_FLAG_H,					///< 停牌，接受申报
+}XTP_SUSPEND_FLAG;
+
+/////////////////////////////////////////////////////////////////////////
+///@brief XTP_EX_DIVIDEND_FLAG是一个除权除息标志枚举类型
+/////////////////////////////////////////////////////////////////////////
+typedef enum XTP_EX_DIVIDEND_FLAG
+{
+	XTP_EX_DIVIDEND_FLAG_UNKNOW = 0,	///< 未知状态
+	XTP_EX_DIVIDEND_FLAG_N,				///< 正常状态
+	XTP_EX_DIVIDEND_FLAG_E,				///< 除权
+	XTP_EX_DIVIDEND_FLAG_D,				///< 除息
+	XTP_EX_DIVIDEND_FLAG_A,				///< 除权除息
+}XTP_EX_DIVIDEND_FLAG;
+
+/////////////////////////////////////////////////////////////////////////
+///@brief XTP_POSITION_SECURITY_TYPE是一个股转代码分层类型枚举类型
+/////////////////////////////////////////////////////////////////////////
+typedef enum XTP_SECURITY_LAYER_TYPE 
+{
+	XTP_SECURITY_LAYER_BASIC = 0,		///< 基础层
+	XTP_SECURITY_LAYER_INNOVATIVE = 1,	///< 创新层
+	XTP_SECURITY_LAYER_NORTH_EX = 2,	///< 北交所
+	XTP_SECURITY_LAYER_OTHER = 8,		///< 其他
+}XTP_SECURITY_LAYERING_TYPE;
 
 #pragma pack()
 

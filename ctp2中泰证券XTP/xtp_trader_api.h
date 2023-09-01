@@ -225,6 +225,15 @@ namespace XTP {
 			///@remark 需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
 			virtual void OnQueryIPOQuotaInfo(XTPQueryIPOQuotaRsp *quota_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) {};
 
+			///请求查询用户可转债转股信息的响应，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
+			///@param swap_stock_info 查询到某条可转债转股信息
+			///@param error_info 查查询可转债转股信息发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
+			///@param request_id 此消息响应函数对应的请求ID
+			///@param is_last 此消息响应函数是否为request_id这条请求所对应的最后一个响应，当为最后一个的时候为true，如果为false，表示还有其他后续消息响应
+			///@param session_id 资金账户对应的session_id，登录时得到
+			///@remark 需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
+			virtual void OnQueryBondSwapStockInfo(XTPQueryBondSwapStockRsp *swap_stock_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) {};
+
 			///请求查询期权合约的响应，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
 			///@param option_info 查询到的期权合约情况
 			///@param error_info 查询期权合约发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
@@ -507,6 +516,31 @@ namespace XTP {
 			///@param session_id 资金账户对应的session_id，登录时得到
 			///@remark 需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
 			virtual void OnStrategySymbolStateReport(XTPStrategySymbolStateReport* strategy_symbol_state, uint64_t session_id) {};
+
+			///algo业务中报送母单创建时的推送消息(包括其他客户端创建的母单)
+			///@param strategy_info 策略具体信息
+			///@param strategy_param 此策略中包含的参数
+			///@param session_id 资金账户对应的session_id，登录时得到
+			///@remark 需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
+			virtual void OnNewStrategyCreateReport(XTPStrategyInfoStruct* strategy_info, char* strategy_param, uint64_t session_id) {};
+
+			///algo业务中算法推荐的响应
+			///@param basket_flag 是否将满足条件的推荐结果打包成母单篮的标志，与请求一致，如果此参数为true，那么请以返回的strategy_param为准
+			///@param recommendation_info 推荐算法的具体信息，当basket_flag=true时，此结构体中的market和ticker将没有意义，此时请以strategy_param为准
+			///@param strategy_param 算法参数，可直接用来创建母单，如果error_info.error_id为0时，有意义
+			///@param error_info 请求推荐算法发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
+			///@param request_id 此消息响应函数对应的请求ID
+			///@param is_last 此消息响应函数是否为request_id这条请求所对应的最后一个响应，当为最后一个的时候为true，如果为false，表示还有其他后续消息响应
+			///@param session_id 资金账户对应的session_id，登录时得到
+			///@remark 需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
+			virtual void OnStrategyRecommendation(bool basket_flag, XTPStrategyRecommendationInfo* recommendation_info, char* strategy_param, XTPRI *error_info, int32_t request_id, bool is_last, uint64_t session_id) {};
+
+			///algo业务中修改已有策略单的响应
+			///@param strategy_info 用户修改后策略单的具体信息
+			///@param error_info 修改策略单发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
+			///@param session_id 资金账户对应的session_id，登录时得到
+			///@remark 需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
+			virtual void OnModifyAlgoOrder(XTPStrategyInfoStruct* strategy_info, XTPRI *error_info, uint64_t session_id) {};
 		};
 	}
 }
@@ -812,6 +846,13 @@ namespace XTP {
 			///@param request_id 用于用户定位查询响应的ID，由用户自定义
 			virtual int QueryIPOQuotaInfo(uint64_t session_id, int request_id) = 0;
 
+			///请求查询可转债转股的基本信息
+			///@return 查询是否发送成功，“0”表示发送成功，非“0”表示发送出错，此时用户可以调用GetApiLastError()来获取错误代码
+			///@param query_param 需要查询的可转债转股信息的筛选条件，可以为NULL（为NULL表示查询所有的可转债转股信息），此参数中合约代码可以为空字符串，如果为空字符串，则查询所有可转债转股信息，如果不为空字符串，请不带空格，并以'\0'结尾，且必须与market匹配
+			///@param session_id 资金账户对应的session_id,登录时得到
+			///@param request_id 用于用户定位查询响应的ID，由用户自定义
+			virtual int QueryBondSwapStockInfo(XTPQueryBondSwapStockReq *query_param, uint64_t session_id, int request_id) = 0;
+
 			///请求查询期权合约
 			///@return 查询是否成功，“0”表示成功，非“0”表示出错，此时用户可以调用GetApiLastError()来获取错误代码
 			///@param query_param 需要查询的期权合约的筛选条件，可以为NULL（为NULL表示查询所有的期权合约）
@@ -1081,7 +1122,7 @@ namespace XTP {
 			///@param client_strategy_id 用户自定义id，帮助用户定位
 			///@param strategy_param 策略参数
 			///@param session_id 资金账户对应的session_id,登录时得到
-			///@remark 仅能在用户建立算法通道后使用，算法单的异步通知得
+			///@remark 仅能在用户建立算法通道后使用，算法单的异步通知
 			virtual int InsertAlgoOrder(uint32_t strategy_type, uint64_t client_strategy_id, char* strategy_param, uint64_t session_id) = 0;
 
 			///algo业务中用户撤销算法单请求
@@ -1098,6 +1139,23 @@ namespace XTP {
 			///@param order_client_id 算法单对应的自定义ID，不可随意填写
 			///@remark 返回为0表示，不是算法单，如果传入的参数不对的话，可能会得不到正确结果，此函数调用不依赖于是否登录
 			virtual uint64_t GetAlgorithmIDByOrder(uint64_t order_xtp_id, uint32_t order_client_id) = 0;
+
+			///algo业务中请求推荐算法
+			///@return 请求发送是否成功，“0”表示成功，非“0”表示出错，此时用户可以调用GetApiLastError()来获取错误代码
+			///@param basket_flag 是否将满足条件的推荐结果打包成母单篮的标志，true-打包
+			///@param basket_param 需要算法推荐的证券列表，为json字串，具体格式参考说明文档或咨询运营人员
+			///@param session_id 资金账户对应的session_id,登录时得到
+			///@param request_id 用于用户定位查询响应的ID，由用户自定义
+			///@remark 此条请求可能对应多条回应消息，此功能上线时间视服务器后台支持情况而定，具体以运营通知时间为准
+			virtual int StrategyRecommendation(bool basket_flag, char* basket_param, uint64_t session_id, int32_t request_id) = 0;
+
+			///algo业务中修改已有的算法单
+			///@return 算法单修改请求发送是否成功，“0”表示成功，非“0”表示出错，此时用户可以调用GetApiLastError()来获取错误代码
+			///@param xtp_strategy_id xtp算法单策略ID
+			///@param strategy_param 修改后的策略参数
+			///@param session_id 资金账户对应的session_id,登录时得到
+			///@remark 仅能在用户建立算法通道后使用，此功能上线时间视服务器后台支持情况而定，具体以运营通知时间为准
+			virtual int ModifyAlgoOrder(uint64_t xtp_strategy_id, char* strategy_param, uint64_t session_id) = 0;
 
 		protected:
 			~TraderApi() {};
