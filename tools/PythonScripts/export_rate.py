@@ -327,7 +327,8 @@ class Export(object):
                 while True:
                     ret = self._spi.api.ReqQryInstrumentCommissionRate(req, 0)
                     if ret == 0:
-                        time.sleep(0.2)
+                        # 由于不同柜台的请求频率限制不同，按需自定义请求间的睡眠时间
+                        time.sleep(0.5)
                         break
                     time.sleep(0.1)
                     print("sleep 0.1")
@@ -345,7 +346,8 @@ class Export(object):
             while True:
                 ret = self._spi.api.ReqQryInstrumentMarginRate(req, 0)
                 if ret == 0:
-                    time.sleep(0.2)
+                    # 由于不同柜台的请求频率限制不同，按需自定义请求间的睡眠时间
+                    time.sleep(0.5)
                     break
                 time.sleep(0.1)
                 print("sleep 0.1")
