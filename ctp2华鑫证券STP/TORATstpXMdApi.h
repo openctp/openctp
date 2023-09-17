@@ -67,10 +67,10 @@ namespace TORALEV1API
 		///退订特定行情应答
 		virtual void OnRspUnSubSpecialMarketData(CTORATstpSpecificSecurityField *pSpecificSecurityField, CTORATstpRspInfoField *pRspInfoField) {};
 
-		///订阅简易行情应答
+		///订阅简易行情应答（仅TCP模式下可用）
 		virtual void OnRspSubSimplifyMarketData(CTORATstpSpecificSecurityField *pSpecificSecurityField, CTORATstpRspInfoField *pRspInfoField) {};
 
-		///退订简易行情应答
+		///退订简易行情应答（仅TCP模式下可用）
 		virtual void OnRspUnSubSimplifyMarketData(CTORATstpSpecificSecurityField *pSpecificSecurityField, CTORATstpRspInfoField *pRspInfoField) {};
 
 		///订阅合约状态应答
@@ -91,13 +91,13 @@ namespace TORALEV1API
 		///退订国际市场互联状态应答
 		virtual void OnRspUnSubImcParams(CTORATstpSpecificMarketField *pSpecificMarketField, CTORATstpRspInfoField *pRspInfoField) {};
 
-		///查询行情快照应答
+		///查询行情快照应答（仅TCP模式下可用）
 		virtual void OnRspInquiryMarketDataMirror(CTORATstpMarketDataField *pMarketDataField, CTORATstpRspInfoField *pRspInfoField, int nRequestID, bool bIsLast) {};
 
-		///查询盘后行情快照应答
+		///查询盘后行情快照应答（仅TCP模式下可用）
 		virtual void OnRspInquiryPHMarketDataMirror(CTORATstpPHMarketDataField *pPHMarketDataField, CTORATstpRspInfoField *pRspInfoField, int nRequestID, bool bIsLast) {};
 
-		///查询特定行情快照应答
+		///查询特定行情快照应答（仅TCP模式下可用）
 		virtual void OnRspInquirySpecialMarketDataMirror(CTORATstpSpecialMarketDataField *pMarketDataField, CTORATstpRspInfoField *pRspInfoField, int nRequestID, bool bIsLast) {};
 
 		///订阅期权行情应答
@@ -106,10 +106,10 @@ namespace TORALEV1API
 		///退订期权行情应答
 		virtual void OnRspUnSubSPMarketData(CTORATstpSpecificSecurityField *pSpecificSecurityField, CTORATstpRspInfoField *pRspInfoField) {};
 
-		///订阅期权简易行情应答
+		///订阅期权简易行情应答（仅TCP模式下可用）
 		virtual void OnRspSubSPSimplifyMarketData(CTORATstpSpecificSecurityField *pSpecificSecurityField, CTORATstpRspInfoField *pRspInfoField) {};
 
-		///退订期权简易行情应答
+		///退订期权简易行情应答（仅TCP模式下可用）
 		virtual void OnRspUnSubSPSimplifyMarketData(CTORATstpSpecificSecurityField *pSpecificSecurityField, CTORATstpRspInfoField *pRspInfoField) {};
 
 		///订阅期权合约状态应答
@@ -124,7 +124,7 @@ namespace TORALEV1API
 		///退订期权市场状态应答
 		virtual void OnRspUnSubSPMarketStatus(CTORATstpSpecificMarketField *pSpecificMarketField, CTORATstpRspInfoField *pRspInfoField) {};
 
-		///查询期权行情快照应答
+		///查询期权行情快照应答（仅TCP模式下可用）
 		virtual void OnRspInquirySPMarketDataMirror(CTORATstpMarketDataField *pMarketDataField, CTORATstpRspInfoField *pRspInfoField, int nRequestID, bool bIsLast) {};
 
 		///行情通知
@@ -136,7 +136,7 @@ namespace TORALEV1API
 		///特定行情通知
 		virtual void OnRtnSpecialMarketData(CTORATstpSpecialMarketDataField *pSpecialMarketDataField) {};
 
-		///简易行情通知
+		///简易行情通知（仅TCP模式下可用）
 		virtual void OnRtnSimplifyMarketData(CTORATstpSimplifyMarketDataField *pSimplifyMarketDataField) {};
 
 		///合约状态
@@ -151,7 +151,7 @@ namespace TORALEV1API
 		///期权行情通知
 		virtual void OnRtnSPMarketData(CTORATstpMarketDataField *pMarketDataField) {};
 
-		///期权简易行情通知
+		///期权简易行情通知（仅TCP模式下可用）
 		virtual void OnRtnSPSimplifyMarketData(CTORATstpSimplifyMarketDataField *pSimplifyMarketDataField) {};
 
 		///期权合约状态通知
@@ -161,23 +161,14 @@ namespace TORALEV1API
 		virtual void OnRtnSPMarketStatus(CTORATstpMarketStatusField *pMarketStatusField) {};
 
 
-		///订阅合成快照应答(衍生服务)
+		///订阅合成快照应答（衍生服务）
 		virtual void OnRspSubRapidMarketData(CTORATstpSpecificSecurityField *pSpecificSecurityField, CTORATstpRspInfoField *pRspInfoField) {};
 
-		///退订合成快照应答(衍生服务)
+		///退订合成快照应答（衍生服务）
 		virtual void OnRspUnSubRapidMarketData(CTORATstpSpecificSecurityField *pSpecificSecurityField, CTORATstpRspInfoField *pRspInfoField) {};
 
-		///合成快照通知(衍生服务)
+		///合成快照通知（衍生服务）
 		virtual void OnRtnRapidMarketData(CTORATstpRapidMarketDataField *pRapidMarketDataField) {};
-
-		///订阅资金流向行情应答(衍生服务)
-		virtual void OnRspSubFundsFlowMarketData(CTORATstpSpecificSecurityField *pSpecificSecurityField, CTORATstpRspInfoField *pRspInfoField) {};
-
-		///退订资金流向行情应答(衍生服务)
-		virtual void OnRspUnSubFundsFlowMarketData(CTORATstpSpecificSecurityField *pSpecificSecurityField, CTORATstpRspInfoField *pRspInfoField) {};
-
-		///资金流向行情通知(衍生服务)
-		virtual void OnRtnFundsFlowMarketData(CTORATstpFundsFlowMarketDataField *pFundsFlowMarketDataField) {};
 	};
 
 	class XMD_API_DLL_EXPORT CTORATstpXMdApi
@@ -197,9 +188,13 @@ namespace TORALEV1API
 		///@remark 不再使用本接口对象时,调用该函数删除接口对象
 		virtual void Release() = 0;
 
-		///初始化
-		///@remark 初始化运行环境,只有调用后,接口才开始工作
-		virtual void Init() = 0;
+		///初始化运行环境
+		///@param cpuCores：API内部线程绑核参数，仅在组播订阅模式下有效。
+		///@remark 默认不绑核运行，支持最多绑3个核，优先级依次为：回调线程、合成快照网络I/O线程、普通行情网络I/O线程。
+		///@remark 例如"0"表示API回调线程绑定到第0核上运行，"0,5,17"表示上述3个线程依次绑定在第0核、第5核、第17核上运行。
+		///@remark 对于大部分不需要同时使用普通行情和合成快照的用户来说，如有绑核的必要，则2个核即可满足需求。如：
+		///@remark "0,5"表示API回调线程、合成快照网络I/O线程分别绑定到第0核、第5核上运行，如未注册衍生服务则第5核绑定普通行情网络I/O线程。				
+		virtual void Init(const char * cpuCores = "") = 0;
 
 		///等待接口线程结束运行
 		///@return 线程退出代码
@@ -272,10 +267,10 @@ namespace TORALEV1API
 		///退订特定行情
 		virtual int UnSubscribeSpecialMarketData(char **ppSecurityID, int nCount, TTORATstpExchangeIDType ExchangeID) = 0;
 
-		///订阅简易行情
+		///订阅简易行情（仅TCP模式下可用）
 		virtual int SubscribeSimplifyMarketData(char **ppSecurityID, int nCount, TTORATstpExchangeIDType ExchangeID) = 0;
 
-		///退订简易行情
+		///退订简易行情（仅TCP模式下可用）
 		virtual int UnSubscribeSimplifyMarketData(char **ppSecurityID, int nCount, TTORATstpExchangeIDType ExchangeID) = 0;
 
 		///订阅合约状态
@@ -296,13 +291,13 @@ namespace TORALEV1API
 		///退订国际市场互联状态
 		virtual int UnSubscribeImcParams(TTORATstpMarketIDType MarketID) = 0;
 
-		///查询行情快照
+		///查询行情快照（仅TCP模式下可用）
 		virtual int ReqInquiryMarketDataMirror(CTORATstpInquiryMarketDataField *pInquiryMarketDataField, int nRequestID) = 0;
 
-		///查询盘后行情快照
+		///查询盘后行情快照（仅TCP模式下可用）
 		virtual int ReqInquiryPHMarketDataMirror(CTORATstpInquiryMarketDataField *pInquiryMarketDataField, int nRequestID) = 0;
 
-		///查询特定行情快照
+		///查询特定行情快照（仅TCP模式下可用）
 		virtual int ReqInquirySpecialMarketDataMirror(CTORATstpInquirySpecialMarketDataField *pInquirySpecialMarketDataField, int nRequestID) = 0;
 
 		///订阅期权行情
@@ -311,10 +306,10 @@ namespace TORALEV1API
 		///退订期权行情
 		virtual int UnSubscribeSPMarketData(char **ppSecurityID, int nCount, TTORATstpExchangeIDType ExchangeID) = 0;
 
-		///订阅期权简易行情
+		///订阅期权简易行情（仅TCP模式下可用）
 		virtual int SubscribeSPSimplifyMarketData(char **ppSecurityID, int nCount, TTORATstpExchangeIDType ExchangeID) = 0;
 
-		///退订期权简易行情
+		///退订期权简易行情（仅TCP模式下可用）
 		virtual int UnSubscribeSPSimplifyMarketData(char **ppSecurityID, int nCount, TTORATstpExchangeIDType ExchangeID) = 0;
 
 		///订阅期权合约状态
@@ -329,21 +324,15 @@ namespace TORALEV1API
 		///退订期权市场状态
 		virtual int UnSubscribeSPMarketStatus(TTORATstpMarketIDType MarketID) = 0;
 
-		///查询期权行情快照
+		///查询期权行情快照（仅TCP模式下可用）
 		virtual int ReqInquirySPMarketDataMirror(CTORATstpInquiryMarketDataField *pInquiryMarketDataField, int nRequestID) = 0;
 
 
-		///订阅合成快照(衍生服务)
+		///订阅合成快照（衍生服务）
 		virtual int SubscribeRapidMarketData(char **ppSecurityID, int nCount, TTORATstpExchangeIDType ExchangeID) = 0;
 
-		///退订合成快照(衍生服务)
+		///退订合成快照（衍生服务）
 		virtual int UnSubscribeRapidMarketData(char **ppSecurityID, int nCount, TTORATstpExchangeIDType ExchangeID) = 0;
-
-		///订阅资金流向行情(衍生服务)
-		virtual int SubscribeFundsFlowMarketData(char **ppSecurityID, int nCount, TTORATstpExchangeIDType ExchangeID) = 0;
-
-		///退订资金流向行情(衍生服务)
-		virtual int UnSubscribeFundsFlowMarketData(char **ppSecurityID, int nCount, TTORATstpExchangeIDType ExchangeID) = 0;
 
 	protected:
 		~CTORATstpXMdApi(){};

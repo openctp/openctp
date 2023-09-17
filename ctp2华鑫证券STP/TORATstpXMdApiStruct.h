@@ -208,7 +208,7 @@ namespace TORALEV1API
 		///成交笔数
 		TTORATstpLongVolumeType	TradingCount;
 	
-		///最新价
+		///最新价（港股为按盘价）
 		TTORATstpPriceType	LastPrice;
 	
 		///最高价
@@ -223,10 +223,10 @@ namespace TORALEV1API
 		///卖1价
 		TTORATstpPriceType	AskPrice1;
 	
-		///涨停价
+		///涨停价（港股为冷静期或集合竞价的价格上限）
 		TTORATstpPriceType	UpperLimitPrice;
 	
-		///跌停价
+		///跌停价（港股为冷静期或集合竞价的价格下限）
 		TTORATstpPriceType	LowerLimitPrice;
 	
 		///市盈率1
@@ -571,7 +571,7 @@ namespace TORALEV1API
 		TTORATstpBoolType	AmountStatus;
 	};
 	
-	/// 极速行情快照
+	/// 合成快照
 	struct CTORATstpRapidMarketDataField
 	{
 		///证券代码
@@ -807,94 +807,6 @@ namespace TORALEV1API
 	
 		///申卖剩余笔数十
 		TTORATstpVolumeType	AskCount10;
-	};
-	
-	/// 资金流向数据行情
-	struct CTORATstpFundsFlowMarketDataField
-	{
-		///交易所代码
-		TTORATstpExchangeIDType	ExchangeID;
-	
-		///证券代码
-		TTORATstpSecurityIDType	SecurityID;
-	
-		///最后修改时间
-		TTORATstpTimeType	UpdateTime;
-	
-		///最后修改毫秒
-		TTORATstpMillisecType	UpdateMillisec;
-	
-		///散户买入金额
-		TTORATstpMoneyType	RetailBuyTurnover;
-	
-		///散户买入数量
-		TTORATstpLongVolumeType	RetailBuyVolume;
-	
-		///散户买入笔数
-		TTORATstpLongVolumeType	RetailBuyAmount;
-	
-		///散户卖出金额
-		TTORATstpMoneyType	RetailSellTurnover;
-	
-		///散户卖出数量
-		TTORATstpLongVolumeType	RetailSellVolume;
-	
-		///散户卖出笔数
-		TTORATstpLongVolumeType	RetailSellAmount;
-	
-		///中户买入金额
-		TTORATstpMoneyType	MiddleBuyTurnover;
-	
-		///中户买入数量
-		TTORATstpLongVolumeType	MiddleBuyVolume;
-	
-		///中户买入笔数
-		TTORATstpLongVolumeType	MiddleBuyAmount;
-	
-		///中户卖出金额
-		TTORATstpMoneyType	MiddleSellTurnover;
-	
-		///中户卖出数量
-		TTORATstpLongVolumeType	MiddleSellVolume;
-	
-		///中户卖出笔数
-		TTORATstpLongVolumeType	MiddleSellAmount;
-	
-		///大户买入金额
-		TTORATstpMoneyType	LargeBuyTurnover;
-	
-		///大户买入数量
-		TTORATstpLongVolumeType	LargeBuyVolume;
-	
-		///大户买入笔数
-		TTORATstpLongVolumeType	LargeBuyAmount;
-	
-		///大户卖出金额
-		TTORATstpMoneyType	LargeSellTurnover;
-	
-		///大户卖出数量
-		TTORATstpLongVolumeType	LargeSellVolume;
-	
-		///大户卖出笔数
-		TTORATstpLongVolumeType	LargeSellAmount;
-	
-		///机构买入金额
-		TTORATstpMoneyType	InstitutionBuyTurnover;
-	
-		///机构买入数量
-		TTORATstpLongVolumeType	InstitutionBuyVolume;
-	
-		///机构买入笔数
-		TTORATstpLongVolumeType	InstitutionBuyAmount;
-	
-		///机构卖出金额
-		TTORATstpMoneyType	InstitutionSellTurnover;
-	
-		///机构卖出数量
-		TTORATstpLongVolumeType	InstitutionSellVolume;
-	
-		///机构卖出笔数
-		TTORATstpLongVolumeType	InstitutionSellAmount;
 	};
 	
 	/// fens用户信息
