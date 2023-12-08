@@ -75,24 +75,24 @@ openctp的支撑系统TTS（Tick Trading System）采用与CTP柜台同样的设
 - [openctp支撑系统（TTS）架构](https://zhuanlan.zhihu.com/p/367326886)
 - [期货交易系统架构演变](https://zhuanlan.zhihu.com/p/360872258)
 - [内存数据库交易系统架构第一篇--概览篇](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247483745&idx=1&sn=555d1c26d66f5888f9f043f15335929c&chksm=c36bdac8f41c53de648bb55ae139d6f205827937872a74d6781e55162a7aaae3a1a6ad5acd2c&token=1790747698&lang=zh_CN#rd)
-- [openctp开放文档](https://openctp.yuque.com/yd1gio/myxue7)
+- [csdn技术文章](https://blog.csdn.net/krenx1983)
 
 ### 撮合方式（同时支持做市与撮合）：
 - 撮合：完全由用户之间撮合，按价格优先、时间优先撮合成交。撮合模式的合约只有三个，合约代码分别为TEST、BTC、MINUS，其它合约均为做市模式。
 - 做市：Simnow用的就是做市模式，以实盘行情盘口做市成交，即高于叫卖价的多单立即成交，低于叫买价的空单立即成交，否则挂在队列中等行情符合条件的时候成交。
 
 ### 部分成交、部分撤消：
-- 模拟撮合在做市处理时对成交数量作了一定的随机处理，可能一次全部成交，可能部分成交并且间隔1秒左右再次撮合，再次撮合的时候如果果盘口不符合成交条件则不会成交。
+- 仿真环境的做市模式不会部分成交，要测试部分成交可在7x24环境交易TEST、BTC、MINUS这三个合约。
 
-### **开放平台7x24环境（不间断轮播某天行情）：**
+### **openctp-7x24环境（不间断轮播某天行情）：**
 - 交易前置 - tcp://121.37.80.177:20002
 - 行情前置 - tcp://121.37.80.177:20004
 
-### **开放平台仿真环境（交易时段与实盘一致）：**
+### **openctp-仿真环境（交易时段与实盘一致）：**
 - 交易前置 - tcp://121.37.90.193:20002
 - 行情前置 - 无（订阅行情需要直连相应行情通道）
 
-### **开放平台VIP仿真环境（需要付费申请，提供更快的速度、更全的品种，具体[点这里](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484339&idx=1&sn=3c56cb0b201d3635a67f40b78dd7ae98&chksm=c36bd81af41c510c8d8e2ab43396a2de2fc73432f23b3cdff46debb85ec1170856903717a23b&token=1217034697&lang=zh_CN#rd)）：**
+### **openctp-VIP仿真环境（需要付费申请，提供更快的速度、更全的品种，具体[点这里](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484339&idx=1&sn=3c56cb0b201d3635a67f40b78dd7ae98&chksm=c36bd81af41c510c8d8e2ab43396a2de2fc73432f23b3cdff46debb85ec1170856903717a23b&token=1217034697&lang=zh_CN#rd)）：**
 - 交易前置 - tcp://42.192.226.242:20002
 - 行情前置 - 无（订阅行情需要直连相应行情通道）
 
@@ -136,9 +136,6 @@ openctp除免费仿真环境外，还提供了vip仿真环境，具有更高的�
 - [ctpbee（一个轻量级Python量化交易框架，支持CTP柜台。）](https://github.com/ctpbee/ctpbee)
 <img src="https://github.com/openctp/openctp/assets/83346523/c0448edf-a1fe-4e7a-92c9-5a7652f83f94" alt="WonderTrader" width="700" height="400" />
 
-- [期魔方（专业的期货量化投研平台，支持策略交易与回测，支持CTP柜台。）](https://www.qmfquant.com/#/)
-<img src="https://github.com/openctp/openctp/assets/83346523/a82fbb4e-150f-4b9d-bb4e-c6715cc33483" alt="期魔方" width="700" height="400" />
-
 ### **通过自己替换dll可接入TTS通道（CTP开放平台）的产品：**
 - [快期V3（CTP期货交易客户端）](https://zhuanlan.zhihu.com/p/376482285)
 <img src="https://user-images.githubusercontent.com/83346523/138928402-f7e12a28-50d3-457b-9c0a-32b356448913.png" alt="快期V3" width="700" height="400" />
@@ -154,9 +151,9 @@ openctp除免费仿真环境外，还提供了vip仿真环境，具有更高的�
 
 ### **特别说明：**
 
-AuthCode、AppID认证信息任意填，不作校验
+AuthCode、AppID不需要填，不作校验
 
-Broker任意填，填什么就回什么
+BrokerID也不需要填
 
 ### **咨询服务：**
 为零散问题解答服务，如果你在CTP技术群、编程语言群等等地方问问题没人理你，你可以来咨询我们，这项服务我们是以团队的形式对外进行服务，由各项技术的大厂专家组成，对技术都有丰富的经验和极高的追求，现推广阶段咨询费也很便宜，报名请在openctp公众号回复“咨询”两个字。请注意，咨询不是培训，如果你需要的是系统性的学习，请报相应的培训课程，咨询也不会帮忙写代码，也不保证能回答你的任何问题，非诚勿扰。
@@ -165,7 +162,7 @@ Broker任意填，填什么就回什么
 ### **招聘服务：**
 需要C/C++、Python、Java、量化交易、互联网、智能汽车等方面的人才或职位请在openctp公众号回复“工作”两个字。
 ### **活动：**
-openctp每个月至少会有一次粉丝线下活动，可以是吃饭、喝茶、徒步等等，想参加的请在openctp公众号回复“活动”两个字。
+参与openctp粉丝线下活动，可以是吃饭、喝茶、徒步等等，想参加的请在openctp公众号回复“活动”两个字。
 
 ### openctp公开课：
 - [C语言0基础](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484592&idx=1&sn=7b0caf96f497461a45f5940dfa6c5361&chksm=c36bdf19f41c560f8a9ebcf7b7031820414d997a7c151e520c006423cf6f9c6f6d890adcda7b&token=798261616&lang=zh_CN#rd)：以生动有趣的方式讲C语言基础性编程技术，重在兴趣培养和信心建立。
