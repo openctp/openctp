@@ -25,7 +25,7 @@
 - ctpapi-java：CTPAPI的Java接口。
 - ctpapi-go：CTPAPI的Go接口。
 - ctpapi-c：CTPAPI的C语言接口。
-- ctpapi-rust：CTPAPI的RUST语言接口。
+- ctpapi-rust：CTPAPI的Rust语言接口。
 - widgets：图形界面小应用。
 
 ### 各套环境运行状态监控：
