@@ -5,23 +5,18 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "emt_quote_api.h"
+#include "TORATstpXMdApi.h"
 #include "ThostFtdcMdApi.h"
-#include <boost/asio.hpp>
-#include <boost/bind.hpp>
-#include <thread>
 
-using namespace EMT::API;
+using namespace TORALEV1API;
 
 ///API接口实现
-class CFtdcMdApiImpl : public CThostFtdcMdApi, public QuoteSpi
+class CFtdcMdApiImpl : public CThostFtdcMdApi, public CTORATstpXMdSpi
 {
 public:	
 	///构造函数
-	CFtdcMdApiImpl(const char* pszFlowPath);
+	CFtdcMdApiImpl();
 
-	void OnTime(const boost::system::error_code& err);
-		
 	///获取API的版本信息
 	///@retrun 获取到的版本号
 	//const char *GetApiVersion(){return 0;};
@@ -62,11 +57,9 @@ public:
 
 	///用户登录请求
 	virtual int ReqUserLogin(CThostFtdcReqUserLoginField *pReqUserLogin, int nRequestID);
-	virtual void HandleReqUserLogin(CThostFtdcReqUserLoginField& ReqUserLogin, int nRequestID);
 
 	///用户退出请求
 	virtual int ReqUserLogout(CThostFtdcUserLogoutField *pUserLogout, int nRequestID);
-	virtual void HandleReqUserLogout(CThostFtdcUserLogoutField& UserLogout, int nRequestID);
 
 	///订阅行情。
 	///@param ppInstrumentID 合约ID  
@@ -79,6 +72,7 @@ public:
 	///@param nCount 要订阅/退订行情的合约个数
 	///@remark 
 	virtual int UnSubscribeMarketData(char* ppInstrumentID[], int nCount);
+
 
 	///注册名字服务器用户信息
 	///@param pFensUserInfo：用户信息。
@@ -96,33 +90,51 @@ public:
 	///@remark 
 	virtual int UnSubscribeForQuoteRsp(char* ppInstrumentID[], int nCount) { return -3; }
 
-#if defined(V6_3_19) || defined(V6_5_1) || defined(V6_6_1_P1)
+#if defined(V6_3_19) || defined(V6_5_1) || defined(V6_6_1_P1) || defined(V6_6_7)
 	///请求查询组播合约
 	virtual int ReqQryMulticastInstrument(CThostFtdcQryMulticastInstrumentField *pQryMulticastInstrument, int nRequestID) { return -3; }
 #endif
 
-	virtual void OnDisconnected(int reason);
+private:
+	//连接建立通知
+	/* 说明：
+		1. 此连接为系统连接，即便没有任何用户登录，该连接依然会维持在线状态
+	*/
+	virtual void OnFrontConnected();
+
+	//连接断开通知，用户无需处理，API会自动重连
+	/* 说明：
+		1. 连接断开后，所有在此连接上登录的用户均处于离线状态，重新连接后均需要重新发送登录请求
+	*/
+	virtual void OnFrontDisconnected(int nReason);
+
+	/*登录应答*/
+	virtual void OnRspUserLogin(CTORATstpRspUserLoginField* pRspUserLoginField, CTORATstpRspInfoField* pRspInfoField, int nRequestID);
+
+	/*登出应答*/
+	virtual void OnRspUserLogout(CTORATstpUserLogoutField* pUserLogoutField, CTORATstpRspInfoField* pRspInfoField, int nRequestID);
 
 	/*行情订阅应答*/
-	virtual void OnSubMarketData(EMTQuoteStaticInfo* ticker, EMTRspInfoStruct* error_info, bool is_last);
+	virtual void OnRspSubMarketData(CTORATstpSpecificSecurityField* pSpecificSecurity, CTORATstpRspInfoField* pRspInfo);
 
 	/*行情退订应答*/
-	virtual void OnUnSubMarketData(EMTQuoteStaticInfo* ticker, EMTRspInfoStruct* error_info, bool is_last);
+	virtual void OnRspUnSubMarketData(CTORATstpSpecificSecurityField* pSpecificSecurity, CTORATstpRspInfoField* pRspInfo);
 
 	/*行情通知*/
-	virtual void OnDepthMarketData(EMTMarketDataStruct* market_data, int64_t bid1_qty[], int32_t bid1_count, int32_t max_bid1_count, int64_t ask1_qty[], int32_t ask1_count, int32_t max_ask1_count);
+	virtual void OnRtnMarketData(CTORATstpMarketDataField* pDepthMarketData);
 
+	///订阅期权行情应答
+	virtual void OnRspSubSPMarketData(CTORATstpSpecificSecurityField* pSpecificSecurityField, CTORATstpRspInfoField* pRspInfoField);
+
+	///退订期权行情应答
+	virtual void OnRspUnSubSPMarketData(CTORATstpSpecificSecurityField* pSpecificSecurityField, CTORATstpRspInfoField* pRspInfoField);
+
+	///期权行情通知
+	virtual void OnRtnSPMarketData(CTORATstpMarketDataField* pMarketDataField);
 public:
-	EMT::API::QuoteApi*m_pUserApi;
+	CTORATstpXMdApi*m_pUserApi;
 	CThostFtdcMdSpi *m_pSpi;
 	TThostFtdcDateType TradingDay;
-	boost::asio::io_service m_io_service;
-	std::thread* m_pthread;
-	boost::asio::deadline_timer* m_pTimer;
-	bool m_logined;
-	char m_ip[16];
-	unsigned short m_port;
-	EMT_PROTOCOL_TYPE m_protocol;
 };
 
 

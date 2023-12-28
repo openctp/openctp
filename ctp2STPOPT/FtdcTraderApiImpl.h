@@ -5,21 +5,21 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "emt_trader_api.h"
+#include "TORATstpSPTraderApi.h"
 #include "ThostFtdcTraderApi.h"
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <thread>
 
-using namespace EMT::API;
+using namespace TORASPAPI;
+
 ///API接口实现
-class CFtdcTraderApiImpl : public CThostFtdcTraderApi, public TraderSpi
+class CFtdcTraderApiImpl : public CThostFtdcTraderApi, public CTORATstpSPTraderSpi
 {
 public:	
 	///构造函数
-	CFtdcTraderApiImpl(const char *pszFlowPath);
+	CFtdcTraderApiImpl(const char *pszFlowPath="");
 
-	const std::string time_to_string(int64_t tm);
 	void OnTime(const boost::system::error_code& err);
 
 	///获取API的版本信息
@@ -79,23 +79,17 @@ public:
 
 	///用户登录请求
 	virtual int ReqUserLogin(CThostFtdcReqUserLoginField *pReqUserLogin, int nRequestID);
-	void HandleReqUserLogin(CThostFtdcReqUserLoginField& ReqUserLogin, int nRequestID);
 
 	///用户退出请求
 	virtual int ReqUserLogout(CThostFtdcUserLogoutField *pUserLogout, int nRequestID);
-	void HandleReqUserLogout(CThostFtdcUserLogoutField& UserLogout, int nRequestID);
-
 	///用户密码修改请求
 	virtual int ReqUserPasswordUpdate(CThostFtdcUserPasswordUpdateField *pUserPasswordUpdate, int nRequestID);
-	void HandleReqUserPasswordUpdate(CThostFtdcUserPasswordUpdateField& UserPasswordUpdate, int nRequestID);
 
 	///报单录入请求
 	virtual int ReqOrderInsert(CThostFtdcInputOrderField *pInputOrder, int nRequestID);
-	void HandleReqOrderInsert(CThostFtdcInputOrderField& InputOrder, int nRequestID);
 
 	///报单操作请求
 	virtual int ReqOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, int nRequestID);
-	void HandleReqOrderAction(CThostFtdcInputOrderActionField& InputOrderAction, int nRequestID);
 
 	///报单查询请求
 	virtual int ReqQryOrder(CThostFtdcQryOrderField *pQryOrder, int nRequestID);
@@ -108,11 +102,9 @@ public:
 
 	///合约查询请求
 	virtual int ReqQryInstrument(CThostFtdcQryInstrumentField *pQryInstrument, int nRequestID);
-	void HandleReqQryInstrument(CThostFtdcQryInstrumentField& QryInstrument, int nRequestID);
 
 	///交易所查询请求
 	virtual int ReqQryExchange(CThostFtdcQryExchangeField *pQryExchange, int nRequestID);
-	void HandleReqQryExchange(CThostFtdcQryExchangeField& QryExchange, int nRequestID);
 
 	///投资者持仓查询请求
 	virtual int ReqQryInvestorPosition(CThostFtdcQryInvestorPositionField *pQryInvestorPosition, int nRequestID);
@@ -131,6 +123,7 @@ public:
 
 	///请求查询产品
 	virtual int ReqQryProduct(CThostFtdcQryProductField *pQryProduct, int nRequestID);
+	virtual int HandleReqQryProduct(CThostFtdcQryProductField QryProduct, int nRequestID);
 
 	///投资者结算结果确认
 	virtual int ReqSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, int nRequestID);
@@ -366,38 +359,115 @@ public:
 	virtual int ReqQryRiskSettleProductStatus(CThostFtdcQryRiskSettleProductStatusField* pQryRiskSettleProductStatus, int nRequestID);
 #endif
 
+#if defined(V6_6_7) || defined(V6_6_5_P1)
+	///请求查询交易员报盘机
+	virtual int ReqQryTraderOffer(CThostFtdcQryTraderOfferField* pQryTraderOffer, int nRequestID);
+#endif
+
+#ifdef V6_6_9
+	///SPBM期货合约参数查询
+	virtual int ReqQrySPBMFutureParameter(CThostFtdcQrySPBMFutureParameterField* pQrySPBMFutureParameter, int nRequestID);
+
+	///SPBM期权合约参数查询
+	virtual int ReqQrySPBMOptionParameter(CThostFtdcQrySPBMOptionParameterField* pQrySPBMOptionParameter, int nRequestID);
+
+	///SPBM品种内对锁仓折扣参数查询
+	virtual int ReqQrySPBMIntraParameter(CThostFtdcQrySPBMIntraParameterField* pQrySPBMIntraParameter, int nRequestID);
+
+	///SPBM跨品种抵扣参数查询
+	virtual int ReqQrySPBMInterParameter(CThostFtdcQrySPBMInterParameterField* pQrySPBMInterParameter, int nRequestID);
+
+	///SPBM组合保证金套餐查询
+	virtual int ReqQrySPBMPortfDefinition(CThostFtdcQrySPBMPortfDefinitionField* pQrySPBMPortfDefinition, int nRequestID);
+
+	///投资者SPBM套餐选择查询
+	virtual int ReqQrySPBMInvestorPortfDef(CThostFtdcQrySPBMInvestorPortfDefField* pQrySPBMInvestorPortfDef, int nRequestID);
+
+	///投资者新型组合保证金系数查询
+	virtual int ReqQryInvestorPortfMarginRatio(CThostFtdcQryInvestorPortfMarginRatioField* pQryInvestorPortfMarginRatio, int nRequestID);
+
+	///投资者产品SPBM明细查询
+	virtual int ReqQryInvestorProdSPBMDetail(CThostFtdcQryInvestorProdSPBMDetailField* pQryInvestorProdSPBMDetail, int nRequestID);
+#endif
+
 private:
-	virtual void OnDisconnected(uint64_t session_id, int reason);
+	//连接建立通知
+	/* 说明：
+		1. 此连接为系统连接，即便没有任何用户登录，该连接依然会维持在线状态
+	*/
+	virtual void OnFrontConnected();
+
+	//连接断开通知，用户无需处理，API会自动重连
+	/* 说明：
+		1. 连接断开后，所有在此连接上登录的用户均处于离线状态，重新连接后均需要重新发送登录请求
+	*/
+	virtual void OnFrontDisconnected(int nReason);
+
+	/*登录应答*/
+	virtual void OnRspUserLogin(CTORATstpSPRspUserLoginField *pRspUserLoginField, CTORATstpSPRspInfoField *pRspInfo, int nRequestID);
+
+	/*登出应答*/
+	virtual void OnRspUserLogout(CTORATstpSPUserLogoutField *pUserLogoutField, CTORATstpSPRspInfoField *pRspInfo, int nRequestID);
+
+	/*修改密码应答*/
+	virtual void OnRspUserPasswordUpdate(CTORATstpSPUserPasswordUpdateField *pUserPasswordUpdateField, CTORATstpSPRspInfoField *pRspInfo, int nRequestID);
 
 	/*合约查询应答*/
+	virtual void OnRspQrySecurity(CTORATstpSPSecurityField *pSecurity, CTORATstpSPRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	//投资者持仓查询
-	void OnQueryPosition(EMTQueryStkPositionRsp* position, EMTRI* error_info, int request_id, bool is_last, uint64_t session_id);
+	virtual void OnRspQryPosition(CTORATstpSPPositionField* pPosition, CTORATstpSPRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 
 	//报单查询
-	void OnQueryOrder(EMTQueryOrderRsp* order_info, EMTRI* error_info, int request_id, bool is_last, uint64_t session_id);
+	virtual void OnRspQryOrder(CTORATstpSPOrderField* pOrder, CTORATstpSPRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 
 	//成交查询
-	void OnQueryTrade(EMTQueryTradeRsp* trade_info, EMTRI* error_info, int request_id, bool is_last, uint64_t session_idt);
+	virtual void OnRspQryTrade(CTORATstpSPTradeField* pTrade, CTORATstpSPRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 
 	//资金账户查询
-	void OnQueryAsset(EMTQueryAssetRsp* asset, EMTRI* error_info, int request_id, bool is_last, uint64_t session_id);
+	virtual void OnRspQryTradingAccount(CTORATstpSPTradingAccountField* pTradingAccount, CTORATstpSPRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
+
+	//报单录入应答	
+	virtual void OnRspOrderInsert(CTORATstpSPInputOrderField* pInputOrderField, CTORATstpSPRspInfoField* pRspInfo, int nRequestID);
 
 	//报单回报
-	virtual void OnOrderEvent(EMTOrderInfo* order_info, EMTRI* error_info, uint64_t session_id);
+	virtual void OnRtnOrder(CTORATstpSPOrderField* pOrder);
+
+	//报单错误回报
+	virtual void OnErrRtnOrderInsert(CTORATstpSPInputOrderField* pInputOrder, CTORATstpSPRspInfoField* pRspInfo) {};
 
 	//撤单应答	
-	virtual void OnCancelOrderError(EMTOrderCancelInfo* cancel_info, EMTRI* error_info, uint64_t session_id);
+	virtual void OnRspOrderAction(CTORATstpSPInputOrderActionField* pInputOrderActionField, CTORATstpSPRspInfoField* pRspInfo, int nRequestID);
+
+	//撤单错误回报
+	virtual void OnErrRtnOrderAction(CTORATstpSPOrderActionField* pOrderAction, CTORATstpSPRspInfoField* pRspInfo) {};
 
 	//成交回报
-	virtual void OnTradeEvent(EMTTradeReport* trade_info, uint64_t session_id);
+	virtual void OnRtnTrade(CTORATstpSPTradeField* pTrade);
+
+	//查询股东账户
+	virtual void OnRspQryShareholderAccount(CTORATstpSPShareholderAccountField* pShareholderAccount, CTORATstpSPRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
+
+	//查询交易所
+	virtual void OnRspQryExchange(CTORATstpSPExchangeField* pExchange, CTORATstpSPRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
+
+	//查询投资者
+	virtual void OnRspQryInvestor(CTORATstpSPInvestorField* pInvestor, CTORATstpSPRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
+
+	//查询实时行情
+	//virtual void OnRspQryMarketData(CTORATstpSPMarketDataField* pMarketData, CTORATstpSPRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
+
+	//查询佣金费率
+	void OnRspQryInvestorTradingFee(CTORATstpSPInvestorTradingFeeField* pInvestorTradingFee, CTORATstpSPRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 
 private:
 	TThostFtdcInvestorIDType m_InvestorID;
 	TThostFtdcUserIDType m_UserID;
 	TThostFtdcBrokerIDType m_BrokerID;
-	uint64_t m_emt_sessionid;
-	EMT_PROTOCOL_TYPE m_protocol;
+	TTORATstpSPShareholderIDType	m_ShareholderID_SSE;
+	TTORATstpSPShareholderIDType	m_ShareholderID_SZSE;
+	TTORATstpSPShareholderIDType	m_ShareholderID_BSE;
+	TTORATstpSPShareholderIDType	m_ShareholderID_HKEX;
 
 	TThostFtdcFrontIDType m_FrontID;
 	TThostFtdcSessionIDType m_SessionID;
@@ -409,23 +479,17 @@ private:
 	CThostFtdcRspAuthenticateField RspAuthenticateField;
 	CThostFtdcSettlementInfoConfirmField SettlementInfoConfirmField;
 	CThostFtdcBrokerTradingParamsField BrokerTradingParamsField;
+	CThostFtdcInvestorField  ThostRspInvestor;
+	CThostFtdcSettlementInfoConfirmField ThostSettlementInfoConfirmField;
+	CThostFtdcRspUserAuthMethodField UserAuthMethodField;
 
 	TThostFtdcDateType	TradingDay;
 	boost::asio::io_service m_io_service;
 	std::thread* m_pthread;
 	boost::asio::deadline_timer* m_pTimer;
-	bool m_logined;
-	char m_ip[16];
-	unsigned short m_port;
-	std::map<uint64_t, uint64_t> m_mOrderRefToXtpID; // 此OrderRef为虚拟ID，为适配CTP机制而设
-	std::map<uint64_t, uint64_t> m_mXtpIDToOrderRef;
-	uint32_t m_ctp_sessionid; // 虚拟ID，为适配CTP机制而设
-	uint32_t m_ctp_orderref; // 虚拟ID，为适配CTP机制而设
-	uint32_t m_ctp_sys_orderref; // 虚拟ID，为适配CTP机制而设
-
 
 public:
-	TraderApi *m_pUserApi;
+	CTORATstpSPTraderApi *m_pUserApi;
 	CThostFtdcTraderSpi *m_pSpi;
 };
 
