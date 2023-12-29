@@ -111,6 +111,14 @@ openctp除免费仿真环境外，还提供了vip仿真环境，具有更高的�
 **股票柜台接口与接入问题请加QQ群 127235179 咨询。**
 
 ### **CTPAPI及各柜台CTPAPI兼容接口下载：**
+<style>
+.markdown-body a {
+    word-wrap:break-word;
+    width:90px;
+    display: block;
+}
+</style>
+
 |                                                                | 文档资料                                                                                | 6.3.15                                                                                    | 6.3.19_P1                                                                                |6.5.1                                                                                    |6.6.1_P1                                                                                        |6.6.7                                                                                        |6.6.9                                                                                        |6.7.2                                                                                        |
 |  ----                                                            | ----                                                                                    |  ----                                                                                        | ----                                                                                    |----                                                                                    |----                                                                                            |----                                                                                        |----                                                                                        |----                                                                                        |
 |CTP柜台官方接口| [ctp_docs.zip](http://121.37.80.177:50080/Download/CTPAPI/CTP/ctp_docs.zip)            |[ctp_6.3.15.zip](http://121.37.80.177:50080/Download/CTPAPI/CTP/ctp_6.3.15.zip)            | [ctp_6.3.19.zip](http://121.37.80.177:50080/Download/CTPAPI/CTP/ctp_6.3.19_P1.zip)        | [ctp_6.5.1.zip](http://121.37.80.177:50080/Download/CTPAPI/CTP/ctp_6.5.1.zip)            | [ctp_6.6.1_P1.zip](http://121.37.80.177:50080/Download/CTPAPI/CTP/ctp_6.6.1_P1.zip)            | [ctp_6.6.7.zip](http://121.37.80.177:50080/Download/CTPAPI/CTP/ctp_6.6.7.zip)                | [ctp_6.6.9.zip](http://121.37.80.177:50080/Download/CTPAPI/CTP/ctp_6.6.9.zip)                | [ctp_6.7.2.zip](http://121.37.80.177:50080/Download/CTPAPI/CTP/ctp_6.7.2.zip)                |
