@@ -8,7 +8,7 @@ import re
 import json
 import time
 import queue
-import thosttraderapi as api
+from openctp_ctp import tdapi as api
 
 verbose = False
 
