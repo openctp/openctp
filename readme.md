@@ -181,11 +181,8 @@ openctp的支撑系统TTS（Tick Trading System）采用与CTP柜台同样的设
 - 第五期：[内存数据库架构交易系统总线开发技术](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484747&idx=1&sn=21b2d57102daa4305860d61f844784fe&chksm=c36bdee2f41c57f4db3fa23bb41c21cfa5b909843590f179b4761f24aad385fbccfde5ae5002&token=798261616&lang=zh_CN#rd)，8000元，通过TTS的总线架构技术讲解CTP那样的总线开发技术，包括重演、热备、负载均衡、最短路由、分布式计算等技术，内存计算架构在各行业的高性能通讯方面都可以应用，远不止金融交易领域。
 
 ### openctp公开课：
-- [C语言0基础](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484592&idx=1&sn=7b0caf96f497461a45f5940dfa6c5361&chksm=c36bdf19f41c560f8a9ebcf7b7031820414d997a7c151e520c006423cf6f9c6f6d890adcda7b&token=798261616&lang=zh_CN#rd)：以生动有趣的方式讲C语言基础性编程技术，重在兴趣培养和信心建立。
-- C++语言0基础：以生动有趣的方式讲C++语言基础性编程技术。
-- Python语言0基础：以生动有趣的方式讲Python语言基础性编程技术。
-- Java语言0基础：以生动有趣的方式讲Java语言基础性编程技术。
-- Go语言0基础：以生动有趣的方式讲Go语言基础性编程技术。
-- Linux环境编程0基础：以生动有趣的方式讲Linux环境编程技术。
+- [C语言公开课](https://www.bilibili.com/video/BV1CK411o743)：以生动有趣的方式讲C语言基础性编程技术，重在兴趣培养和信心建立。
+- C++语言公开课：以生动有趣的方式讲C++语言基础性编程技术。
+- [Linux环境编程公开课](https://www.bilibili.com/video/BV1Jw411E7sF)：介绍Unix&Linux的前世今世，讲Shell、VI编辑器等使用，讲netstat、traceroute、ifconfig、lsof等网络工具的使用，讲正则表达式等等，0基础，谁都能听得懂。
 
 <u>*本模拟平台不对模拟结果作任何保证，依据本平台测试结果进行实盘交易的后果完全由使用者自己承担。*</u>
