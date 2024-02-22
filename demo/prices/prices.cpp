@@ -118,14 +118,14 @@ public:
 
 	void HandleRtnDepthMarketData(CThostFtdcDepthMarketDataField& DepthMarketData)
 	{
-		std::map<std::string, size_t>::iterator iter;
-		if ((iter = mquotes.find(DepthMarketData.InstrumentID)) == mquotes.end()) {
+		if (!mquotes.contains(DepthMarketData.InstrumentID)) {
 			// new
 			vquotes.push_back(DepthMarketData);
 			mquotes[DepthMarketData.InstrumentID] = vquotes.size() - 1;
-			iter = mquotes.find(DepthMarketData.InstrumentID);
+		}else {
+			// update
+			vquotes[mquotes[DepthMarketData.InstrumentID]]=DepthMarketData;
 		}
-
 		display_quotation(DepthMarketData.InstrumentID);
 	}
 
