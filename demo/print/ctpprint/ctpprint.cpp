@@ -385,8 +385,8 @@ public:
 		}
 
 		if (pInvestorPositionDetail)
-			printf("OnRspQryInvestorPositionDetail:InstrumentID:%s,Direction:%s,HedgeFlag:%c,Volume:%d,OpenDate:%s,OpenPrice:%lf,Margin:%lf,ExchangeID:%s\n",
-				pInvestorPositionDetail->InstrumentID, direction_to_string(pInvestorPositionDetail->Direction).c_str(), pInvestorPositionDetail->HedgeFlag, pInvestorPositionDetail->Volume, pInvestorPositionDetail->OpenDate, pInvestorPositionDetail->OpenPrice, pInvestorPositionDetail->Margin, pInvestorPositionDetail->ExchangeID);
+			printf("OnRspQryInvestorPositionDetail:InstrumentID:%s,Direction:%s,HedgeFlag:%c,Volume:%d,CloseVolume:%d,OpenDate:%s,OpenPrice:%lf,Margin:%lf,ExchangeID:%s\n",
+				pInvestorPositionDetail->InstrumentID, direction_to_string(pInvestorPositionDetail->Direction).c_str(), pInvestorPositionDetail->HedgeFlag, pInvestorPositionDetail->Volume, pInvestorPositionDetail->CloseVolume, pInvestorPositionDetail->OpenDate, pInvestorPositionDetail->OpenPrice, pInvestorPositionDetail->Margin, pInvestorPositionDetail->ExchangeID);
 
 		if (bIsLast) {
 			_semaphore.signal();
