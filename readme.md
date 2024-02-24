@@ -1,21 +1,27 @@
 # **openctp（Powered by TTS - Tick Trading System）**
 
-开放平台采用与CTPAPI完全兼容的接口，一定程度上可替代simnow等模拟平台进行功能测试。 CTP程序无需修改代码也无需重新编译，只需在这里**下载与CTP API版本号一致的动态库**，覆盖掉自己的即可。
+[openctp](https://github.com/openctp/openctp)是一个以CTP生态为基础的平台，既提供了华鑫证券奇点、中泰证券XTP、东方财富EMT、东方证券OST等柜台的[CTPAPI](https://github.com/openctp/openctp)兼容接口，也提供了一套与上期技术SimNow模拟环境类似的模拟环境，也支持CTPAPI接口，不仅提供国内各期货交易所的期货与期权品种模拟交易，还提供了A股的股票、基金、债券以及股票期权模拟交易，也支持港股、美股等市场模拟交易。
 
-提供CTPAPI 6.3.15、6.3.19、6.5.1、6.6.1、6.6.7、6.6.9、6.7.0、6.7.1、6.7.2全部在用的版本，对应支持win32、win64、linux、MacOS等多个操作系统。
+openctp还提供了CTPAPI的Python接口，开发了CTP交易客户端[ViTrader](https://github.com/openctp/ViTrader)并开放了源码，还开发了图形界面的交易客户端[TickTrader](https://github.com/openctp/TickTrader),都支持openctp、CTP、CTP股票期权、中泰XTP、华鑫奇点股票与股票期权等柜台。
+
+openctp还做了一套websocket接口的CTP服务，[webctp](https://github.com/openctp/webctp)，将CTP的服务以websocket+json形式对外提供服务，也开放了源码。
+
+openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询和培训以及柜台系统等的开发培训服务。
+
+openctp还有更多的产品和服务在研发中。。。
 
 ![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
 
 # 目录结构：
-- 6.3.15 ~ 6.7.2：开放平台标准模拟环境TTS系统的CTPAPI兼容接口，替换CTP官方动态库即可连接TTS系统。
-- ctp2IB盈透：盈透证券的CTPAPI兼容接口。
-- ctp2OST东方证券：东方证券的CTPAPI兼容接口。
-- ctp2中泰证券XTP：中泰证券XTP柜台的CTPAPI兼容接口。
-- ctp2华鑫证券STP：华鑫证券奇点柜台股票的CTPAPI兼容接口。
-- ctp2EMT东方财富：东方财富EMT极速柜台的CTPAPI兼容接口。
-- ctp2STPOPT：华鑫证券奇点柜台股票期权的CTPAPI兼容接口。
-- ctp2QQ行情：腾讯行情的CTPAPI兼容接口（含源码）。
-- ctp2Sina行情：新浪行情的CTPAPI兼容接口（含源码）。
+- 6.3.15 ~ 6.7.2：openctp模拟环境CTPAPI兼容接口。
+- ctp2中泰证券XTP：中泰证券XTP柜台CTPAPI兼容接口（含源码）。
+- ctp2华鑫证券STP：华鑫证券奇点股票柜台CTPAPI兼容接口（含源码）。
+- ctp2EMT东方财富：东方财富EMT柜台CTPAPI兼容接口（含源码）。
+- ctp2STPOPT：华鑫证券奇点股票期权柜台CTPAPI兼容接口（含源码）。
+- ctp2OST东方证券：东方证券OST柜台CTPAPI兼容接口。
+- ctp2IB盈透：盈透证券CTPAPI兼容接口。
+- ctp2QQ行情：腾讯行情CTPAPI兼容接口（含源码）。
+- ctp2Sina行情：新浪行情CTPAPI兼容接口（含源码）。
 - demo：CTPAPI开发相关的demo及工具源码。
 - tools：生产力工具。
 - docs：开发文档及行业资料。
