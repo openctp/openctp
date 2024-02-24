@@ -59,7 +59,7 @@ openctp模拟环境不检查这几个字段，3项均可不填。
 ## openctp环境监控平台
 openctp提供了一个集中监控SimNow、华鑫N视界、中泰XTP、东财EMT等模拟环境的监控平台，当然也包括openctp自己的模拟环境，有几个环境，有没开着，一眼就知道了。
 
-监控页面：[openctp模拟环境监控](http://121.37.80.177:50080/index.html)
+监控页面：[openctp模拟环境监控](http://121.37.80.177)
 
 ![613dc093f916d1bf0764e5365f202ff](https://user-images.githubusercontent.com/83346523/148802378-2c9b3d3f-1959-4aab-851a-cf55666806d8.png)
 
