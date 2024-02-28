@@ -1,0 +1,4 @@
+all: ctpoptping
+ctpping:
+	g++ -std=c++11 -I. -L. -o ctpoptping ctpoptping.cpp soptthostmduserapi_se.so soptthosttraderapi_se.so
+
