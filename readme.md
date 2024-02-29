@@ -13,7 +13,8 @@ openctp还有更多的产品和服务在研发中。。。
 ![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
 
 # 目录结构：
-- 6.3.15 ~ 6.7.2：openctp模拟环境CTPAPI兼容接口。
+- ctp2TTS：openctp模拟环境CTPAPI兼容接口。
+- ctpopt2TTS:openctp模拟环境CTP股票期权兼容接口。
 - ctp2中泰证券XTP：中泰证券XTP柜台CTPAPI兼容接口（含源码）。
 - ctp2华鑫证券STP：华鑫证券奇点股票柜台CTPAPI兼容接口（含源码）。
 - ctp2EMT东方财富：东方财富EMT柜台CTPAPI兼容接口（含源码）。
