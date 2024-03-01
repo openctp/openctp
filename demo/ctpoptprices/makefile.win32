@@ -1,0 +1,5 @@
+all: prices.exe
+prices.exe:
+	cl /DWIN32 /I .\PDCurses /I .\CTP prices.cpp /link /LIBPATH:.\PDCurses /LIBPATH:.\CTP soptthostmduserapi_se.lib pdcurses.lib advapi32.lib user32.lib /OUT:prices.exe
+clean:
+	del *.obj prices.exe

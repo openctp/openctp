@@ -118,7 +118,7 @@ public:
 
 	void HandleRtnDepthMarketData(CThostFtdcDepthMarketDataField& DepthMarketData)
 	{
-		if (!mquotes.contains(DepthMarketData.InstrumentID)) {
+		if (mquotes.find(DepthMarketData.InstrumentID)==mquotes.end()) {
 			// new
 			vquotes.push_back(DepthMarketData);
 			mquotes[DepthMarketData.InstrumentID] = vquotes.size() - 1;
