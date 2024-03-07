@@ -7,7 +7,7 @@
 #define EXCHANGE_HKEX "HKEX"
 #define EXCHANGE_NASD "NASD"
 
-#define snaptime  3 // Ãë
+#define snaptime  3 // ï¿½ï¿½
 
 
 CThostFtdcMdApi* CThostFtdcMdApi::CreateFtdcMdApi(const char* pszFlowPath, const bool bIsUsingUdp, const bool bIsMulticast)
@@ -84,7 +84,7 @@ void CFtdcMdApiImpl::RegisterSpi(CThostFtdcMdSpi *pSpi)
 	m_pSpi = pSpi;
 }
 
-///ÓÃ»§µÇÂ¼ÇëÇó
+///ï¿½Ã»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
 int CFtdcMdApiImpl::ReqUserLogin(CThostFtdcReqUserLoginField *pReqUserLogin, int nRequestID)
 {
 	memset(&ThostRspUserLogin,0x00,sizeof(ThostRspUserLogin));
@@ -95,7 +95,7 @@ int CFtdcMdApiImpl::ReqUserLogin(CThostFtdcReqUserLoginField *pReqUserLogin, int
 	return 0; 
 }
 
-///¶©ÔÄÐÐÇé
+///ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int CFtdcMdApiImpl::SubscribeMarketData(char* ppInstrumentID[], int nCount)
 {
 	for (int i = 0; i < nCount; i++) {
@@ -106,7 +106,7 @@ int CFtdcMdApiImpl::SubscribeMarketData(char* ppInstrumentID[], int nCount)
 	return 0;
 }
 
-///ÍË¶©ÐÐÇé
+///ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½
 int CFtdcMdApiImpl::UnSubscribeMarketData(char* ppInstrumentID[], int nCount)
 {
 	for (int i = 0; i < nCount; i++) {
@@ -120,7 +120,7 @@ int CFtdcMdApiImpl::UnSubscribeMarketData(char* ppInstrumentID[], int nCount)
 	return 0;
 }
 
-///ÓÃ»§ÍË³öÇëÇó
+///ï¿½Ã»ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½
 int CFtdcMdApiImpl::ReqUserLogout(CThostFtdcUserLogoutField *pUserLogout, int nRequestID)
 {
 	memset(&ThostUserLogout, 0x00, sizeof(ThostUserLogout));
@@ -140,86 +140,121 @@ void CFtdcMdApiImpl::HandleMarketData(std::vector<std::string>& data)
             memset(&DepthMarketData, 0x00, sizeof(DepthMarketData));
             std::vector<std::string> vFields;
             boost::split(vFields, *iter, boost::is_any_of(","));
-            if (vFields.size() < 10) // ÖÁÉÙÒªÓÐ10¸ö×Ö¶Î
+            if (vFields.size() < 10) // ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½10ï¿½ï¿½ï¿½Ö¶ï¿½
                 return;
 
-            // ½»Ò×Ëù
-            // ºÏÔ¼
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            // ï¿½ï¿½Ô¼
             if (vFields[0].compare(0, 2, "hk") == 0) {
-                // ¸Û¹É
+                // ï¿½Û¹ï¿½
                 strncpy(DepthMarketData.ExchangeID, EXCHANGE_HKEX, sizeof(DepthMarketData.ExchangeID) - 1);
                 strncpy(DepthMarketData.InstrumentID, vFields[0].c_str() + 2, sizeof(DepthMarketData.InstrumentID) - 1);
                 strncpy(DepthMarketData.ExchangeInstID, DepthMarketData.InstrumentID, sizeof(DepthMarketData.ExchangeInstID) - 1);
 
 
-                // ×îÐÂ¼Û
+                // ï¿½ï¿½ï¿½Â¼ï¿½
                 DepthMarketData.LastPrice = atof(vFields[7].c_str());
 
-                // ¿ª
+                // ï¿½ï¿½
                 DepthMarketData.OpenPrice = atof(vFields[3].c_str());
 
-                // ¸ß
+                // ï¿½ï¿½
                 DepthMarketData.HighestPrice = atof(vFields[5].c_str());
 
-                // µÍ
+                // ï¿½ï¿½
                 DepthMarketData.LowestPrice = atof(vFields[6].c_str());
 
-                // ×òÊÕ
+                // ï¿½ï¿½ï¿½ï¿½
                 DepthMarketData.PreClosePrice = atof(vFields[4].c_str());
 
-                // ³É½»Á¿
+                // ï¿½É½ï¿½ï¿½ï¿½
                 DepthMarketData.Volume = atol(vFields[13].c_str());
 
-                // ³É½»¶î
+                // ï¿½É½ï¿½ï¿½ï¿½
                 DepthMarketData.Turnover = atof(vFields[12].c_str());
 
-                // ÂòÒ»
+                // ï¿½ï¿½Ò»
                 DepthMarketData.BidPrice1 = atof(vFields[10].c_str());
 
-                // ÂôÒ»
+                // ï¿½ï¿½Ò»
                 DepthMarketData.AskPrice1 = atof(vFields[11].c_str());
 
-                // Ê±¼ä
+                // Ê±ï¿½ï¿½
                 sprintf(DepthMarketData.ActionDay, "%4.4s%2.2s%2.2s", vFields[18].c_str(), vFields[18].c_str() + 5, vFields[18].c_str() + 8);
                 sprintf(DepthMarketData.UpdateTime, "%s:00", vFields[19].c_str());
                 sprintf(DepthMarketData.TradingDay, "%4.4s%2.2s%2.2s", vFields[18].c_str(), vFields[18].c_str() + 5, vFields[18].c_str() + 8);
             }
             else if (vFields[0].compare(0, 3, "gb_") == 0) {
-                // ÃÀ¹É
-                boost::algorithm::to_upper(vFields[0]); // ºÏÔ¼ºÅ¸ÄÎª´óÐ´ÃÀ¹É
+                // ï¿½ï¿½ï¿½ï¿½
+                boost::algorithm::to_upper(vFields[0]); // ï¿½ï¿½Ô¼ï¿½Å¸ï¿½Îªï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½
 
                 strncpy(DepthMarketData.ExchangeID, EXCHANGE_NASD, sizeof(DepthMarketData.ExchangeID) - 1);
                 strncpy(DepthMarketData.InstrumentID, vFields[0].c_str()+3, sizeof(DepthMarketData.InstrumentID) - 1);
                 strncpy(DepthMarketData.ExchangeInstID, DepthMarketData.InstrumentID, sizeof(DepthMarketData.ExchangeInstID) - 1);
 
-                // ×îÐÂ¼Û
+                // ï¿½ï¿½ï¿½Â¼ï¿½
                 DepthMarketData.LastPrice = atof(vFields[2].c_str());
 
-                // ¿ª
+                // ï¿½ï¿½
                 DepthMarketData.OpenPrice = atof(vFields[6].c_str());
 
-                // ¸ß
+                // ï¿½ï¿½
                 DepthMarketData.HighestPrice = atof(vFields[7].c_str());
 
-                // µÍ
+                // ï¿½ï¿½
                 DepthMarketData.LowestPrice = atof(vFields[8].c_str());
 
-                // ×òÊÕ
+                // ï¿½ï¿½ï¿½ï¿½
                 DepthMarketData.PreClosePrice = atof(vFields[27].c_str());
 
-                // ³É½»Á¿
+                // ï¿½É½ï¿½ï¿½ï¿½
                 DepthMarketData.Volume = atol(vFields[11].c_str());
 
-                // ³É½»¶î
+                // ï¿½É½ï¿½ï¿½ï¿½
                 DepthMarketData.Turnover = atof(vFields[31].c_str());
 
-                // Ê±¼ä
+                // Ê±ï¿½ï¿½
                 sprintf(DepthMarketData.ActionDay, "%4.4s%2.2s%2.2s", vFields[4].c_str(), vFields[4].c_str() + 5, vFields[4].c_str() + 8);
                 strncpy(DepthMarketData.UpdateTime, vFields[4].c_str()+11, sizeof(DepthMarketData.UpdateTime)-1);
                 sprintf(DepthMarketData.TradingDay, "%4.4s%2.2s%2.2s", vFields[4].c_str(), vFields[4].c_str() + 5, vFields[4].c_str() + 8);
             }
+            else if(vFields[0].compare(0, 3, "nf_") == 0) {
+                // ï¿½Ú»ï¿½
+                strncpy(DepthMarketData.ExchangeID, "", sizeof(DepthMarketData.ExchangeID) - 1);
+                strncpy(DepthMarketData.InstrumentID, vFields[0].c_str()+3, sizeof(DepthMarketData.InstrumentID) - 1);
+                strncpy(DepthMarketData.ExchangeInstID, DepthMarketData.InstrumentID, sizeof(DepthMarketData.ExchangeInstID) - 1);
+
+                // ï¿½ï¿½ï¿½Â¼ï¿½
+                DepthMarketData.LastPrice = atof(vFields[9].c_str());
+
+                // ï¿½ï¿½
+                DepthMarketData.OpenPrice = atof(vFields[3].c_str());
+
+                // ï¿½ï¿½
+                DepthMarketData.HighestPrice = atof(vFields[4].c_str());
+
+                // ï¿½ï¿½
+                DepthMarketData.LowestPrice = atof(vFields[5].c_str());
+
+                // ï¿½ï¿½ï¿½ï¿½
+                DepthMarketData.PreClosePrice = atof(vFields[11].c_str());
+
+                // ï¿½É½ï¿½ï¿½ï¿½
+                DepthMarketData.Volume = atol(vFields[15].c_str());
+
+                // ï¿½ï¿½Ò»
+                DepthMarketData.BidPrice1 = atof(vFields[7].c_str());
+                DepthMarketData.BidVolume1 = atol(vFields[12].c_str());
+
+                // ï¿½ï¿½Ò»
+                DepthMarketData.AskPrice1 = atof(vFields[8].c_str());
+                DepthMarketData.AskVolume1 = atol(vFields[13].c_str());
+                sprintf(DepthMarketData.ActionDay, "%4.4s%2.2s%2.2s", vFields[18].c_str(), vFields[18].c_str() + 5, vFields[18].c_str() + 8);
+                // strncpy(DepthMarketData.UpdateTime, vFields[18].c_str()+11, sizeof(DepthMarketData.UpdateTime)-1);
+                sprintf(DepthMarketData.TradingDay, "%4.4s%2.2s%2.2s", vFields[18].c_str(), vFields[18].c_str() + 5, vFields[18].c_str() + 8);
+            }
             else {
-                // A¹É
+                // Aï¿½ï¿½
                 if (vFields[0].compare(0, 2, "sh") == 0) {
                     strncpy(DepthMarketData.ExchangeID, EXCHANGE_SSE, sizeof(DepthMarketData.ExchangeID) - 1);
                 }
@@ -232,68 +267,68 @@ void CFtdcMdApiImpl::HandleMarketData(std::vector<std::string>& data)
                 strncpy(DepthMarketData.InstrumentID, vFields[0].c_str() + 2, sizeof(DepthMarketData.InstrumentID) - 1);
                 strncpy(DepthMarketData.ExchangeInstID, DepthMarketData.InstrumentID, sizeof(DepthMarketData.ExchangeInstID) - 1);
 
-                // ×îÐÂ¼Û
+                // ï¿½ï¿½ï¿½Â¼ï¿½
                 DepthMarketData.LastPrice = atof(vFields[4].c_str());
 
-                // ¿ª
+                // ï¿½ï¿½
                 DepthMarketData.OpenPrice = atof(vFields[2].c_str());
 
-                // ¸ß
+                // ï¿½ï¿½
                 DepthMarketData.HighestPrice = atof(vFields[5].c_str());
 
-                // µÍ
+                // ï¿½ï¿½
                 DepthMarketData.LowestPrice = atof(vFields[6].c_str());
 
-                // ×òÊÕ
+                // ï¿½ï¿½ï¿½ï¿½
                 DepthMarketData.PreClosePrice = atof(vFields[3].c_str());
 
-                // ³É½»Á¿
+                // ï¿½É½ï¿½ï¿½ï¿½
                 DepthMarketData.Volume = atol(vFields[9].c_str());
 
-                // ³É½»¶î
+                // ï¿½É½ï¿½ï¿½ï¿½
                 DepthMarketData.Turnover = atof(vFields[10].c_str());
 
-                // ÂòÒ»
+                // ï¿½ï¿½Ò»
                 DepthMarketData.BidPrice1 = atof(vFields[12].c_str());
                 DepthMarketData.BidVolume1 = atol(vFields[11].c_str());
 
-                // Âò¶þ
+                // ï¿½ï¿½ï¿½
                 DepthMarketData.BidPrice2 = atof(vFields[14].c_str());
                 DepthMarketData.BidVolume2 = atol(vFields[13].c_str());
 
-                // ÂòÈý
+                // ï¿½ï¿½ï¿½ï¿½
                 DepthMarketData.BidPrice3 = atof(vFields[16].c_str());
                 DepthMarketData.BidVolume3 = atol(vFields[15].c_str());
 
-                // ÂòËÄ
+                // ï¿½ï¿½ï¿½ï¿½
                 DepthMarketData.BidPrice4 = atof(vFields[18].c_str());
                 DepthMarketData.BidVolume4 = atol(vFields[17].c_str());
 
-                // ÂòÎå
+                // ï¿½ï¿½ï¿½ï¿½
                 DepthMarketData.BidPrice5 = atof(vFields[20].c_str());
                 DepthMarketData.BidVolume5 = atol(vFields[19].c_str());
 
-                // ÂôÒ»
+                // ï¿½ï¿½Ò»
                 DepthMarketData.AskPrice1 = atof(vFields[22].c_str());
                 DepthMarketData.AskVolume1 = atol(vFields[21].c_str());
 
-                // Âô¶þ
+                // ï¿½ï¿½ï¿½ï¿½
                 DepthMarketData.AskPrice2 = atof(vFields[24].c_str());
                 DepthMarketData.AskVolume2 = atol(vFields[23].c_str());
 
-                // ÂôÈý
+                // ï¿½ï¿½ï¿½ï¿½
                 DepthMarketData.AskPrice3 = atof(vFields[26].c_str());
                 DepthMarketData.AskVolume3 = atol(vFields[25].c_str());
 
-                // ÂôËÄ
+                // ï¿½ï¿½ï¿½ï¿½
                 DepthMarketData.AskPrice4 = atof(vFields[28].c_str());
                 DepthMarketData.AskVolume4 = atol(vFields[27].c_str());
 
-                // ÂôÎå
+                // ï¿½ï¿½ï¿½ï¿½
                 DepthMarketData.AskPrice5 = atof(vFields[30].c_str());
                 DepthMarketData.AskVolume5 = atol(vFields[29].c_str());
 
-                // Ê±¼ä
+                // Ê±ï¿½ï¿½
                 sprintf(DepthMarketData.ActionDay, "%4.4s%2.2s%2.2s", vFields[31].c_str(), vFields[31].c_str() + 5, vFields[31].c_str() + 8);
                 strncpy(DepthMarketData.UpdateTime, vFields[32].c_str(), sizeof(DepthMarketData.UpdateTime) - 1);
                 sprintf(DepthMarketData.TradingDay, "%4.4s%2.2s%2.2s", vFields[31].c_str(), vFields[31].c_str() + 5, vFields[31].c_str() + 8);
@@ -314,8 +349,10 @@ void CFtdcMdApiImpl::OnSnapTime(const boost::system::error_code& error)
 
     // make url
     std::string prefix = "/list=";
-    std::string querystr = prefix; // "/list=sh600000,sz000001,bj833266,hk00700,gb_aapl"
+    std::string querystr = prefix; // "/list=sh600000,sz000001,bj833266,hk00700,gb_aapl,ag2404"
+    
     for (auto iter = _mInstruments.begin(); iter != _mInstruments.end(); iter++) {
+        bool need_upper = false;
         if (querystr != prefix)
             querystr += ",";
         if(iter->first.length()==5 && isdigit(*iter->first.c_str()))
@@ -341,10 +378,19 @@ void CFtdcMdApiImpl::OnSnapTime(const boost::system::error_code& error)
             || memcmp(iter->first.c_str(), "87", 2) == 0
             || memcmp(iter->first.c_str(), "88", 2) == 0)
             querystr += "bj";
-        else
+        // first char is a-z or A-Z last is a digit
+        else if(isalpha(*iter->first.c_str()) && isdigit(*(iter->first.c_str()+2))){
+            querystr += "nf_";
+            need_upper = true;
+        }
+        else 
             querystr += "gb_";
-        querystr += iter->first;
+        std::string may_upper = iter->first;
+        boost::algorithm::to_upper(may_upper);
+        querystr += need_upper? may_upper : iter->first;
+
     }
+
     query(querystr.c_str());
 
     m_snap_timer.expires_from_now(boost::posix_time::milliseconds(snaptime * 1000));
