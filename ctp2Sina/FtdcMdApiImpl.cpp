@@ -151,7 +151,6 @@ void CFtdcMdApiImpl::HandleMarketData(std::vector<std::string>& data)
                 strncpy(DepthMarketData.InstrumentID, vFields[0].c_str() + 2, sizeof(DepthMarketData.InstrumentID) - 1);
                 strncpy(DepthMarketData.ExchangeInstID, DepthMarketData.InstrumentID, sizeof(DepthMarketData.ExchangeInstID) - 1);
 
-
                 // 最新价
                 DepthMarketData.LastPrice = atof(vFields[7].c_str());
 
@@ -217,6 +216,41 @@ void CFtdcMdApiImpl::HandleMarketData(std::vector<std::string>& data)
                 sprintf(DepthMarketData.ActionDay, "%4.4s%2.2s%2.2s", vFields[4].c_str(), vFields[4].c_str() + 5, vFields[4].c_str() + 8);
                 strncpy(DepthMarketData.UpdateTime, vFields[4].c_str()+11, sizeof(DepthMarketData.UpdateTime)-1);
                 sprintf(DepthMarketData.TradingDay, "%4.4s%2.2s%2.2s", vFields[4].c_str(), vFields[4].c_str() + 5, vFields[4].c_str() + 8);
+            }
+            else if(vFields[0].compare(0, 3, "nf_") == 0) {
+                // 期货
+                strncpy(DepthMarketData.ExchangeID, "", sizeof(DepthMarketData.ExchangeID) - 1);
+                strncpy(DepthMarketData.InstrumentID, vFields[0].c_str()+3, sizeof(DepthMarketData.InstrumentID) - 1);
+                strncpy(DepthMarketData.ExchangeInstID, DepthMarketData.InstrumentID, sizeof(DepthMarketData.ExchangeInstID) - 1);
+
+                // 最新价
+                DepthMarketData.LastPrice = atof(vFields[9].c_str());
+
+                // 开
+                DepthMarketData.OpenPrice = atof(vFields[3].c_str());
+
+                // 高
+                DepthMarketData.HighestPrice = atof(vFields[4].c_str());
+
+                // 低
+                DepthMarketData.LowestPrice = atof(vFields[5].c_str());
+
+                // 昨收
+                DepthMarketData.PreClosePrice = atof(vFields[11].c_str());
+
+                // 成交量
+                DepthMarketData.Volume = atol(vFields[15].c_str());
+
+                // 买一
+                DepthMarketData.BidPrice1 = atof(vFields[7].c_str());
+                DepthMarketData.BidVolume1 = atol(vFields[12].c_str());
+
+                // 卖一
+                DepthMarketData.AskPrice1 = atof(vFields[8].c_str());
+                DepthMarketData.AskVolume1 = atol(vFields[13].c_str());
+                sprintf(DepthMarketData.ActionDay, "%4.4s%2.2s%2.2s", vFields[18].c_str(), vFields[18].c_str() + 5, vFields[18].c_str() + 8);
+                // strncpy(DepthMarketData.UpdateTime, vFields[18].c_str()+11, sizeof(DepthMarketData.UpdateTime)-1);
+                sprintf(DepthMarketData.TradingDay, "%4.4s%2.2s%2.2s", vFields[18].c_str(), vFields[18].c_str() + 5, vFields[18].c_str() + 8);
             }
             else {
                 // A股
@@ -314,8 +348,10 @@ void CFtdcMdApiImpl::OnSnapTime(const boost::system::error_code& error)
 
     // make url
     std::string prefix = "/list=";
-    std::string querystr = prefix; // "/list=sh600000,sz000001,bj833266,hk00700,gb_aapl"
+    std::string querystr = prefix; // "/list=sh600000,sz000001,bj833266,hk00700,gb_aapl,ag2404"
+    
     for (auto iter = _mInstruments.begin(); iter != _mInstruments.end(); iter++) {
+        bool need_upper = false;
         if (querystr != prefix)
             querystr += ",";
         if(iter->first.length()==5 && isdigit(*iter->first.c_str()))
@@ -341,10 +377,19 @@ void CFtdcMdApiImpl::OnSnapTime(const boost::system::error_code& error)
             || memcmp(iter->first.c_str(), "87", 2) == 0
             || memcmp(iter->first.c_str(), "88", 2) == 0)
             querystr += "bj";
-        else
+        // first char is a-z or A-Z last is a digit
+        else if(isalpha(*iter->first.c_str()) && isdigit(*(iter->first.c_str()+2))){
+            querystr += "nf_";
+            need_upper = true;
+        }
+        else 
             querystr += "gb_";
-        querystr += iter->first;
+        std::string may_upper = iter->first;
+        boost::algorithm::to_upper(may_upper);
+        querystr += need_upper? may_upper : iter->first;
+
     }
+
     query(querystr.c_str());
 
     m_snap_timer.expires_from_now(boost::posix_time::milliseconds(snaptime * 1000));

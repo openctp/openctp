@@ -5,32 +5,23 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include <boost/asio.hpp>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
 #include <vector>
 #include <string>
+#include <map>
+
+#include <boost/asio.hpp>
+
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
-#include <boost/asio/strand.hpp>
-#include <cstdlib>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <string>
+
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
-#include <boost/program_options.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp> 
-#include <boost/typeof/typeof.hpp> 
-#include <fstream>
-#include <limits>
+
 #include <boost/thread.hpp>
+#include <boost/typeof/typeof.hpp>
+
 #include "ThostFtdcMdApi.h"
 
 namespace beast = boost::beast;         // from <boost/beast.hpp>
