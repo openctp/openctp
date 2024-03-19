@@ -17,6 +17,22 @@ xxxprint系列工具已发布CTP、XTP、恒生等8个柜台版本，只是查�
 
 TTS工具ttsprint就是拿ctpprint换上了TTS对应的仿ctp接口dll，dll版本是6.3.15。其实XTP、STP也可以拿ctpprint换上相应的仿ctp接口dll，但是这批工具针对的是原生接口开发辅助，所以CTP、XTP、STP都是基于官方发布的接口做的，以便开发者了解原生接口开发逻辑。
 
+### 使用方法：
+
+以ctpprint为例子
+
+构建
+```
+cd ctpprint
+MSBuild.exe ctpprint.vcxproj /p:OutDir="."
+```
+
+运行
+```
+ctpprint [host] [broker] [user] [password] [appid] [authcode]
+ctpprint tcp://180.168.146.187:10130 9999 000001 888888 simnow_client_test 0000000000000000
+```
+
 ### ctpdemo运行效果：
 
 ![img](https://pic1.zhimg.com/80/v2-56b9e17d7c94fffbb2c7c9aa77957f04_720w.jpg)
