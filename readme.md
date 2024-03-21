@@ -2,7 +2,7 @@
 
 [openctp](https://github.com/openctp/openctp)是一个以CTP生态为基础的平台，既提供了华鑫证券奇点、中泰证券XTP、东方财富EMT、东方证券OST等柜台的[CTPAPI](https://github.com/openctp/openctp)兼容接口，也提供了一套与上期技术SimNow模拟环境类似的模拟环境，也支持CTPAPI接口，不仅提供国内各期货交易所的期货与期权品种模拟交易，还提供了A股的股票、基金、债券以及股票期权模拟交易，也支持港股、美股等市场模拟交易。
 
-openctp还提供了CTPAPI的Python接口，开发了CTP交易客户端[ViTrader](https://github.com/openctp/ViTrader)并开放了源码，还开发了图形界面的交易客户端[TickTrader](https://github.com/openctp/TickTrader),都支持openctp、CTP、CTP股票期权、中泰XTP、华鑫奇点股票与股票期权等柜台。
+openctp还提供了CTPAPI的Python接口，开发了CTP交易客户端[ViTrader](https://github.com/openctp/ViTrader)并开放了源码，还开发了图形界面的交易客户端[TickTrader](http://www.openctp.cn/download.html),都支持openctp、CTP、CTP股票期权、中泰XTP、华鑫奇点股票与股票期权等柜台。
 
 openctp还做了一套websocket接口的CTP服务，[webctp](https://github.com/openctp/webctp)，将CTP的服务以websocket+json形式对外提供服务，也开放了源码。
 
@@ -73,18 +73,18 @@ openctp模拟环境有三套，一套7x24环境，不间断循环播放最新交
 openctp模拟环境不检查这几个字段，3项均可不填。
 
 ## 7x24模拟环境
-- 交易前置 - tcp://121.37.80.177:20002
-- 行情前置 - tcp://121.37.80.177:20004
+- 交易前置 - tcp://121.37.80.177:20002，或者使用域名tcp://openctp.cn:20002
+- 行情前置 - tcp://121.37.80.177:20004，或者使用域名tcp://openctp.cn:20004
 ## 仿真环境
 - 交易前置 - tcp://121.37.90.193:20002
-- 行情前置 - 无（期货行情见[CTP柜台实盘环境监控](http://121.37.80.177/env.html)）
+- 行情前置 - 无（期货实盘行情前置见[CTP柜台实盘环境监控](http://www.openctp.cn/env.html)）
 ## 仿真环境
 - 交易前置 - tcp://42.192.226.242:20002
-- 行情前置 - 无（期货行情见[CTP柜台实盘环境监控](http://121.37.80.177/env.html)）
+- 行情前置 - 无（期货实盘行情前置见[CTP柜台实盘环境监控](http://www.openctp.cn/env.html)）
 # openctp监控平台
-openctp提供了一个集中监控SimNow、华鑫N视界、中泰XTP、东财EMT等模拟环境的监控平台，当然也包括openctp自己的模拟环境，有几个环境，有没开着，一眼就知道了，点这里看看：[openctp模拟环境监控](http://121.37.80.177)。
+openctp提供了一个集中监控SimNow、华鑫N视界、中泰XTP、东财EMT等模拟环境的监控平台，当然也包括openctp自己的模拟环境，有几个环境，有没开着，一眼就知道了，点这里看看：[openctp模拟环境监控](http://www.openctp.cn)。
 
-openctp还提供了对几十家主流期货公司CTP柜台实盘环境的监控，并且标出了提供上期所免费5档行情支持的期货公司，点这里一看就知道了：[CTP柜台实盘环境监控](http://121.37.80.177/env.html)。
+openctp还提供了对几十家主流期货公司CTP柜台实盘环境的监控，并且标出了提供上期所免费5档行情支持的期货公司，点这里一看就知道了：[CTP柜台实盘环境监控](http://www.openctp.cn/env.html)。
 
 ![613dc093f916d1bf0764e5365f202ff](https://user-images.githubusercontent.com/83346523/148802378-2c9b3d3f-1959-4aab-851a-cf55666806d8.png)
 
@@ -99,10 +99,10 @@ openctp还提供了对几十家主流期货公司CTP柜台实盘环境的监控�
 **股票柜台接口与接入问题请加QQ群 127235179 咨询。**
 
 # **CTPAPI及各柜台CTPAPI兼容接口下载：**
-[CTP、TTS、XTP、TORA等柜台接口下载](http://121.37.80.177/download.html)
+[CTP、TTS、XTP、TORA等柜台接口下载](http://www.openctp.cn/download.html)
 
 # **已官方支持TTS通道（CTP开放平台）的产品：**
-- [TickTrader（openctp出品的交易客户端，支持全球市场交易，支持TTS、CTP、华鑫证券等柜台）](https://github.com/openctp/TickTrader)
+- [TickTrader（openctp出品的交易客户端，支持全球市场交易，支持TTS、CTP、华鑫证券等柜台）](http://www.openctp.cn/download.html)
 ![image](https://github.com/openctp/openctp/assets/83346523/bc458496-172b-4cb3-bc70-dbde12c0bc17)
 
 - [vn.py（知名Python量化交易客户端，支持全球市场交易）](https://www.vnpy.com/)
@@ -111,7 +111,7 @@ openctp还提供了对几十家主流期货公司CTP柜台实盘环境的监控�
 - [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ群：967352413，备注openctp。）](https://www.zhihu.com/people/mt5ctp)
 <img src="https://user-images.githubusercontent.com/83346523/136989596-b12d91e8-48a0-4b26-bcaf-fdfca52d962c.png" alt="mt5ctp" width="700" height="400" />
 
-- [TextTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/krenx1983/TextTrader)
+- [TextTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/openctp/TextTrader)
 <img src="https://user-images.githubusercontent.com/83346523/136989754-1f0130e6-5d75-427f-bbf3-7ed084b6eae1.png" alt="texttrader" width="700" height="400" />
 
 - [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架，QQ群：610730738，备注openctp。）](https://www.zhihu.com/column/c_1338797723131740161)
