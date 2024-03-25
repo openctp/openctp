@@ -27,6 +27,7 @@ openctp还有更多的产品和服务在研发中。。。
 - tools：生产力工具。
 - docs：开发文档及行业资料。
 - ctpapi-python：CTPAPI的Python接口（openctp官方开发）。
+- ctpapi-opt-python：CTP股票期权API的Python接口（openctp官方开发）。
 - ctpapi-java：CTPAPI的Java接口。
 - ctpapi-go：CTPAPI的Go接口。
 - ctpapi-c：CTPAPI的C语言接口。
