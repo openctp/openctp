@@ -82,11 +82,11 @@ openctp模拟环境不检查这几个字段，3项均可不填。
 - 交易前置 - tcp://42.192.226.242:20002
 - 行情前置 - 无（期货实盘行情前置见[CTP柜台实盘环境监控](http://www.openctp.cn/env.html)）
 # openctp监控平台
-openctp提供了一个集中监控SimNow、华鑫N视界、中泰XTP、东财EMT等模拟环境的监控平台，当然也包括openctp自己的模拟环境，有几个环境，有没开着，一眼就知道了，点这里看看：[openctp模拟环境监控](http://www.openctp.cn)。
+openctp提供了一个集中监控SimNow、华鑫N视界、中泰XTP、东财EMT等模拟环境的监控平台，当然也包括openctp自己的模拟环境，有几个环境，有没开着，一眼就知道了，点这里看看：[CTP接口模拟环境监控](http://www.openctp.cn)。
 
 openctp还提供了对几十家主流期货公司CTP柜台实盘环境的监控，并且标出了提供上期所免费5档行情支持的期货公司，点这里一看就知道了：[CTP柜台实盘环境监控](http://www.openctp.cn/env.html)。
 
-![613dc093f916d1bf0764e5365f202ff](https://user-images.githubusercontent.com/83346523/148802378-2c9b3d3f-1959-4aab-851a-cf55666806d8.png)
+<img width="662" alt="monitor" src="https://github.com/openctp/openctp/assets/83346523/a28557e1-d9df-4ffa-9aef-959415c06714">
 
 # **CTPAPI及各柜台CTPAPI兼容接口下载：**
 [CTP、TTS、XTP、TORA等柜台接口下载](http://www.openctp.cn/download.html)
@@ -95,7 +95,7 @@ openctp还提供了对几十家主流期货公司CTP柜台实盘环境的监控�
 - [TickTrader（openctp研发的交易客户端，支持点价下单，支持全球市场交易，支持CTP、CTP股票期权、TTS、华鑫证券股票与股票期权等柜台）](http://www.openctp.cn/download.html)
 ![image](https://github.com/openctp/openctp/assets/83346523/bc458496-172b-4cb3-bc70-dbde12c0bc17)
 
-- [MiniTrader（openctp研发的CTP交易客户端，支持点价下单，支持CTP、TTS、华鑫证券股票与股票期权等柜台）](https://github.com/openctp/MiniTrader)
+- [MiniTrader（openctp研发的CTP交易客户端，支持点价下单，支持CTP、TTS、华鑫证券股票与股票期权等柜台）](http://www.openctp.cn/download.html)
 <img width="314" alt="MiniTrader" src="https://github.com/openctp/MiniTrader/assets/83346523/e8853aae-7695-44b3-ba8d-a8e1390cc93b">
 
 - [vn.py（知名Python量化交易客户端，支持全球市场交易）](https://www.vnpy.com/)
@@ -104,7 +104,7 @@ openctp还提供了对几十家主流期货公司CTP柜台实盘环境的监控�
 - [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ群：967352413，备注openctp。）](https://www.zhihu.com/people/mt5ctp)
 <img src="https://user-images.githubusercontent.com/83346523/136989596-b12d91e8-48a0-4b26-bcaf-fdfca52d962c.png" alt="mt5ctp" width="700" height="400" />
 
-- [TextTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/openctp/TextTrader)
+- [ViTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/openctp/ViTrader)
 <img src="https://user-images.githubusercontent.com/83346523/136989754-1f0130e6-5d75-427f-bbf3-7ed084b6eae1.png" alt="texttrader" width="700" height="400" />
 
 - [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架，QQ群：610730738，备注openctp。）](https://www.zhihu.com/column/c_1338797723131740161)
