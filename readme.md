@@ -11,8 +11,8 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
 ![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
 
 # 目录结构：
-- ctp2TTS：openctp模拟环境CTPAPI兼容接口。
-- ctpopt2TTS:openctp模拟环境CTP股票期权兼容接口。
+- [ctp2TTS](https://github.com/openctp/openctp/tree/master/ctp2TTS)：openctp模拟环境CTPAPI兼容接口。
+- [ctpopt2TTS](https://github.com/openctp/openctp/tree/master/ctpopt2TTS)：openctp模拟环境CTP股票期权兼容接口。
 - ctp2XTP：中泰证券XTP柜台CTPAPI兼容接口（含源码）。
 - ctp2STP：华鑫证券TORA奇点股票柜台CTPAPI兼容接口（含源码）。
 - ctp2EMT：东方财富EMT柜台CTPAPI兼容接口（含源码）。
