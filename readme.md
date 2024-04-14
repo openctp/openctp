@@ -2,7 +2,7 @@
 
 [openctp](https://github.com/openctp/openctp)是一个以CTP生态为基础的平台，既提供了华鑫证券奇点、中泰证券XTP、东方财富EMT、东方证券OST等柜台的[CTPAPI](https://github.com/openctp/openctp)兼容接口，也提供了一套与上期技术SimNow模拟环境类似的模拟环境，也支持CTPAPI接口，不仅提供国内各期货交易所的期货与期权品种模拟交易，还提供了A股的股票、基金、债券以及股票期权模拟交易，也支持港股、美股等市场模拟交易。
 
-openctp还提供了CTPAPI的Python接口，开发了CTP交易客户端[ViTrader](https://github.com/openctp/ViTrader)并开放了源码，还开发了图形界面的交易客户端[TickTrader](http://www.openctp.cn/download.html),都支持openctp、CTP、CTP股票期权、中泰XTP、华鑫奇点股票与股票期权等柜台，TickTrader的Mini版[MiniTrader](https://github.com/openctp/MiniTrader)采用openctp的CTPAPI兼容接口技术支持了CTP、TTS、华鑫证券股票与股票期权等柜台，无需自己再替换dll。
+openctp还提供了[CTPAPI的Python接口](https://github.com/openctp/openctp-ctp-python)以及[CTP股票期权API的Python接口](https://github.com/openctp/openctp-ctpopt-python)，开源了CTP命令行交易客户端[ViTrader](https://github.com/openctp/ViTrader)，还有图形界面交易客户端[TickTrader](http://www.openctp.cn/download.html)，以及Mini版的[MiniTrader](https://github.com/openctp/MiniTrader)都支持openctp、CTP、CTP股票期权、中泰XTP、华鑫奇点股票与股票期权等柜台，[MiniTrader](https://github.com/openctp/MiniTrader)采用openctp的CTPAPI兼容接口技术支持了CTP、TTS、华鑫证券股票与股票期权等柜台，无需自己再替换dll。
 
 openctp还做了一套websocket接口的CTP服务，[webctp](https://github.com/openctp/webctp)，将CTP的服务以websocket+json形式对外提供服务，也开放了源码。
 
@@ -26,8 +26,8 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
 - demo：CTPAPI开发相关的demo及工具源码。
 - tools：生产力工具。
 - docs：开发文档及行业资料。
-- ctpapi-python：CTPAPI的Python接口（openctp官方开发）。
-- ctpapi-opt-python：CTP股票期权API的Python接口（openctp官方开发）。
+- [ctpapi-python](https://github.com/openctp/openctp-ctp-python)：CTPAPI的Python接口（openctp官方开发）。
+- [ctpapi-opt-python](https://github.com/openctp/openctp-ctpopt-python)：CTP股票期权API的Python接口（openctp官方开发）。
 - ctpapi-java：CTPAPI的Java接口。
 - ctpapi-go：CTPAPI的Go接口。
 - ctpapi-c：CTPAPI的C语言接口。
