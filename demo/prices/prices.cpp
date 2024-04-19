@@ -179,39 +179,39 @@ column_item_t column_items[]={
 	{"涨幅",		10},
 #define COL_VOLUME			4		// 总量
 	{"总量",		10},
-#define COL_ADVANCE			6		// 涨跌
+#define COL_ADVANCE			5		// 涨跌
 	{"涨跌",		10},
-#define COL_OPEN			7		// 开盘
+#define COL_OPEN			6		// 开盘
 	{"开盘",		10},
-#define COL_HIGH			8		// 最高
+#define COL_HIGH			7		// 最高
 	{"最高",		10},
-#define COL_LOW				9		// 最低
+#define COL_LOW				8		// 最低
 	{"最低",		10},
-#define COL_BID_PRICE		10		// 买价
+#define COL_BID_PRICE		9		// 买价
 	{"买价",		10},
-#define COL_BID_VOLUME		11		// 买量
+#define COL_BID_VOLUME		10		// 买量
 	{"买量",		10},
-#define COL_ASK_PRICE		12		// 卖价
+#define COL_ASK_PRICE		11		// 卖价
 	{"卖价",		10},
-#define COL_ASK_VOLUME		13		// 卖量
+#define COL_ASK_VOLUME		12		// 卖量
 	{"卖量",		10},
-#define COL_PREV_SETTLEMENT	14		// 昨结
+#define COL_PREV_SETTLEMENT	13		// 昨结
 	{"昨结",		10},
-#define COL_SETTLEMENT		15		// 今结
+#define COL_SETTLEMENT		14		// 今结
 	{"今结",		10},
-#define COL_PREV_CLOSE		16		// 昨收
+#define COL_PREV_CLOSE		15		// 昨收
 	{"昨收",		10},
-#define COL_OPENINT			17		// 今仓
+#define COL_OPENINT			16		// 今仓
 	{"今仓",		10},
-#define COL_PREV_OPENINT	18		// 昨仓
+#define COL_PREV_OPENINT	17		// 昨仓
 	{"昨仓",		10},
-#define COL_HIGH_LIMIT		20		// 涨停
+#define COL_HIGH_LIMIT		18		// 涨停
 	{"涨停",		10},
-#define COL_LOW_LIMIT		21		// 跌停
+#define COL_LOW_LIMIT		19		// 跌停
 	{"跌停",		10},
-#define COL_EXCHANGE		22		// 交易所
+#define COL_EXCHANGE		20		// 交易所
 	{"交易所",		10},
-#define COL_TRADINGDAY		23		// 交易日
+#define COL_TRADINGDAY		21		// 交易日
 	{"交易日",		10}
 };
 std::vector<int> vcolumns;	// columns in order

@@ -18,6 +18,7 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
 - ctp2EMT：东方财富EMT柜台CTPAPI兼容接口（含源码）。
 - ctp2STPOPT：华鑫证券TORA奇点股票期权柜台CTPAPI兼容接口。
 - ctp2OST：东方证券OST柜台CTPAPI兼容接口。
+- ctp2YD：易达柜台CTPAPI兼容接口。（易达官方提供）
 - ctp2IB：盈透证券TWS平台CTPAPI兼容接口。
 - ctp2QDP：量投QDP柜台CTPAPI兼容接口。
 - ctp2TAP：易盛TAP启明星柜台CTPAPI兼容接口。
