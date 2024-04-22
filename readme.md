@@ -99,7 +99,7 @@ openctp还提供了对几十家主流期货公司CTP柜台实盘环境的监控�
 ![image](https://github.com/openctp/openctp/assets/83346523/bc458496-172b-4cb3-bc70-dbde12c0bc17)
 
 - [MiniTrader（openctp研发的CTP交易客户端，支持点价下单，支持CTP、TTS、华鑫证券股票与股票期权等柜台）](http://www.openctp.cn/download.html)
-<img width="314" alt="MiniTrader" src="https://github.com/openctp/MiniTrader/assets/83346523/e8853aae-7695-44b3-ba8d-a8e1390cc93b">
+<img width="698" alt="MiniTrader" src="https://github.com/openctp/openctp/assets/83346523/207d2dbd-8baa-4c06-b421-78faae74484d">
 
 - [vn.py（知名Python量化交易客户端，支持全球市场交易）](https://www.vnpy.com/)
 <img src="https://user-images.githubusercontent.com/83346523/136988918-1159fc88-073e-4b6f-a8d6-3f33991e8a72.png" alt="vnpy" width="700" height="400" />
