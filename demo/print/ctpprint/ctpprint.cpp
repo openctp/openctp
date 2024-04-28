@@ -350,8 +350,8 @@ public:
 		}
 
 		if(pTrade)
-			printf("OnRspQryTrade:BrokerID:%s,BrokerOrderSeq:%d,OrderLocalID:%s,InstrumentID:%s,Direction:%s,Volume:%d,Price:%lf,OrderSysID:%s,OrderRef:%s,ExchangeID:%s,TradeTime:%s,ClientID:%s,InvestUnitID:%s\n",
-				pTrade->BrokerID, pTrade->BrokerOrderSeq, pTrade->OrderLocalID, pTrade->InstrumentID, direction_to_string(pTrade->Direction).c_str(), pTrade->Volume, pTrade->Price, pTrade->OrderSysID, pTrade->OrderRef, pTrade->ExchangeID, pTrade->TradeTime,pTrade->ClientID,pTrade->InvestUnitID);
+			printf("OnRspQryTrade:BrokerID:%s,BrokerOrderSeq:%d,OrderLocalID:%s,InstrumentID:%s,Direction:%s,Volume:%d,Price:%lf,OrderSysID:%s,TradeID:%s,OrderRef:%s,ExchangeID:%s,TradeTime:%s,ClientID:%s,InvestUnitID:%s\n",
+				pTrade->BrokerID, pTrade->BrokerOrderSeq, pTrade->OrderLocalID, pTrade->InstrumentID, direction_to_string(pTrade->Direction).c_str(), pTrade->Volume, pTrade->Price, pTrade->OrderSysID, pTrade->TradeID, pTrade->OrderRef, pTrade->ExchangeID, pTrade->TradeTime,pTrade->ClientID,pTrade->InvestUnitID);
 
 		if (bIsLast) {
 			_semaphore.signal();
@@ -415,8 +415,8 @@ public:
 	// 成交回报
 	void OnRtnTrade(CThostFtdcTradeField* pTrade)
 	{
-		printf("OnRtnTrade:BrokerID:%s,BrokerOrderSeq:%d,OrderLocalID:%s,InstrumentID:%s,Direction:%s,Volume:%d,Price:%lf,OrderSysID:%s,OrderRef:%s,ExchangeID:%s,TradeTime:%s,ClientID:%s,InvestUnitID:%s\n",
-			pTrade->BrokerID, pTrade->BrokerOrderSeq, pTrade->OrderLocalID, pTrade->InstrumentID, direction_to_string(pTrade->Direction).c_str(), pTrade->Volume, pTrade->Price, pTrade->OrderSysID, pTrade->OrderRef, pTrade->ExchangeID, pTrade->TradeTime,pTrade->ClientID,pTrade->InvestUnitID);
+		printf("OnRtnTrade:BrokerID:%s,BrokerOrderSeq:%d,OrderLocalID:%s,InstrumentID:%s,Direction:%s,Volume:%d,Price:%lf,OrderSysID:%s,TradeID:%s,OrderRef:%s,ExchangeID:%s,TradeTime:%s,ClientID:%s,InvestUnitID:%s\n",
+			pTrade->BrokerID, pTrade->BrokerOrderSeq, pTrade->OrderLocalID, pTrade->InstrumentID, direction_to_string(pTrade->Direction).c_str(), pTrade->Volume, pTrade->Price, pTrade->OrderSysID, pTrade->TradeID, pTrade->OrderRef, pTrade->ExchangeID, pTrade->TradeTime,pTrade->ClientID,pTrade->InvestUnitID);
 	}
 
 	// 报单错误
