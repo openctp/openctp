@@ -6,8 +6,9 @@ last modify: 2024/5/2
 """
 
 import sys
-import thosttraderapi as tdapi
 import threading
+from openctp_ctp import tdapi
+#import thosttraderapi as tdapi
 
 class CTPTelnet(tdapi.CThostFtdcTraderSpi):
     def __init__(self, host,broker,user,password,appid,authcode):
@@ -32,10 +33,6 @@ class CTPTelnet(tdapi.CThostFtdcTraderSpi):
         req.ExchangeID = exchangeid
         req.ProductID = productid
         req.InstrumentID = instrumentid
-        # if productclass == "futures":
-        #    req.ProductClass = tdapi.THOST_FTDC_PC_Futures
-        #elif productclass == "options":
-        #    req.ProductClass = tdapi.THOST_FTDC_PC_Options
         self.api.ReqQryInstrument(req, 0)
 
     def QryExchange(self):
@@ -73,7 +70,6 @@ class CTPTelnet(tdapi.CThostFtdcTraderSpi):
         req.AppID = self.appid
         req.AuthCode = self.authcode
         self.api.ReqAuthenticate(req, 0)
-
 
     def OnFrontDisconnected(self, nReason: int) -> "void":
         print(f"OnFrontDisconnected.[nReason={nReason}]")

@@ -32,9 +32,6 @@ class Product:
     ProductID: str
     ProductName: str
 
-def dataclass_to_dict(obj):
-    return obj.__dict__
-
 class CTPDump(tdapi.CThostFtdcTraderSpi):
     def __init__(self, host,broker,user,password,appid,authcode):
         self.broker = broker
