@@ -155,7 +155,7 @@ class CTPDump(tdapi.CThostFtdcTraderSpi):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 7:
+    if len(sys.argv) == 7:
         print("Usage: {} host broker user password appid authcode".format(sys.argv[0]))
         print("example: {} tcp://180.168.146.187:10130 9999 000001 888888 simnow_client_test 0000000000000000".format(sys.argv[0]))
         exit(0)
