@@ -4,6 +4,7 @@
 #include <mutex>
 #include <functional>
 #include <condition_variable>
+#include <iostream>
 #include "TapTradeAPI.h"
 #include "TapAPIError.h"
 
@@ -54,6 +55,7 @@ public:
 		m_appid(appid),
 		m_authcode(authcode)
 	{
+		m_SessionID = 0;
 		TAPIINT32 iResult = TAPIERROR_SUCCEED;
 		TapAPIApplicationInfo stAppInfo;
 		strcpy(stAppInfo.AuthCode, TAP_AUTHCODE);
@@ -106,14 +108,15 @@ public:
 	}
 
 	// 下单
-	int OrderInsert(const char* ExchangeID, const char* InstrumentID, TAPISideType Direction, TAPIPositionEffectType PositionEffect, double Price, unsigned int Qty)
+	int OrderInsert(const char* ExchangeID, TAPICommodityType CommodityType, const char* CommodityNo, const char* InstrumentID, TAPISideType Direction, TAPIPositionEffectType PositionEffect, double Price, unsigned int Qty)
 	{
-		TapAPINewOrder Req;
+		TapAPINewOrder Req = { 0 };
 
-		memset(&Req, 0x00, sizeof(Req));
 		strncpy_s(Req.AccountNo, m_user.c_str(), sizeof(Req.AccountNo) - 1);
-		strncpy_s(Req.ContractNo, InstrumentID, sizeof(Req.ContractNo) - 1);
 		strncpy_s(Req.ExchangeNo, ExchangeID, sizeof(Req.ExchangeNo) - 1);
+		Req.CommodityType = CommodityType;
+		strncpy_s(Req.CommodityNo, CommodityNo, sizeof(Req.CommodityNo) - 1);
+		strncpy_s(Req.ContractNo, InstrumentID, sizeof(Req.ContractNo) - 1);
 		Req.OrderSide = Direction;
 		Req.PositionEffect = PositionEffect;
 		Req.HedgeFlag = TAPI_HEDGEFLAG_T;
@@ -122,21 +125,48 @@ public:
 		Req.OrderType = TAPI_ORDER_TYPE_LIMIT;
 		Req.TimeInForce = TAPI_ORDER_TIMEINFORCE_GFD;
 		Req.OrderMinQty = 1;
-		Req.TriggerCondition = TAPI_TRIGGER_CONDITION_NONE;
 
-		return m_pTdApi->InsertOrder(nullptr, &Req);
+		Req.RefInt = 999;
+		strncpy_s(Req.RefString, "xxx", sizeof(Req.RefString) - 1);
+
+		Req.TriggerCondition = TAPI_TRIGGER_CONDITION_NONE;
+		Req.CallOrPutFlag = TAPI_CALLPUT_FLAG_NONE;
+		Req.CallOrPutFlag2 = TAPI_CALLPUT_FLAG_NONE;
+		Req.PositionEffect2 = TAPI_PositionEffect_NONE;
+		Req.HedgeFlag2 = TAPI_HEDGEFLAG_NONE;
+		Req.IsRiskOrder = APIYNFLAG_NO;
+		Req.OrderSource = TAPI_ORDER_SOURCE_ESUNNY_API;
+		Req.AddOneIsValid = APIYNFLAG_NO;
+		Req.TacticsType = TAPI_TACTICS_TYPE_NONE;
+		Req.TriggerCondition = TAPI_TRIGGER_CONDITION_NONE;
+		Req.TriggerPriceType = TAPI_TRIGGER_PRICE_NONE;
+		Req.MarketLevel = TAPI_MARKET_LEVEL_0;
+		Req.FutureAutoCloseFlag = APIYNFLAG_NO;
+
+		int r = m_pTdApi->InsertOrder(&m_SessionID, &Req);
+		if (r != 0) {
+			std::cout << "InsertOrder failed. r=" << r << std::endl;
+			return -1;
+		}
+
+		return 0;
 	}
 
 	// 撤单
-	int OrderCancel(TAPIINT32 RefInt, const char* OrderNo)
+	int OrderCancel(const char* OrderNo)
 	{
-		TapAPIOrderCancelReq Req;
+		TapAPIOrderCancelReq Req = { 0 };
 
-		memset(&Req, 0x00, sizeof(Req));
-		Req.RefInt = RefInt;
+		//Req.ServerFlag = 'x';
 		strncpy_s(Req.OrderNo, OrderNo, sizeof(Req.OrderNo) - 1);
 
-		return m_pTdApi->CancelOrder(nullptr, &Req);
+		int r = m_pTdApi->CancelOrder(&m_SessionID, &Req);
+		if (r != 0) {
+			std::cout << "CancelOrder failed. r=" << r << std::endl;
+			return -1;
+		}
+
+		return 0;
 	}
 
 	//连接成功
@@ -262,8 +292,8 @@ public:
 		}
 
 		if(info)
-			printf("OnRspQryOrder:ParentAccountNo:%s,UpperUserNo:%s,OrderLocalNo:%s,ContractNo:%s,Direction:%s,OrderQty:%d,OrderPrice:%lf,OrderMatchQty:%d,OrderExchangeSystemNo:%s,ClientOrderNo:%s,OrderState:%c,ExchangeNo:%s,OrderInsertTime:%s\n",
-				info->ParentAccountNo, info->UpperUserNo, info->OrderLocalNo, info->ContractNo, direction_to_string(info->OrderSide).c_str(), info->OrderQty, info->OrderPrice, info->OrderMatchQty, info->OrderExchangeSystemNo, info->ClientOrderNo, info->OrderState, info->ExchangeNo, info->OrderInsertTime);
+			printf("OnRspQryOrder:ParentAccountNo:%s,UpperUserNo:%s,OrderLocalNo:%s,ContractNo:%s,OrderNo:%s,Direction:%s,OrderQty:%d,OrderPrice:%lf,OrderMatchQty:%d,OrderExchangeSystemNo:%s,ClientOrderNo:%s,OrderState:%c,ExchangeNo:%s,OrderInsertTime:%s,RefInt:%d,RefString=%s,ServerFlag:%c,ErrorText:%s\n",
+				info->ParentAccountNo, info->UpperUserNo, info->OrderLocalNo, info->ContractNo, info->OrderNo, direction_to_string(info->OrderSide).c_str(), info->OrderQty, info->OrderPrice, info->OrderMatchQty, info->OrderExchangeSystemNo, info->ClientOrderNo, info->OrderState, info->ExchangeNo, info->OrderInsertTime, info->RefInt, info->RefString, info->ServerFlag, info->ErrorText);
 
 		if (APIYNFLAG_YES == isLast) {
 			g_semaphore.signal();
@@ -322,27 +352,53 @@ public:
 	// 委托回报
 	void TAP_CDECL OnRtnOrder(const TapAPIOrderInfoNotice* info)
 	{
-		printf("OnRtnOrder:AccountNo:%s,ExchangeNo:%s,ContractNo:%s,OrderNo:%s,OrderSystemNo:%s,OrderExchangeSystemNo:%s,MatchSide:%s,MatchPrice:%lf,MatchQty:%u,MatchDateTime:%s\n",
-			info->OrderInfo->AccountNo, info->OrderInfo->ExchangeNo, info->OrderInfo->ContractNo, info->OrderInfo->OrderNo, info->OrderInfo->OrderSystemNo, info->OrderInfo->OrderExchangeSystemNo, direction_to_string(info->OrderInfo->OrderSide).c_str(), info->OrderInfo->OrderPrice, info->OrderInfo->OrderQty, info->OrderInfo->OrderInsertTime);
+		printf("OnRtnOrder:AccountNo:%s,ExchangeNo:%s,ContractNo:%s,OrderNo:%s,OrderSystemNo:%s,OrderExchangeSystemNo:%s,OrderSide:%s,OrderPrice:%lf,OrderQty:%u,OrderInsertTime:%s,ErrorText:%s,OrderState:%c,RefInt:%d,RefString=%s,ServerFlag:%c,OrderLocalNo=%s\n",
+			info->OrderInfo->AccountNo, info->OrderInfo->ExchangeNo, info->OrderInfo->ContractNo, info->OrderInfo->OrderNo, info->OrderInfo->OrderSystemNo, info->OrderInfo->OrderExchangeSystemNo, direction_to_string(info->OrderInfo->OrderSide).c_str(), info->OrderInfo->OrderPrice, info->OrderInfo->OrderQty, info->OrderInfo->OrderInsertTime, info->OrderInfo->ErrorText, info->OrderInfo->OrderState, info->OrderInfo->RefInt, info->OrderInfo->RefString, info->OrderInfo->ServerFlag, info->OrderInfo->OrderLocalNo);
 	}
 
 	// 成交回报
 	void TAP_CDECL OnRtnFill(const TapAPIFillInfo* info)
 	{
-		printf("OnRtnFill:AccountNo:%s,ExchangeNo:%s,ContractNo:%s,OrderNo:%s,OrderExchangeNo:%s,ExchangeMatchNo:%s,MatchSide:%s,MatchPrice:%lf,MatchQty:%u,MatchDateTime:%s\n",
-			info->AccountNo, info->ExchangeNo, info->ContractNo, info->OrderNo, info->OrderExchangeNo, info->ExchangeMatchNo, direction_to_string(info->MatchSide).c_str(), info->MatchPrice, info->MatchQty, info->MatchDateTime);
+		printf("OnRtnFill:AccountNo:%s,ExchangeNo:%s,ContractNo:%s,OrderNo:%s,OrderExchangeNo:%s,ExchangeMatchNo:%s,MatchSide:%s,MatchPrice:%lf,MatchQty:%u,MatchDateTime:%s,ServerFlag:%c,OrderLocalNo=%s\n",
+			info->AccountNo, info->ExchangeNo, info->ContractNo, info->OrderNo, info->OrderExchangeNo, info->ExchangeMatchNo, direction_to_string(info->MatchSide).c_str(), info->MatchPrice, info->MatchQty, info->MatchDateTime, info->ServerFlag, info->OrderLocalNo);
+	}
+
+	void TAP_CDECL OnRtnPosition(const TapAPIPositionInfo* info)
+	{
+		if (info)
+			printf("OnRtnPosition:InstrumentID:%s,PosiDirection:%s,HedgeFlag:%c,PositionQty:%d,PositionPrice:%lf,ExchangeID:%s\n",
+				info->ContractNo, direction_to_string(info->MatchSide).c_str(), info->HedgeFlag, info->PositionQty, info->PositionPrice, info->ExchangeNo);
+	}
+
+	void TAP_CDECL OnRtnFund(const TapAPIFundData* info)
+	{
+		if (info)
+			printf("OnRtnFund:AccountNo:%s,PreEquity:%lf,Equity:%lf,Available:%lf,AccountMaintenanceMargin:%lf,FrozenDeposit:%lf,CloseProfit:%lf,PositionProfit:%lf,AccountFee:%lf\n",
+				info->AccountNo, info->PreEquity, info->Equity, info->Available, info->AccountMaintenanceMargin, info->FrozenDeposit, info->CloseProfit, info->PositionProfit, info->AccountFee);
+	}
+
+	void TAP_CDECL OnRtnContract(const TapAPITradeContractInfo* info)
+	{
+		if (info)
+			printf("OnRtnContract:ContractNo1:%s,ContractName:%s,CommodityNo:%s,FutureContractNo:%s,StrikePrice1:%s,ExchangeNo:%s\n", info->ContractNo1, info->ContractName, info->CommodityNo, info->FutureContractNo, info->StrikePrice1, info->ExchangeNo);
+	}
+
+	void TAP_CDECL OnRtnClose(const TapAPICloseInfo* info)
+	{
+	}
+
+	void TAP_CDECL OnRtnPositionProfit(const TapAPIPositionProfitNotice* info)
+	{
+		if (info)
+			printf("OnRtnPositionProfit:PositionNo:%s,PositionProfit:%lf,FloatingPL:%lf\n",
+				info->Data->PositionNo, info->Data->PositionProfit, info->Data->FloatingPL);
 	}
 
 	void TAP_CDECL OnRspChangePassword(TAPIUINT32 sessionID, TAPIINT32 errorCode) {}
 	void TAP_CDECL OnRspSetReservedInfo(TAPIUINT32 sessionID, TAPIINT32 errorCode, const TAPISTR_50 info) {}
 	void TAP_CDECL OnRspQryAccount(TAPIUINT32 sessionID, TAPIUINT32 errorCode, TAPIYNFLAG isLast, const TapAPIAccountInfo* info) {}
-	void TAP_CDECL OnRtnFund(const TapAPIFundData* info) {}
-	void TAP_CDECL OnRtnContract(const TapAPITradeContractInfo* info) {}
 	void TAP_CDECL OnRspQryOrderProcess(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPIOrderInfo* info) {}
-	void TAP_CDECL OnRtnPosition(const TapAPIPositionInfo* info) {}
 	void TAP_CDECL OnRspQryClose(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPICloseInfo* info) {}
-	void TAP_CDECL OnRtnClose(const TapAPICloseInfo* info) {}
-	void TAP_CDECL OnRtnPositionProfit(const TapAPIPositionProfitNotice* info) {}
 	void TAP_CDECL OnRspQryExchangeStateInfo(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPIExchangeStateInfo* info) {}
 	void TAP_CDECL OnRtnExchangeStateInfo(const TapAPIExchangeStateInfoNotice* info) {}
 	void TAP_CDECL OnRtnReqQuoteNotice(const TapAPIReqQuoteNotice* info) {}
@@ -361,6 +417,7 @@ public:
 	std::string m_appid;
 	std::string m_authcode;
 	unsigned int m_nOrderRef;
+	TAPIUINT32 m_SessionID;
 
 	ITapTradeAPI* m_pTdApi;
 };
@@ -394,7 +451,11 @@ int main(int argc, char* argv[])
 	// 查询交易所
 	printf("查询交易所 ...\n");
 	TAPIUINT32 SessionID=0;
-	Spi.m_pTdApi->QryExchange(&SessionID);
+	int r;
+	if ((r = Spi.m_pTdApi->QryExchange(&SessionID)) != 0) {
+		std::cout << "QryExchange failed. r=" << r << std::endl;
+		return -1;
+	}
 	g_semaphore.wait();
 
 	// 查询品种
@@ -454,20 +515,15 @@ int main(int argc, char* argv[])
 	Spi.m_pTdApi->QryFund(&SessionID, &FundReq);
 
 	// 如需下单、撤单，放开下面的代码即可
-	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	//printf("按任意键下单 ...\n");
-	//getchar();
-	//Spi.OrderInsert("SHFE", "au2206", THOST_FTDC_D_Buy, THOST_FTDC_OF_Open, 380.0, 3);
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("按任意键下单 ...\n");
+	getchar();
+	Spi.OrderInsert("SHFE", TAPI_COMMODITY_TYPE_FUTURES, "AG", "2406", TAPI_SIDE_BUY, TAPI_PositionEffect_OPEN, 7100, 1);
 
-	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	//printf("按任意键下单 ...\n");
-	//getchar();
-	//Spi.OrderInsert("CFFEX", "IF2201", THOST_FTDC_D_Sell, THOST_FTDC_OF_Open, 5000.0, 1);
-
-	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	//printf("按任意键撤单 ...\n");
-	//getchar();
-	//Spi.OrderCancel("CFFEX", "IF2201", "xxx");
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("按任意键撤单 ...\n");
+	getchar();
+	Spi.OrderCancel("2024050900000098558");
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	printf("按任意键退出 ...\n");
