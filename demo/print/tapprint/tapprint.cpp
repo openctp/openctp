@@ -309,8 +309,8 @@ public:
 		}
 
 		if(info)
-			printf("OnRspQryFill:ParentAccountNo:%s,UpperUserNo:%s,OrderLocalNo:%s,ContractNo:%s,Direction:%s,MatchQty:%d,MatchPrice:%lf,OrderExchangeNo:%s,TradeNo:%s,ExchangeNo:%s,MatchDateTime:%s\n",
-				info->ParentAccountNo, info->UpperUserNo, info->OrderLocalNo, info->ContractNo, direction_to_string(info->MatchSide).c_str(), info->MatchQty, info->MatchPrice, info->OrderExchangeNo, info->TradeNo, info->ExchangeNo, info->MatchDateTime);
+			printf("OnRspQryFill:ParentAccountNo:%s,UpperUserNo:%s,OrderLocalNo:%s,ContractNo:%s,Direction:%s,MatchQty:%d,MatchPrice:%lf,OrderExchangeNo:%s,ExchangeMatchNo:%s,TradeNo:%s,ExchangeNo:%s,MatchDateTime:%s,ServerFlag:%c\n",
+				info->ParentAccountNo, info->UpperUserNo, info->OrderLocalNo, info->ContractNo, direction_to_string(info->MatchSide).c_str(), info->MatchQty, info->MatchPrice, info->OrderExchangeNo, info->ExchangeMatchNo, info->TradeNo, info->ExchangeNo, info->MatchDateTime, info->ServerFlag);
 
 		if (APIYNFLAG_YES == isLast) {
 			g_semaphore.signal();
@@ -326,8 +326,8 @@ public:
 		}
 
 		if (info)
-			printf("OnRspQryPosition:InstrumentID:%s,PosiDirection:%s,HedgeFlag:%c,PositionQty:%d,PositionPrice:%lf,ExchangeID:%s\n",
-				info->ContractNo, direction_to_string(info->MatchSide).c_str(), info->HedgeFlag, info->PositionQty, info->PositionPrice, info->ExchangeNo);
+			printf("OnRspQryPosition:CommodityNo:%s,InstrumentID:%s,PosiDirection:%s,HedgeFlag:%c,PositionQty:%d,PositionPrice:%lf,ExchangeID:%s,OrderExchangeNo:%s,PositionNo:%s,MatchDate:%s,PositionProfit:%lf,PreSettlePrice:%lf,IsHistory:%c,ServerFlag:%c,OrderType:%c,ExchangeMatchNo:%s,MatchNo:%s\n",
+				info->CommodityNo, info->ContractNo, direction_to_string(info->MatchSide).c_str(), info->HedgeFlag, info->PositionQty, info->PositionPrice, info->ExchangeNo, info->OrderExchangeNo, info->PositionNo, info->MatchDate, info->PositionProfit, info->PreSettlePrice, info->IsHistory, info->ServerFlag, info->OrderType, info->ExchangeMatchNo, info->MatchNo);
 
 		if (APIYNFLAG_YES == isLast) {
 			g_semaphore.signal();
@@ -366,8 +366,8 @@ public:
 	void TAP_CDECL OnRtnPosition(const TapAPIPositionInfo* info)
 	{
 		if (info)
-			printf("OnRtnPosition:InstrumentID:%s,PosiDirection:%s,HedgeFlag:%c,PositionQty:%d,PositionPrice:%lf,ExchangeID:%s\n",
-				info->ContractNo, direction_to_string(info->MatchSide).c_str(), info->HedgeFlag, info->PositionQty, info->PositionPrice, info->ExchangeNo);
+			printf("OnRspQryPosition:CommodityNo:%s,InstrumentID:%s,PosiDirection:%s,HedgeFlag:%c,PositionQty:%d,PositionPrice:%lf,ExchangeID:%s,OrderExchangeNo:%s,PositionNo:%s,MatchDate:%s,PositionProfit:%lf,PreSettlePrice:%lf,IsHistory:%c,ServerFlag:%c,OrderType:%c,ExchangeMatchNo:%s,MatchNo:%s\n",
+				info->CommodityNo, info->ContractNo, direction_to_string(info->MatchSide).c_str(), info->HedgeFlag, info->PositionQty, info->PositionPrice, info->ExchangeNo, info->OrderExchangeNo, info->PositionNo, info->MatchDate, info->PositionProfit, info->PreSettlePrice, info->IsHistory, info->ServerFlag, info->OrderType, info->ExchangeMatchNo, info->MatchNo);
 	}
 
 	void TAP_CDECL OnRtnFund(const TapAPIFundData* info)
@@ -385,6 +385,9 @@ public:
 
 	void TAP_CDECL OnRtnClose(const TapAPICloseInfo* info)
 	{
+		if (info)
+			printf("OnRtnClose:AccountNo:%s,ExchangeNo:%s,ContractNo:%s,OpenOrderNo:%s,OpenOrderExchangeNo:%s,OpenExchangeMatchNo:%s,CloseOrderNo:%s,CloseOrderExchangeNo:%s,CloseExchangeMatchNo:%s,CloseSide:%s,ClosePrice:%lf,OpenPrice:%lf,CloseQty:%u,CloseMatchDateTime:%s,OpenMatchDateTime:%s,CloseServerFlag:%c,OpenServerFlag:%c\n",
+				info->AccountNo, info->ExchangeNo, info->ContractNo, info->OpenOrderNo, info->OpenOrderExchangeNo, info->OpenExchangeMatchNo, info->CloseOrderNo, info->CloseOrderExchangeNo, info->CloseExchangeMatchNo, direction_to_string(info->CloseSide).c_str(), info->ClosePrice, info->OpenPrice, info->CloseQty, info->CloseMatchDateTime, info->OpenMatchDateTime, info->CloseServerFlag, info->OpenServerFlag);
 	}
 
 	void TAP_CDECL OnRtnPositionProfit(const TapAPIPositionProfitNotice* info)
