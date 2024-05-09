@@ -1,13 +1,14 @@
-﻿#include <stdio.h>
-#include <string>
-#include "./CTP/ThostFtdcTraderApi.h"
+﻿// author: krenx@openctp
+// last modify: 2024/5/10
 
+#include <stdio.h>
+#include <string>
 #include <thread>
 #include <mutex>
 #include <functional>
 #include <condition_variable>
+#include "ThostFtdcTraderApi.h"
 
-#pragma comment (lib, "./CTP/thosttraderapi_se.lib")
 
 class semaphore
 {
