@@ -1,4 +1,7 @@
-﻿#include <stdio.h>
+﻿// author: krenx@openctp
+// last modify: 2024/5/10
+
+#include <stdio.h>
 #include <string>
 #include <thread>
 #include <mutex>
@@ -428,8 +431,8 @@ public:
 
 void display_usage()
 {
-	printf("usage:esprint host user password appid authcode\n");
-	printf("example:esprint 180.168.146.187:10130 000001 888888 simnow_client_test 0000000000000000\n");
+	printf("usage:tapprint host user password appid authcode\n");
+	printf("example:tapprint 123.161.206.213:6160 Q99114024 88888888 Demo_TestCollect Demo_TestCollect\n");
 }
 
 
