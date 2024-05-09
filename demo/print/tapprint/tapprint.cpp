@@ -240,10 +240,10 @@ public:
 	void TAP_CDECL OnRspAccountRentInfo(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPIAccountRentInfo* info)
 	{
 		if (info)
-			printf("OnRspAccountRentInfo:ExchangeNo:%s,ContractNo:%s,OpenTurnover:%lf,ClosedTurnover:%lf,CloseNewTurnover:%lf,OpenVolume:%lf,ClosedVolume:%lf,CloseNewVolume:%lf\n", 
-				info->ExchangeNo, info->ContractNo,
+			printf("OnRspAccountRentInfo:ExchangeNo:%s,CommodityNo:%s,ContractNo:%s,FeeMode=%c,OpenTurnover:%lf,ClosedTurnover:%lf,CloseNewTurnover:%lf,OpenVolume:%lf,ClosedVolume:%lf,CloseNewVolume:%lf,MarginMode:%c,BuyTInitMargin=%lf,SellTInitMargin=%lf\n", 
+				info->ExchangeNo, info->CommodityNo, info->ContractNo, info->FeeMode,
 				info->OpenTurnover, info->ClosedTurnover, info->CloseNewTurnover,
-				info->OpenVolume, info->ClosedVolume, info->CloseNewVolume);
+				info->OpenVolume, info->ClosedVolume, info->CloseNewVolume, info->MarginMode, info->BuyTInitMargin, info->SellTInitMargin);
 
 		if (APIYNFLAG_YES == isLast) {
 			g_semaphore.signal();
@@ -259,7 +259,7 @@ public:
 		}
 		
 		if (info)
-			printf("OnRspQryContract:ContractNo1:%s,ContractName:%s,CommodityNo:%s,FutureContractNo:%s,StrikePrice1:%s,ExchangeNo:%s\n", info->ContractNo1, info->ContractName, info->CommodityNo, info->FutureContractNo, info->StrikePrice1, info->ExchangeNo);
+			printf("OnRspQryContract:ExchangeNo:%s,CommodityType=%c,CommodityNo:%s,ContractNo1:%s,ContractName:%s,CallOrPutFlag1=%c,FutureContractNo:%s,StrikePrice1:%s,LastTradeDate:%s,ContractExpDate:%s\n", info->ExchangeNo, info->CommodityType, info->CommodityNo, info->ContractNo1, info->ContractName, info->CallOrPutFlag1, info->FutureContractNo, info->StrikePrice1, info->LastTradeDate, info->ContractExpDate);
 
 		if (APIYNFLAG_YES == isLast) {
 			g_semaphore.signal();
@@ -526,7 +526,7 @@ int main(int argc, char* argv[])
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	printf("按任意键撤单 ...\n");
 	getchar();
-	Spi.OrderCancel("2024050900000098558");
+	Spi.OrderCancel("2024051000000024163");
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	printf("按任意键退出 ...\n");
