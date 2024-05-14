@@ -71,9 +71,25 @@ public:
 	{
 	}
 
-	const std::string direction_to_string(TAPISideType Direction)
+	const std::string direction_to_string(TAPISideType Side)
 	{
-		std::string str = Direction == TAPI_SIDE_BUY ? "买" : "卖";
+		std::string str = Side == TAPI_SIDE_BUY ? "买" : "卖";
+		return std::move(str);
+	}
+
+	const std::string openclose_to_string(TAPIPositionEffectType PositionEffect)
+	{
+		std::string str;
+		
+		if (PositionEffect == TAPI_PositionEffect_OPEN)
+			str = "开";
+		else if (PositionEffect == TAPI_PositionEffect_COVER)
+			str = "平";
+		else if (PositionEffect == TAPI_PositionEffect_COVER_TODAY)
+			str = "平今";
+		else
+			str = "无";
+
 		return std::move(str);
 	}
 
@@ -221,7 +237,7 @@ public:
 	void TAP_CDECL OnRspQryCommodity(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPICommodityInfo* info)
 	{
 		if (info)
-			printf("OnRspQryCommodity:CommodityNo:%s,CommodityName:%s,CommodityType:'%c',ExchangeNo:%s\n", info->CommodityNo, info->CommodityName, info->CommodityType, info->ExchangeNo);
+			printf("OnRspQryCommodity:CommodityNo:%s,CommodityName:%s,CommodityType:'%c',ExchangeNo:%s,OpenCloseMode:%c,MarginCalculateMode:%c\n", info->CommodityNo, info->CommodityName, info->CommodityType, info->ExchangeNo, info->OpenCloseMode, info->MarginCalculateMode);
 
 		if (APIYNFLAG_YES == isLast) {
 			g_semaphore.signal();
@@ -295,8 +311,8 @@ public:
 		}
 
 		if(info)
-			printf("OnRspQryOrder:ParentAccountNo:%s,UpperUserNo:%s,OrderLocalNo:%s,ContractNo:%s,OrderNo:%s,Direction:%s,OrderQty:%d,OrderPrice:%lf,OrderMatchQty:%d,OrderExchangeSystemNo:%s,ClientOrderNo:%s,OrderState:%c,ExchangeNo:%s,OrderInsertTime:%s,RefInt:%d,RefString=%s,ServerFlag:%c,ErrorText:%s\n",
-				info->ParentAccountNo, info->UpperUserNo, info->OrderLocalNo, info->ContractNo, info->OrderNo, direction_to_string(info->OrderSide).c_str(), info->OrderQty, info->OrderPrice, info->OrderMatchQty, info->OrderExchangeSystemNo, info->ClientOrderNo, info->OrderState, info->ExchangeNo, info->OrderInsertTime, info->RefInt, info->RefString, info->ServerFlag, info->ErrorText);
+			printf("OnRspQryOrder:ParentAccountNo:%s,UpperUserNo:%s,OrderLocalNo:%s,ContractNo:%s,OrderNo:%s,Direction:%s,PositionEffect:%s,OrderQty:%d,OrderPrice:%lf,OrderMatchQty:%d,OrderExchangeSystemNo:%s,ClientOrderNo:%s,OrderState:%c,ExchangeNo:%s,OrderInsertTime:%s,RefInt:%d,RefString=%s,ServerFlag:%c,ErrorText:%s\n",
+				info->ParentAccountNo, info->UpperUserNo, info->OrderLocalNo, info->ContractNo, info->OrderNo, direction_to_string(info->OrderSide).c_str(), openclose_to_string(info->PositionEffect).c_str(), info->OrderQty, info->OrderPrice, info->OrderMatchQty, info->OrderExchangeSystemNo, info->ClientOrderNo, info->OrderState, info->ExchangeNo, info->OrderInsertTime, info->RefInt, info->RefString, info->ServerFlag, info->ErrorText);
 
 		if (APIYNFLAG_YES == isLast) {
 			g_semaphore.signal();
@@ -312,8 +328,8 @@ public:
 		}
 
 		if(info)
-			printf("OnRspQryFill:ParentAccountNo:%s,UpperUserNo:%s,OrderLocalNo:%s,ContractNo:%s,Direction:%s,MatchQty:%d,MatchPrice:%lf,OrderExchangeNo:%s,ExchangeMatchNo:%s,TradeNo:%s,ExchangeNo:%s,MatchDateTime:%s,ServerFlag:%c\n",
-				info->ParentAccountNo, info->UpperUserNo, info->OrderLocalNo, info->ContractNo, direction_to_string(info->MatchSide).c_str(), info->MatchQty, info->MatchPrice, info->OrderExchangeNo, info->ExchangeMatchNo, info->TradeNo, info->ExchangeNo, info->MatchDateTime, info->ServerFlag);
+			printf("OnRspQryFill:ParentAccountNo:%s,UpperUserNo:%s,OrderLocalNo:%s,ContractNo:%s,Direction:%s,PositionEffect:%s,MatchQty:%d,MatchPrice:%lf,OrderExchangeNo:%s,ExchangeMatchNo:%s,TradeNo:%s,ExchangeNo:%s,MatchDateTime:%s,ServerFlag:%c\n",
+				info->ParentAccountNo, info->UpperUserNo, info->OrderLocalNo, info->ContractNo, direction_to_string(info->MatchSide).c_str(), openclose_to_string(info->PositionEffect).c_str(), info->MatchQty, info->MatchPrice, info->OrderExchangeNo, info->ExchangeMatchNo, info->TradeNo, info->ExchangeNo, info->MatchDateTime, info->ServerFlag);
 
 		if (APIYNFLAG_YES == isLast) {
 			g_semaphore.signal();
@@ -331,6 +347,23 @@ public:
 		if (info)
 			printf("OnRspQryPosition:CommodityNo:%s,InstrumentID:%s,PosiDirection:%s,HedgeFlag:%c,PositionQty:%d,PositionPrice:%lf,ExchangeID:%s,OrderExchangeNo:%s,PositionNo:%s,MatchDate:%s,PositionProfit:%lf,PreSettlePrice:%lf,IsHistory:%c,ServerFlag:%c,OrderType:%c,ExchangeMatchNo:%s,MatchNo:%s\n",
 				info->CommodityNo, info->ContractNo, direction_to_string(info->MatchSide).c_str(), info->HedgeFlag, info->PositionQty, info->PositionPrice, info->ExchangeNo, info->OrderExchangeNo, info->PositionNo, info->MatchDate, info->PositionProfit, info->PreSettlePrice, info->IsHistory, info->ServerFlag, info->OrderType, info->ExchangeMatchNo, info->MatchNo);
+
+		if (APIYNFLAG_YES == isLast) {
+			g_semaphore.signal();
+		}
+	}
+
+	// 查询平仓
+	void TAP_CDECL OnRspQryClose(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPICloseInfo* info)
+	{
+		if (TAPIERROR_SUCCEED != errorCode) {
+			printf("OnRspQryClose failed. %d\n", errorCode);
+			return;
+		}
+
+		if (info)
+			printf("OnRspQryClose:ExchangeNo:%s,CommodityNo:%s,InstrumentID:%s,CloseSide:%s,CloseQty:%d,ClosePrice:%lf,ExchangeID:%s,CloseMatchNo:%s,OpenMatchNo:%s,CloseMatchDateTime:%s,CloseProfit:%lf,PreSettlePrice:%lf,CloseServerFlag:%c,OpenServerFlag:%c\n",
+				info->ExchangeNo, info->CommodityNo, info->ContractNo, direction_to_string(info->CloseSide).c_str(), info->CloseQty, info->ClosePrice, info->ExchangeNo, info->CloseMatchNo, info->OpenMatchNo, info->CloseMatchDateTime, info->CloseProfit, info->PreSettlePrice, info->CloseServerFlag, info->OpenServerFlag);
 
 		if (APIYNFLAG_YES == isLast) {
 			g_semaphore.signal();
@@ -355,15 +388,15 @@ public:
 	// 委托回报
 	void TAP_CDECL OnRtnOrder(const TapAPIOrderInfoNotice* info)
 	{
-		printf("OnRtnOrder:AccountNo:%s,ExchangeNo:%s,ContractNo:%s,OrderNo:%s,OrderSystemNo:%s,OrderExchangeSystemNo:%s,OrderSide:%s,OrderPrice:%lf,OrderQty:%u,OrderInsertTime:%s,ErrorText:%s,OrderState:%c,RefInt:%d,RefString=%s,ServerFlag:%c,OrderLocalNo=%s\n",
-			info->OrderInfo->AccountNo, info->OrderInfo->ExchangeNo, info->OrderInfo->ContractNo, info->OrderInfo->OrderNo, info->OrderInfo->OrderSystemNo, info->OrderInfo->OrderExchangeSystemNo, direction_to_string(info->OrderInfo->OrderSide).c_str(), info->OrderInfo->OrderPrice, info->OrderInfo->OrderQty, info->OrderInfo->OrderInsertTime, info->OrderInfo->ErrorText, info->OrderInfo->OrderState, info->OrderInfo->RefInt, info->OrderInfo->RefString, info->OrderInfo->ServerFlag, info->OrderInfo->OrderLocalNo);
+		printf("OnRtnOrder:AccountNo:%s,ExchangeNo:%s,ContractNo:%s,OrderNo:%s,OrderSystemNo:%s,OrderExchangeSystemNo:%s,OrderSide:%s,PositionEffect:%s,OrderPrice:%lf,OrderQty:%u,OrderInsertTime:%s,ErrorText:%s,OrderState:%c,RefInt:%d,RefString=%s,ServerFlag:%c,OrderLocalNo=%s\n",
+			info->OrderInfo->AccountNo, info->OrderInfo->ExchangeNo, info->OrderInfo->ContractNo, info->OrderInfo->OrderNo, info->OrderInfo->OrderSystemNo, info->OrderInfo->OrderExchangeSystemNo, direction_to_string(info->OrderInfo->OrderSide).c_str(), openclose_to_string(info->OrderInfo->PositionEffect).c_str(), info->OrderInfo->OrderPrice, info->OrderInfo->OrderQty, info->OrderInfo->OrderInsertTime, info->OrderInfo->ErrorText, info->OrderInfo->OrderState, info->OrderInfo->RefInt, info->OrderInfo->RefString, info->OrderInfo->ServerFlag, info->OrderInfo->OrderLocalNo);
 	}
 
 	// 成交回报
 	void TAP_CDECL OnRtnFill(const TapAPIFillInfo* info)
 	{
-		printf("OnRtnFill:AccountNo:%s,ExchangeNo:%s,ContractNo:%s,OrderNo:%s,OrderExchangeNo:%s,ExchangeMatchNo:%s,MatchSide:%s,MatchPrice:%lf,MatchQty:%u,MatchDateTime:%s,ServerFlag:%c,OrderLocalNo=%s\n",
-			info->AccountNo, info->ExchangeNo, info->ContractNo, info->OrderNo, info->OrderExchangeNo, info->ExchangeMatchNo, direction_to_string(info->MatchSide).c_str(), info->MatchPrice, info->MatchQty, info->MatchDateTime, info->ServerFlag, info->OrderLocalNo);
+		printf("OnRtnFill:AccountNo:%s,ExchangeNo:%s,ContractNo:%s,OrderNo:%s,OrderExchangeNo:%s,ExchangeMatchNo:%s,MatchSide:%s,PositionEffect:%s,MatchPrice:%lf,MatchQty:%u,MatchDateTime:%s,ServerFlag:%c,OrderLocalNo=%s\n",
+			info->AccountNo, info->ExchangeNo, info->ContractNo, info->OrderNo, info->OrderExchangeNo, info->ExchangeMatchNo, direction_to_string(info->MatchSide).c_str(), openclose_to_string(info->PositionEffect).c_str(), info->MatchPrice, info->MatchQty, info->MatchDateTime, info->ServerFlag, info->OrderLocalNo);
 	}
 
 	void TAP_CDECL OnRtnPosition(const TapAPIPositionInfo* info)
@@ -400,15 +433,18 @@ public:
 				info->Data->PositionNo, info->Data->PositionProfit, info->Data->FloatingPL);
 	}
 
+	void TAP_CDECL OnRspQryAccount(TAPIUINT32 sessionID, TAPIUINT32 errorCode, TAPIYNFLAG isLast, const TapAPIAccountInfo* info)
+	{
+		if (info)
+			printf("OnRspQryAccount:AccountNo:%s,AccountShortName:%s\n", info->AccountNo, info->AccountShortName);
+	}
+
 	void TAP_CDECL OnRspChangePassword(TAPIUINT32 sessionID, TAPIINT32 errorCode) {}
 	void TAP_CDECL OnRspSetReservedInfo(TAPIUINT32 sessionID, TAPIINT32 errorCode, const TAPISTR_50 info) {}
-	void TAP_CDECL OnRspQryAccount(TAPIUINT32 sessionID, TAPIUINT32 errorCode, TAPIYNFLAG isLast, const TapAPIAccountInfo* info) {}
 	void TAP_CDECL OnRspQryOrderProcess(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPIOrderInfo* info) {}
-	void TAP_CDECL OnRspQryClose(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPICloseInfo* info) {}
 	void TAP_CDECL OnRspQryExchangeStateInfo(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPIExchangeStateInfo* info) {}
 	void TAP_CDECL OnRtnExchangeStateInfo(const TapAPIExchangeStateInfoNotice* info) {}
 	void TAP_CDECL OnRtnReqQuoteNotice(const TapAPIReqQuoteNotice* info) {}
-
 	void TAP_CDECL OnRspUpperChannelInfo(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPIUpperChannelInfo* info) {}
 	void TAP_CDECL OnRspSubmitUserLoginInfo(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPISubmitUserLoginRspInfo* info) {}
 	void TAP_CDECL OnRspQryBill(TAPIUINT32 sessionID, TAPIINT32 errorCode, TAPIYNFLAG isLast, const TapAPIBillQryRsp* info) {}
@@ -482,6 +518,7 @@ int main(int argc, char* argv[])
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	printf("查询合约 ...\n");
 	TapAPICommodity Commodity = { 0 };
+	//strcpy(Commodity.ExchangeNo, "SGE");
 	Spi.m_pTdApi->QryContract(&SessionID, &Commodity);
 	g_semaphore.wait();
 
@@ -507,12 +544,25 @@ int main(int argc, char* argv[])
 	Spi.m_pTdApi->QryFill(&SessionID, &FillQryReq);
 	g_semaphore.wait();
 
-	// 查询持仓
+	// 查询持仓明细
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	printf("查询持仓 ...\n");
 	TapAPIPositionQryReq PositionQryReq;
 	Spi.m_pTdApi->QryPosition(&SessionID, &PositionQryReq);
 	g_semaphore.wait();
+
+	// 查询平仓明细
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询平仓明细 ...\n");
+	TapAPICloseQryReq CloseQryReq;
+	Spi.m_pTdApi->QryClose(&SessionID, &CloseQryReq);
+	g_semaphore.wait();
+
+	// 查询账户
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	printf("查询账户 ...\n");
+	TapAPIAccQryReq AccQryReq = { 0 };
+	Spi.m_pTdApi->QryAccount(&SessionID, &AccQryReq);
 
 	// 查询资金
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
