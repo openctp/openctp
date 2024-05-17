@@ -8,7 +8,7 @@ import json
 import sys
 import threading
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from openctp_ctp import tdapi
 #import thosttraderapi as tdapi
 
@@ -587,39 +587,34 @@ if __name__ == '__main__':
     semaphore.acquire()
 
     print("Exchanges:")
-    jsonstr = ',\n'.join(json.dumps(item) for item in [exchange.__dict__ for exchange in ctpdump.Exchanges])
+    jsonstr = ',\n'.join(json.dumps(item, ensure_ascii=False) for item in [asdict(exchange) for exchange in ctpdump.Exchanges])
     print("[{}]".format(jsonstr))
 
     print("Products:")
-    jsonstr = ',\n'.join(json.dumps(item) for item in [product.__dict__ for product in ctpdump.Products])
+    jsonstr = ',\n'.join(json.dumps(item, ensure_ascii=False) for item in [asdict(product) for product in ctpdump.Products])
     print("[{}]".format(jsonstr))
 
     print("Instruments:")
     #print(json.dumps([instrument.__dict__ for instrument in ctpdump.Instruments]))
-    jsonstr = ',\n'.join(json.dumps(item) for item in [instrument.__dict__ for instrument in ctpdump.Instruments])
+    jsonstr = ',\n'.join(json.dumps(item, ensure_ascii=False) for item in [asdict(instrument) for instrument in ctpdump.Instruments])
     print("[{}]".format(jsonstr))
     
     print("DepthMarketData:")
-    print(json.dumps([data.__dict__ for data in ctpdump.MarketData], indent=2))
-    jsonstr = ',\n'.join(json.dumps(item) for item in [data.__dict__ for data in ctpdump.MarketData])
+    jsonstr = ',\n'.join(json.dumps(item, ensure_ascii=False) for item in [asdict(data) for data in ctpdump.MarketData])
     print("[{}]".format(jsonstr))
    
     print("Account:")
-    print(json.dumps([account.__dict__ for account in ctpdump.TradingAccount], indent=2))
-    jsonstr = ',\n'.join(json.dumps(item) for item in [data.__dict__ for data in ctpdump.TradingAccount])
+    jsonstr = ',\n'.join(json.dumps(item, ensure_ascii=False) for item in [asdict(data) for data in ctpdump.TradingAccount])
     print("[{}]".format(jsonstr))
 
     print("Positions:")
-    print(json.dumps([position.__dict__ for position in ctpdump.Positions], indent=2))
-    jsonstr = ',\n'.join(json.dumps(item) for item in [data.__dict__ for data in ctpdump.Positions])
+    jsonstr = ',\n'.join(json.dumps(item, ensure_ascii=False) for item in [asdict(data) for data in ctpdump.Positions])
     print("[{}]".format(jsonstr))
 
     print("Orders:")
-    print(json.dumps([order.__dict__ for order in ctpdump.Orders], indent=2))
-    jsonstr = ',\n'.join(json.dumps(item) for item in [data.__dict__ for data in ctpdump.Orders])
+    jsonstr = ',\n'.join(json.dumps(item, ensure_ascii=False) for item in [asdict(data) for data in ctpdump.Orders])
     print("[{}]".format(jsonstr))
 
     print("Trades:")
-    print(json.dumps([trade.__dict__ for trade in ctpdump.Trades], indent=2))
-    jsonstr = ',\n'.join(json.dumps(item) for item in [data.__dict__ for data in ctpdump.Trades])
+    jsonstr = ',\n'.join(json.dumps(item, ensure_ascii=False) for item in [asdict(data) for data in ctpdump.Trades])
     print("[{}]".format(jsonstr))
