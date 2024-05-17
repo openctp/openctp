@@ -13,6 +13,12 @@ from openctp_ctp import tdapi
 #import thosttraderapi as tdapi
 
 
+def adjust_price(price: float) -> float:
+    if price == sys.float_info.max:
+        price = 0
+    return price
+
+
 @dataclass
 class Instrument:
     InstrumentID: str
@@ -520,6 +526,29 @@ class CTPDump(tdapi.CThostFtdcTraderSpi):
             exit(-1)
         if pDepthMarketData:
             data = convert_field(pDepthMarketData, DepthMarketDataField)
+            data.PreSettlementPrice = adjust_price(data.PreSettlementPrice)
+            data.PreClosePrice = adjust_price(data.PreClosePrice)
+            data.LastPrice = adjust_price(data.LastPrice)
+            data.OpenPrice = adjust_price(data.OpenPrice)
+            data.ClosePrice = adjust_price(data.ClosePrice)
+            data.LowestPrice = adjust_price(data.LowestPrice)
+            data.AveragePrice = adjust_price(data.AveragePrice)
+            data.HighestPrice = adjust_price(data.HighestPrice)
+            data.SettlementPrice = adjust_price(data.SettlementPrice)
+            data.CurrDelta = adjust_price(data.CurrDelta)
+            data.PreDelta = adjust_price(data.PreDelta)
+            data.BandingLowerPrice = adjust_price(data.BandingLowerPrice)
+            data.BandingUpperPrice = adjust_price(data.BandingUpperPrice)
+            data.AskPrice1 = adjust_price(data.AskPrice1)
+            data.AskPrice2 = adjust_price(data.AskPrice2)
+            data.AskPrice3 = adjust_price(data.AskPrice3)
+            data.AskPrice4 = adjust_price(data.AskPrice4)
+            data.AskPrice5 = adjust_price(data.AskPrice5)
+            data.BidPrice1 = adjust_price(data.BidPrice1)
+            data.BidPrice2 = adjust_price(data.BidPrice2)
+            data.BidPrice3 = adjust_price(data.BidPrice3)
+            data.BidPrice4 = adjust_price(data.BidPrice4)
+            data.BidPrice5 = adjust_price(data.BidPrice5)
             self.MarketData.append(data)
         if bIsLast is True:
             semaphore.release()
