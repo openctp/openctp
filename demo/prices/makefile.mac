@@ -1,0 +1,6 @@
+all: prices
+prices:
+	g++ -std=c++11 -Wno-invalid-source-encoding -I./CTP -L/usr/local/lib -o $@ prices.cpp thostmduserapi_se.dylib -lcurses -lstdc++
+
+clean:
+	rm prices
