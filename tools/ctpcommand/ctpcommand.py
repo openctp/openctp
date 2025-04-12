@@ -105,12 +105,13 @@ class CTPCommand(tdapi.CThostFtdcTraderSpi):
         req.InstrumentID = InstrumentID
         self.api.ReqQryInstrumentCommissionRate(req, 0)
 
-    def QryMarginRate(self, ExchangeID, InstrumentID):
+    def QryMarginRate(self, ExchangeID, InstrumentID, HedgeFlag):
         req = tdapi.CThostFtdcQryInstrumentMarginRateField()
         req.BrokerID = self.broker
         req.InvestorID = self.user
         req.ExchangeID = ExchangeID
         req.InstrumentID = InstrumentID
+        req.HedgeFlag = HedgeFlag
         self.api.ReqQryInstrumentMarginRate(req, 0)
 
     def QryOrderCommRate(self, InstrumentID):
@@ -1291,7 +1292,10 @@ if __name__ == '__main__':
         elif command == command_query_MarginRate:
             ExchangeID = input("ExchangeID: (Default:All)")
             InstrumentID = input("InstrumentID:(Default:All)")
-            ctpcommand.QryMarginRate(ExchangeID, InstrumentID)
+            HedgeFlag = input("HedgeFlag:1,投机;2,套利;3,套保;4,做市商(Default:1)")
+            if HedgeFlag == "":
+                HedgeFlag = "1"
+            ctpcommand.QryMarginRate(ExchangeID, InstrumentID, HedgeFlag)
         elif command == command_query_OrderCommRate:
             InstrumentID = input("InstrumentID:(Default:All)")
             ctpcommand.QryOrderCommRate(InstrumentID)
