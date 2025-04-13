@@ -175,7 +175,7 @@ openctp有合作的券商和期货公司，不仅交易费用低并且还可以�
   ![image](https://github.com/user-attachments/assets/173e43cc-0117-43a0-b942-004417d55ca8)
 
 - [QAUTLRA-RS（一个基于Rust实现的高性能量化交易和市场数据处理平台，为金融市场分析和交易提供完整的技术基础设施。）](https://github.com/yutiansut/qautlra-rs)
-  <img width="263" alt="13d8c57dfb5b9ba0c7ed187681c0f01" src="https://github.com/user-attachments/assets/ad89952e-f07f-49b9-bed9-8fe44c762c28" />
+  <img alt="qautlra-rs" src="https://github.com/user-attachments/assets/ad89952e-f07f-49b9-bed9-8fe44c762c28" />
 
 - [ctpbee（一个轻量级Python量化交易框架，支持CTP柜台。）](https://github.com/ctpbee/ctpbee)
   
