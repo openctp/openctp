@@ -159,7 +159,7 @@ openctp有合作的券商和期货公司，不仅交易费用低并且还可以�
   
   <img src="https://user-images.githubusercontent.com/83346523/136988918-1159fc88-073e-4b6f-a8d6-3f33991e8a72.png" alt="vnpy" width="700" height="400" />
 
-- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ群：967352413，备注openctp。）](https://www.zhihu.com/people/mt5ctp)
+- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ群：967352413）](https://www.zhihu.com/people/mt5ctp)
   
   <img src="https://user-images.githubusercontent.com/83346523/136989596-b12d91e8-48a0-4b26-bcaf-fdfca52d962c.png" alt="mt5ctp" width="700" height="400" />
 
@@ -167,9 +167,17 @@ openctp有合作的券商和期货公司，不仅交易费用低并且还可以�
   
   <img src="https://user-images.githubusercontent.com/83346523/136989754-1f0130e6-5d75-427f-bbf3-7ed084b6eae1.png" alt="texttrader" width="700" height="400" />
 
-- [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架，QQ群：610730738，备注openctp。）](https://www.zhihu.com/column/c_1338797723131740161)
+- [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架，QQ群：610730738）](https://www.zhihu.com/column/c_1338797723131740161)
   
   <img src="https://user-images.githubusercontent.com/83346523/198839414-d72614d8-9752-497a-b9a9-19b38d3da326.png" alt="WonderTrader" width="700" height="400" />
+
+- [ctpmaster（一款类似无限易的专业级交易客户端，支持国内期货、期权及etf期权交易）](www.ctpmaster.com)
+
+  ![image](https://github.com/user-attachments/assets/173e43cc-0117-43a0-b942-004417d55ca8)
+
+- [QAUTLRA-RS（一个基于Rust实现的高性能量化交易和市场数据处理平台，为金融市场分析和交易提供完整的技术基础设施。）](https://github.com/yutiansut/qautlra-rs)
+
+  <img alt="qautlra-rs" src="https://github.com/user-attachments/assets/ad89952e-f07f-49b9-bed9-8fe44c762c28" />
 
 - [ctpbee（一个轻量级Python量化交易框架，支持CTP柜台。）](https://github.com/ctpbee/ctpbee)
   
@@ -177,7 +185,8 @@ openctp有合作的券商和期货公司，不仅交易费用低并且还可以�
 
 # 技术交流
 
-QQ群：564385877
+- QQ群：564385877
+- 微信群+v：openctp_helper
 
 # openctp官网
 
@@ -202,3 +211,7 @@ QQ群：564385877
 - [openctp培训与咨询服务](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484610&idx=1&sn=b7317eb127d22fd52958a41e40121b06&chksm=c36bdf6bf41c567d4f3c16454fc1f5ff2a22f567d893ea35a2135c082b78ce5d01d944b086e4&token=55513683&lang=zh_CN#rd)
 
 <u>*注：openctp不对模拟交易及相关服务作任何保证，使用openctp产品进行实盘交易的后果完全由使用者自己承担。*</u>
+
+# 友情推荐
+- [QUANTAXIS（量化交易框架，支持股票、期货、期权，支持回测、多账户等特性。）](https://github.com/yutiansut/QUANTAXIS)
+- [KLineChart（基于 html5 canvas 构建的轻量级金融图表。）](https://github.com/klinecharts/KLineChart)
