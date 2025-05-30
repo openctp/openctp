@@ -6,7 +6,7 @@ openctp还提供了[CTPAPI的Python接口](https://github.com/openctp/openctp-ct
 
 openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询和培训以及柜台系统等的开发培训服务。
 
-![ctp开放平台全景图](https://user-images.githubusercontent.com/83346523/148639077-6c328032-b75a-4979-be8d-157de60cf3b4.jpg)
+![CTPAPI兼容接口结构图](https://github.com/user-attachments/assets/5974ae64-ae18-4f2a-b459-d5f73243037a)
 
 # 目录结构：
 
@@ -101,15 +101,15 @@ openctp模拟环境不检查这几个字段，3项均可不填。
 
 # openctp监控平台
 
-openctp提供了一个集中监控SimNow、华鑫N视界、中泰XTP、东财EMT等模拟环境的监控平台，当然也包括openctp自己的模拟环境，有几个环境，有没开着，一眼就知道了，点这里看看：[CTP接口模拟环境监控](http://www.openctp.cn)。
+openctp提供了一个集中监控SimNow、华鑫N视界、中泰XTP、东财EMT等模拟环境的监控平台，当然也包括openctp自己的模拟环境，有几个环境，有没开着，一眼就知道了，点这里看看：[CTP接口模拟环境监控](http://www.openctp.cn/simenv.html)。
 
 openctp还提供了对几十家主流期货公司CTP柜台实盘环境的监控，并且标出了提供上期所免费5档行情支持的期货公司，点这里一看就知道了：[CTP柜台实盘环境监控](http://www.openctp.cn/env.html)。
 
-<img width="662" alt="monitor" src="https://github.com/openctp/openctp/assets/83346523/a28557e1-d9df-4ffa-9aef-959415c06714">
+![simenv_20250531003723_92](https://github.com/user-attachments/assets/f45aa8dd-13ff-4d3e-aab6-865326c94e70)
 
 # **CTPAPI及各柜台CTPAPI兼容接口下载：**
 
-[CTP、TTS、XTP、TORA等柜台接口下载](http://www.openctp.cn/download.html)
+[CTP、TTS、XTP、TORA等柜台接口下载](http://www.openctp.cn/CTPAPI.html)
 
 # TickTradingFramework策略交易框架
 
