@@ -6,35 +6,15 @@
 
 ViTrader是一款命令行交易客户端，操作命令基本同Vi编辑器，集交易与行情于一体，支持支持Windows、Linux、MacOS、FreeBSD等操作系统。
 
-ViTrader支持CTP期货交易柜台，也支持采用CTP兼容接口的其它柜台（[openctp](https://github.com/openctp/openctp)）。
+ViTrader默认支持CTP柜台，也支持通过CTPAPI兼容接口方式连接其它柜台（[openctp](https://github.com/openctp/openctp)）。
 
 采用自动开平模式，不需要手动指定开平。
 
 采用同图形界面的“One Click Order”点价下单模式，支持改单。
 
-### 编译
-
-Windows：
-
-build/win32目录下，进入命令行执行nmake，或打开VS2019工程编译。
-
-Linux：
-
-build/linux目录下，执行make
-
-MacOSX:
-
-build/MacOSX目录下，执行make，或打开xcode工程编译。
-
-### 安装包
-
-已编译好Win32、Linux、Mac版本，绿色无需安装，如需要接入openctp、华鑫、中泰等柜台需要更换dll，各柜台CTPAPI的dll下载链接:[CTPAPI下载](http://www.openctp.cn/CTPAPI.html)。
-
-下载链接:[ViTrader下载](http://www.openctp.cn/Widgets.html)
-
 ### 移动命令（所有窗口通用）：
 
-- ​    上下左右：j、k、h、l及四个方向键
+- ​上下左右：j、k、h、l及四个方向键
 - 翻页：f、b、u、d，支持上下翻页键，同时也支持^f、^b、^u、^d，即按住Control键
 - 上下行滚动：y、e，同时也支持^y、^e，即按住Control键
 - 屏幕顶部、中间、底部：H、M、L
