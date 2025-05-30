@@ -7,6 +7,9 @@ CTP交易及行情通道检测工具，可通过替换dll方式连接CTP股票�
 ## prices
 CTP柜台行情显示工具，可通过替换dll方式连接CTP股票期权等其它各个通道。
 
+## ViTrader
+ViTrader是一款命令行交易客户端，操作命令基本同Vi编辑器，集交易与行情于一体，支持支持Windows、Linux、MacOS、FreeBSD等操作系统。
+
 ## ctpdump
 ctpdump将柜台系统合约、手续费率、保证金率、行情、资金、持仓、订单等数据dump为json格式，以便查看和分析。
 
