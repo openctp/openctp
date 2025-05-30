@@ -129,6 +129,14 @@ class CTPCommand(tdapi.CThostFtdcTraderSpi):
         req.InstrumentID = InstrumentID
         self.api.ReqQryOptionInstrCommRate(req, 0)
 
+    def QryOptionInstrTradeCost(self, ExchangeID, InstrumentID):
+        req = tdapi.CThostFtdcQryOptionInstrTradeCostField()
+        req.BrokerID = self.broker
+        req.InvestorID = self.user
+        req.ExchangeID = ExchangeID
+        req.InstrumentID = InstrumentID
+        self.api.ReqQryOptionInstrTradeCost(req, 0)
+
     def QryTradingCode(self):
         req = tdapi.CThostFtdcQryTradingCodeField()
         self.api.ReqQryTradingCode(req, 0)
@@ -895,6 +903,29 @@ class CTPCommand(tdapi.CThostFtdcTraderSpi):
               f"EnterReason={pInstrumentStatus.EnterReason} "
               )
 
+    def OnRspQryOptionInstrTradeCost(self, pOptionInstrTradeCost: "CThostFtdcOptionInstrTradeCostField",
+                                     pRspInfo: "CThostFtdcRspInfoField", nRequestID: "int", bIsLast: "bool") -> "void":
+        r"""请求查询期权交易成本响应"""
+        if pRspInfo is not None and pRspInfo.ErrorID != 0:
+            print(f'OnRspQryOptionInstrTradeCost failed: {pRspInfo.ErrorMsg}')
+            return
+        if pOptionInstrTradeCost is not None:
+            print(f"OnRspQryOptionInstrTradeCost:"
+                  f"BrokerID={pOptionInstrTradeCost.BrokerID} "
+                  f"InvestorID={pOptionInstrTradeCost.InvestorID} "
+                  f"InstrumentID={pOptionInstrTradeCost.InstrumentID} "
+                  f"HedgeFlag={pOptionInstrTradeCost.HedgeFlag} "
+                  f"FixedMargin={pOptionInstrTradeCost.FixedMargin} "
+                  f"MiniMargin={pOptionInstrTradeCost.MiniMargin} "
+                  f"Royalty={pOptionInstrTradeCost.Royalty} "
+                  f"ExchFixedMargin={pOptionInstrTradeCost.ExchFixedMargin} "
+                  f"ExchMiniMargin={pOptionInstrTradeCost.ExchMiniMargin} "
+                  f"ExchangeID={pOptionInstrTradeCost.ExchangeID} "
+                  f"InvestUnitID={pOptionInstrTradeCost.InvestUnitID} "
+                  )
+        if bIsLast == True:
+            print("Completed.")
+
     def OnRspQryTransferSerial(self, pTransferSerial: "CThostFtdcTransferSerialField", pRspInfo: "CThostFtdcRspInfoField", nRequestID: "int", bIsLast: "bool") -> "void":
         r"""请求查询转帐流水响应"""
         if pRspInfo is not None and pRspInfo.ErrorID != 0:
@@ -1162,6 +1193,7 @@ def print_commands():
     print("{}: query MarginRate".format(command_query_MarginRate))
     print("{}: query OrderCommRate".format(command_query_OrderCommRate))
     print("{}: query OptionInstrCommRate".format(command_query_OptionInstrCommRate))
+    print("{}: query OptionInstrTradeCost".format(command_query_OptionInstrTradeCost))
     print("{}: query investor".format(command_query_investor))
     print("{}: query tradingcode".format(command_query_tradingcode))
     print("{}: query settlement".format(command_query_settlement))
@@ -1226,6 +1258,8 @@ if __name__ == '__main__':
     command_query_OrderCommRate = str(i)
     i = i + 1
     command_query_OptionInstrCommRate = str(i)
+    i = i + 1
+    command_query_OptionInstrTradeCost = str(i)
     i = i + 1
     command_query_investor = str(i)
     i = i + 1
@@ -1303,6 +1337,10 @@ if __name__ == '__main__':
             ExchangeID = input("ExchangeID: (Default:All)")
             InstrumentID = input("InstrumentID:(Default:All)")
             ctpcommand.QryOptionInstrCommRate(ExchangeID, InstrumentID)
+        elif command == command_query_OptionInstrTradeCost:
+            ExchangeID = input("ExchangeID: (Default:All)")
+            InstrumentID = input("InstrumentID:(Default:All)")
+            ctpcommand.QryOptionInstrTradeCost(ExchangeID, InstrumentID)
         elif command == command_query_investor:
             ctpcommand.QryInvestor()
         elif command == command_query_tradingcode:

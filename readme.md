@@ -1,10 +1,8 @@
 # **openctp（Powered by TTS - Tick Trading System）**
 
-[openctp](https://github.com/openctp/openctp)是一个以CTP生态为基础的平台，既提供了华鑫证券奇点、中泰证券XTP、东方财富EMT、东方证券OST等柜台的[CTPAPI](https://github.com/openctp/openctp)兼容接口，也提供了一套与上期技术SimNow模拟环境类似的模拟环境，也支持CTPAPI接口，不仅提供国内各期货交易所的期货与期权品种模拟交易，还提供了A股的股票、基金、债券以及股票期权模拟交易，也支持港股、美股等市场模拟交易。
+[openctp](http://www.openctp.cn)是一个以CTP生态为依托的技术服务平台，既提供了华鑫证券奇点、中泰证券XTP、东方财富EMT、东方证券OST等柜台的[CTPAPI](http://openctp.cn/CTPAPI.html)兼容接口，也提供了一套与上期技术SimNow模拟环境类似的模拟环境，也支持CTPAPI接口，不仅提供国内各期货交易所的期货与期权品种模拟交易，还提供了A股的股票、基金、债券以及股票期权模拟交易，也支持港股、美股等市场模拟交易。
 
-openctp还提供了[CTPAPI的Python接口](https://github.com/openctp/openctp-ctp-python)以及[CTP股票期权API的Python接口](https://github.com/openctp/openctp-ctpopt-python)，开源了CTP命令行交易客户端[ViTrader](https://github.com/openctp/ViTrader)，还有图形界面交易客户端[TickTrader](http://www.openctp.cn/download.html)，以及Mini版的[MiniTrader](https://github.com/openctp/MiniTrader)都支持openctp、CTP、CTP股票期权、中泰XTP、华鑫奇点股票与股票期权等柜台，[MiniTrader](https://github.com/openctp/MiniTrader)采用openctp的CTPAPI兼容接口技术支持了CTP、TTS、华鑫证券股票与股票期权等柜台，无需自己再替换dll。
-
-openctp还做了一套websocket接口的CTP服务，[webctp](https://github.com/openctp/webctp)，将CTP的服务以websocket+json形式对外提供服务，也开放了源码。
+openctp还提供了[CTPAPI的Python接口](https://github.com/openctp/openctp-ctp-python)以及[CTP股票期权API的Python接口](https://github.com/openctp/openctp-ctpopt-python)，开源了CTP命令行交易客户端[ViTrader](https://github.com/openctp/openctp/tree/master/tools/ViTrader)，还有图形界面交易客户端[TickTrader](http://www.openctp.cn/TickTrader.html)，以及Mini版的[TickTraderMini](http://www.openctp.cn/TickTrader.html)都支持openctp、CTP、CTP股票期权、中泰XTP、华鑫奇点股票与股票期权等柜台，[TickTraderMini](http://www.openctp.cn/TickTrader.html)采用openctp的CTPAPI兼容接口技术支持了CTP、TTS、华鑫证券股票与股票期权等柜台，无需自己再替换dll。
 
 openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询和培训以及柜台系统等的开发培训服务。
 
@@ -114,25 +112,12 @@ openctp还提供了对几十家主流期货公司CTP柜台实盘环境的监控�
 [CTP、TTS、XTP、TORA等柜台接口下载](http://www.openctp.cn/download.html)
 
 # TickTradingFramework策略交易框架
-CTPAPI接口的坑非常多，专业性很强，持仓与资金的实时计算也很难处理，各种持仓与资金字段的冻结、计算等，openctp给出了一套轻量级的基于Tick的CTPAPI策略交易框架源码，保持了原汁原味的CTP数据结构，代码很漂亮，不到5000行，简洁易懂，二次开发很容易，更多介绍见：[CTPAPI策略交易框架](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247485118&idx=1&sn=6ad0fe9db64e15f0ef481aac6cdbaa4e&chksm=c36bdd17f41c5401a823513fc82b28f42616b63faece2e6dc96db07b5a70ca419ccdbfecc835&token=246256733&lang=zh_CN#rd)。
-- CTPAPI策略交易框架Python版源码，10000元。只支持单账户，实时计算全部持仓及资金字段。
-- CTPAPI策略交易框架Python多账户版源码，20000元。支持多账户，可以通过openctp的CTPAPI兼容接口方式接入华鑫证券、中泰证券等柜台。
-- CTPAPI策略交易框架C++版源码，20000元。只支持单账户，实时计算全部持仓及资金字段。
-- CTPAPI策略交易框架C++多账户版源码，30000元。支持多账户，可以通过openctp的CTPAPI兼容接口方式接入华鑫证券、中泰证券等柜台。
+
+CTPAPI接口的坑非常多，专业性很强，持仓与资金的实时计算也很难处理，各种持仓与资金字段的冻结、计算等，openctp给出了一套轻量级的基于Tick的CTPAPI策略交易框架源码，保持了原汁原味的CTP数据结构，代码很漂亮，不到5000行，简洁易懂，二次开发很容易，更多介绍见：[CTPAPI策略交易框架](http://openctp.cn/TTF.html)。
 
 # openctp培训服务
 
-openctp提供证券期货交易开发方面的技术培训，也提供行业无关的基础技术培训，openctp的培训偏向于就业方向，比如想去私募或者科技公司从事量化或者柜台系统开发的比较适合，当然如果想自己学习一些技术帮助自己更好地做交易也是可以的。openctp的培训是迭代式的，会不断更新，补充更多的内容，同学可在相应课程的群内永久交流。所有课程的每节课在B站上都有试看视频，报培训只需要在openctp的公众号回复培训两个字即可获取联系方式。
-
-openctp不定期组织同学进行技术交流，为大家创造一个好的学习氛围。
-
-## 课程介绍
-
-- 第一期：[C/C++高级编程](https://www.bilibili.com/video/BV1mV4y1V7HM)，5000元，以krenx开发的C语言跨平台开发框架[Think库](https://github.com/krenx1983/think)为基准进行讲解，含socket网络编程、IPC进程通讯等，有众多实用的工具，可立即应用到工作中。另外还有boost.asio异步网络通讯框架等开发技术的讲解，赠送已闭源的think库源码。
-- 第二期：[CTP、XTP等柜台接口开发技术](https://www.bilibili.com/video/BV1JP411N78s)，5000元，以openctp相关技术为基准进行讲解，含CTPAPI底层逻辑、CTPAPI各种注意事项、ViTrader交易客户端源码讲解等，送一套价值5000元的CTPAPI策略交易框架Python-Lite版源码（实时计算持仓信息）。
-- 第三期：[交易系统开发](https://www.bilibili.com/video/BV1F3411f7Q9)，8000元，以TTS交易系统为基准进行讲解，含交易系统结构、架构技术、业务表结构设计、关键业务处理等。
-- 第四期：[金融交易业务与产品设计](https://www.bilibili.com/video/BV1sd4y1a7Kk)，5000元，通讲全球股票、期货、期权交易发展历程、交易规则、计算公式、风险控制及产品设计，提供一份CTP全部常用字段的详细说明。
-- 第五期：[内存数据库架构交易系统总线开发技术](https://www.bilibili.com/video/BV1Bx4y1K7t7)，10000元，通过TTS的总线架构技术讲解CTP那样的总线开发技术，包括重演、热备、负载均衡、最短路由、分布式计算等技术，内存计算架构在各行业的高性能通讯方面都可以应用，远不止金融交易领域。
+openctp提供证券期货交易开发方面的技术培训，也提供通用的基础技术培训，openctp的培训偏向于就业方向，比如想去私募或者科技公司从事量化或者柜台系统开发的比较适合，当然如果想自己学习一些技术帮助自己更好地做交易也是可以的。openctp的培训是迭代式的，会不断更新，补充更多的内容，同学可长期在相应课程的群内交流，具体见：[培训](http://openctp.cn/Learning.html)。
 
 ## openctp公开课
 
@@ -142,48 +127,7 @@ openctp做了一些免费的0基础学习课程，帮助更多朋友进入到软
 - C++语言公开课：以生动有趣的方式讲C++语言基础性编程技术，课程在准备中。
 - [Linux环境编程公开课](https://www.bilibili.com/video/BV1Jw411E7sF)：介绍Unix&Linux的前世今世，讲Shell、VI编辑器等使用，讲netstat、traceroute、ifconfig、lsof等网络工具的使用，讲正则表达式等等，0基础，谁都能听得懂。
 
-# 实盘交易
-
-openctp有合作的券商和期货公司，不仅交易费用低并且还可以得到免费的技术支持服务（CTP、XTP等接口与应用开发培训等），具体请关注openctp公众号，回复“咨询”两个字。
-
-# **已官方支持openctp-TTS系统的产品：**
-
-- [TickTrader（openctp研发的交易客户端，支持点价下单，支持全球市场交易，支持CTP、CTP股票期权、TTS、华鑫证券股票与股票期权等柜台）](http://www.openctp.cn/download.html)
-  ![image](https://github.com/openctp/openctp/assets/83346523/bc458496-172b-4cb3-bc70-dbde12c0bc17)
-
-- [MiniTrader（openctp研发的CTP交易客户端，支持点价下单，支持CTP、TTS、华鑫证券股票与股票期权、中泰XTP、东财EMT、易盛TAP、易达、量投QDP等柜台）](http://www.openctp.cn/download.html)
-  
-  <img width="698" alt="MiniTrader" src="https://github.com/openctp/openctp/assets/83346523/207d2dbd-8baa-4c06-b421-78faae74484d">
-
-- [vn.py（知名Python量化交易客户端，支持全球市场交易）](https://www.vnpy.com/)
-  
-  <img src="https://user-images.githubusercontent.com/83346523/136988918-1159fc88-073e-4b6f-a8d6-3f33991e8a72.png" alt="vnpy" width="700" height="400" />
-
-- [MT5CTP（MT5软件，已支持国内A股、期货及期权交易，QQ群：967352413）](https://www.zhihu.com/people/mt5ctp)
-  
-  <img src="https://user-images.githubusercontent.com/83346523/136989596-b12d91e8-48a0-4b26-bcaf-fdfca52d962c.png" alt="mt5ctp" width="700" height="400" />
-
-- [ViTrader（CTP开源命令行交易终端，支持A股、期货及期权交易）](https://github.com/openctp/ViTrader)
-  
-  <img src="https://user-images.githubusercontent.com/83346523/136989754-1f0130e6-5d75-427f-bbf3-7ed084b6eae1.png" alt="texttrader" width="700" height="400" />
-
-- [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架，QQ群：610730738）](https://www.zhihu.com/column/c_1338797723131740161)
-  
-  <img src="https://user-images.githubusercontent.com/83346523/198839414-d72614d8-9752-497a-b9a9-19b38d3da326.png" alt="WonderTrader" width="700" height="400" />
-
-- [ctpmaster（一款类似无限易的专业级交易客户端，支持国内期货、期权及etf期权交易）](www.ctpmaster.com)
-
-  ![image](https://github.com/user-attachments/assets/173e43cc-0117-43a0-b942-004417d55ca8)
-
-- [QAUTLRA-RS（一个基于Rust实现的高性能量化交易和市场数据处理平台，为金融市场分析和交易提供完整的技术基础设施。）](https://github.com/yutiansut/qautlra-rs)
-
-  <img alt="qautlra-rs" src="https://github.com/user-attachments/assets/ad89952e-f07f-49b9-bed9-8fe44c762c28" />
-
-- [ctpbee（一个轻量级Python量化交易框架，支持CTP柜台。）](https://github.com/ctpbee/ctpbee)
-  
-  <img src="https://github.com/openctp/openctp/assets/83346523/c0448edf-a1fe-4e7a-92c9-5a7652f83f94" alt="WonderTrader" width="700" height="400" />
-
-# 技术交流
+# # 技术交流
 
 - QQ群：564385877
 - 微信群+v：openctp_helper
@@ -213,5 +157,6 @@ openctp有合作的券商和期货公司，不仅交易费用低并且还可以�
 <u>*注：openctp不对模拟交易及相关服务作任何保证，使用openctp产品进行实盘交易的后果完全由使用者自己承担。*</u>
 
 # 友情推荐
+
 - [QUANTAXIS（量化交易框架，支持股票、期货、期权，支持回测、多账户等特性。）](https://github.com/yutiansut/QUANTAXIS)
 - [KLineChart（基于 html5 canvas 构建的轻量级金融图表。）](https://github.com/klinecharts/KLineChart)
