@@ -37,7 +37,7 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
 openctp提供了3套CTPAPI兼容接口模拟环境，分别为7x24环境、仿真环境、vip仿真环境，具体信息见：[模拟交易](http://openctp.cn/Trading.html)。
 # CTPAPI策略交易框架
 CTPAPI接口专业性很强，原生接口开发有一定难度，持仓与资金的实时计算也很难处理，各种持仓与资金字段的冻结、计算等，openctp给出了一套轻量的Tick级CTPAPI策略交易框架源码，保持了原汁原味的CTP数据结构，代码很漂亮，不到5000行，简洁易懂，二次开发很容易，更多介绍见：[CTPAPI策略交易框架](http://openctp.cn/TTF.html)。
-# openctp培训服务
+# 培训服务
 openctp提供证券期货交易开发方面的技术培训，也提供通用的基础技术培训，openctp的培训偏向于就业方向，比如想去私募或者科技公司从事量化或者柜台系统开发的比较适合，当然如果想自己学习一些技术帮助自己更好地做交易也是可以的。openctp的培训是迭代式的，会不断更新，补充更多的内容，同学可长期在相应课程的群内交流，具体见：[培训](http://openctp.cn/Learning.html)。
 # 就业服务
 为帮助解决金融、互联网等行业就业问题，openctp提供了招聘、兼职服务，有招聘、兼职需求的甲乙方可联系openctp咨询，具体见：[就业](http://openctp.cn/Jobs.html)。
@@ -47,7 +47,8 @@ openctp提供证券期货交易开发方面的技术培训，也提供通用的�
 # openctp官网
 [www.openctp.cn](http://www.openctp.cn/)
 # openctp公众号
-<img src="https://user-images.githubusercontent.com/83346523/225707613-59293970-0f04-4056-8ea4-dd4596a4efec.png" alt="微信公众号" width="300" height="350" />
+![公众号二维码](https://github.com/user-attachments/assets/36a905db-745f-4df0-b55d-bb3c4c7b6b40)
+
 # 精品文章：
 
 - [如何使用CTP开放平台提供的各项能力](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484094&idx=1&sn=97bd791622333886260bf767bea40db1&chksm=c36bd917f41c50016b676b5f5b11f899aea889cd9b10e6724c7fee0ad443f31351f87ff5a4d2&token=1790747698&lang=zh_CN#rd)
@@ -64,5 +65,11 @@ openctp提供证券期货交易开发方面的技术培训，也提供通用的�
 
 <u>*注：openctp不对模拟交易及相关服务作任何保证，使用openctp产品进行实盘交易的后果完全由使用者自己承担。*</u>
 # 友情推荐
+- [LocalCTP（兼容CTPAPI接口的嵌入式模拟交易环境（无服务端），支持全市场期货、期权及组合合约的模拟交易，支持FAK、FOK订单及条件单等指令，支持回测及结算单功能。）](https://github.com/dearleeyoung/LocalCTP)
+- [VeighNa（基于Python的开源量化交易平台开发框架）](https://github.com/vnpy/vnpy)
 - [QUANTAXIS（量化交易框架，支持股票、期货、期权，支持回测、多账户等特性。）](https://github.com/yutiansut/QUANTAXIS)
+- [WonderTrader（一个基于C++核心模块的，适应全市场全品种交易的，高效率、高可用的量化交易开发框架。）](https://github.com/wondertrader/wondertrader)
+- [MT5CTP（MT5客户端直连期货公司CTP柜台的期货程序化交易软件）](https://gitee.com/mt5ctp/MT5CTP)
+- [ctpbee（简单易用的期货实盘ctp交易框架 支持ctp和ctp_mini）](https://github.com/ctpbee/ctpbee)
+- [HQChart（基于国内传统PC股票客户端软件(C++)移植到js/py平台的一个项目, 包含K线图图形库及麦语法(分析家语法)指标执行器）](https://github.com/jones2000/HQChart)
 - [KLineChart（基于 html5 canvas 构建的轻量级金融图表。）](https://github.com/klinecharts/KLineChart)
