@@ -4,7 +4,7 @@
 
 ### 简介
 
-ViTrader是一款命令行交易客户端，操作命令基本同Vi编辑器，集交易与行情于一体，支持支持Windows、Linux、MacOS、FreeBSD等操作系统。
+ViTrader是openctp开发的一款命令行交易客户端，操作命令基本同Vi编辑器，集交易与行情于一体，支持支持Windows、Linux、MacOS、FreeBSD等操作系统。
 
 ViTrader默认支持CTP柜台，也支持通过CTPAPI兼容接口方式连接其它柜台（[openctp](https://github.com/openctp/openctp)）。
 
