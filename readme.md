@@ -1,4 +1,4 @@
-# **openctp（Powered by TTS - Tick Trading System）**
+# **openctp**
 [openctp](http://www.openctp.cn)是一个以CTP生态为依托的技术服务平台，既提供了华鑫证券奇点、中泰证券XTP、东方财富EMT、东方证券OST等柜台的[CTPAPI](http://openctp.cn/CTPAPI.html)兼容接口，也提供了一套与上期技术SimNow模拟环境类似的模拟环境，也支持CTPAPI接口，不仅提供国内各期货交易所的期货与期权品种模拟交易，还提供了A股的股票、基金、债券以及股票期权模拟交易，也支持港股、美股等市场模拟交易。
 
 openctp提供了[CTPAPI的Python接口](https://github.com/openctp/openctp-ctp-python)以及[CTP股票期权API的Python接口](https://github.com/openctp/openctp-ctpopt-python)，CTPAPI命令行交易客户端[ViTrader](https://github.com/openctp/openctp/tree/master/widgets/ViTrader)，还有图形界面交易客户端[TickTrader](http://www.openctp.cn/TickTrader.html)，以及Mini版的[TickTraderMini](http://www.openctp.cn/TickTrader.html)都支持openctp、CTP、CTP股票期权、中泰XTP、华鑫奇点股票与股票期权等柜台，[TickTraderMini](http://www.openctp.cn/TickTrader.html)采用openctp的CTPAPI兼容接口技术支持了CTP、TTS、华鑫证券股票与股票期权等柜台，无需自己再替换dll。
@@ -49,19 +49,24 @@ openctp提供证券期货交易开发方面的技术培训，也提供通用的�
 # openctp公众号
 ![公众号二维码](https://github.com/user-attachments/assets/36a905db-745f-4df0-b55d-bb3c4c7b6b40)
 
-# 精品文章：
-
-- [如何使用CTP开放平台提供的各项能力](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484094&idx=1&sn=97bd791622333886260bf767bea40db1&chksm=c36bd917f41c50016b676b5f5b11f899aea889cd9b10e6724c7fee0ad443f31351f87ff5a4d2&token=1790747698&lang=zh_CN#rd)
-- [CTP接口开发“葵花宝典”](https://zhuanlan.zhihu.com/p/397359483)
-- [CTP接口支持pip install](https://zhuanlan.zhihu.com/p/622959788)
+# CTPAPI相关文章：
 - [CTP接口量化交易资料汇总](https://zhuanlan.zhihu.com/p/607325008)
-- [开放腾讯行情CTPAPI接口源码](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484606&idx=1&sn=270ba6034d9e45334642236dc315b16e&chksm=c36bdf17f41c56011a5a3bf974022c13f53b21b0cad35d43ea85130748152b4f0739e02f7a0e&token=55513683&lang=zh_CN#rd)
+- [量化交易数据接口汇总](https://zhuanlan.zhihu.com/p/681814762)
+- [CTP接口开发“葵花宝典”](https://zhuanlan.zhihu.com/p/397359483)
+- [景色大佬的CTP接口开发技术讲解](https://www.zhihu.com/column/QuantRoad2019)
+- [秋水大佬的CTP接口开发技术讲解](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/mp/appmsgalbum%3F__biz%3DMzAxOTQ2ODA3OA%3D%3D%26action%3Dgetalbum%26album_id%3D1501810151681523713%26scene%3D173%26from_msgid%3D2247483738%26from_itemidx%3D1%26count%3D3%26nolastread%3D1%23wechat_redirect)
+- [krenx的CTP柜台系统相关技术讲解](https://www.zhihu.com/column/c_1356686503654109184)
+- [发布CTPAPI-Python源码](https://zhuanlan.zhihu.com/p/12295276223)
+- [发布CTP股票期权柜台CTPAPI](https://zhuanlan.zhihu.com/p/709700501)
+- [发布QDP极速柜台CTPAPI](https://zhuanlan.zhihu.com/p/709307501)
 - [开放新浪行情CTPAPI接口源码](https://zhuanlan.zhihu.com/p/585724196)
-- [CTP程序无缝接入华鑫证券奇点柜台（CTP2STP）](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247483843&idx=1&sn=fdb033a68e9f803183d902dcf92f969b&chksm=c36bda6af41c537c6ed262923f2ee9a4cccb1b02821b918382e51a299cca81556bdb4302cdd3&scene=21#wechat_redirect)
-- [发布华鑫证券奇点柜台股票期权CTPAPI](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484767&idx=1&sn=34fc5c6b270cf8c8bdc37981df4ae8e1&chksm=c36bdef6f41c57e075460fca8d670db17310e7d832a240aa37fa0f4666ba92672aa179d8f0dd&token=1435234803&lang=zh_CN#rd)
-- [开放华鑫证券奇点柜台行情CTPAPI接口源码](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484647&idx=1&sn=03bef5f9f71ecd879c3520de2564f8dd&chksm=c36bdf4ef41c565895c10adaa558d6ac471ac5003791cbe301771c8884757cef13400e09ca5b&token=1847931716&lang=zh_CN#rd)
-- [发布一批行情显示工具（命令行版）](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484039&idx=1&sn=794a13777cb358e01c175439e022d99b&chksm=c36bd92ef41c5038224f3b38740b001ef3b36bec89b0ccede51a446039fd1fa679ff7b4bc3b5&token=1790747698&lang=zh_CN#rd)
-- [openctp培训与咨询服务](https://mp.weixin.qq.com/s?__biz=Mzk0ODI0NDE2Ng==&mid=2247484610&idx=1&sn=b7317eb127d22fd52958a41e40121b06&chksm=c36bdf6bf41c567d4f3c16454fc1f5ff2a22f567d893ea35a2135c082b78ce5d01d944b086e4&token=55513683&lang=zh_CN#rd)
+- [开放腾讯行情CTPAPI接口源码](https://zhuanlan.zhihu.com/p/583796057)
+- [CTPAPI哪些字段可以用来标识订单？](https://zhuanlan.zhihu.com/p/461809304)
+- [如何使用CTP开放平台提供的各项能力](https://zhuanlan.zhihu.com/p/451403422)
+- [发布一批CTP链路检测工具](https://zhuanlan.zhihu.com/p/447148174)
+- [发两个ctp开发者生产力工具](https://zhuanlan.zhihu.com/p/695782688)
+- [发布openctp数据中心接口](https://zhuanlan.zhihu.com/p/1899531333975375926)
+- [openctp的demo和tools](https://zhuanlan.zhihu.com/p/708647615)
 
 <u>*注：openctp不对模拟交易及相关服务作任何保证，使用openctp产品进行实盘交易的后果完全由使用者自己承担。*</u>
 # 友情推荐
