@@ -1,0 +1,5 @@
+all: vitrader.exe
+vitrader.exe:
+	cl /DWIN32 /I .\PDCurses /I .\INIReader /I .\CTP ViTrader.cpp INIReader/ini.cpp INIReader/INIReader.cpp /link /LIBPATH:.\PDCurses /LIBPATH:.\CTP thosttraderapi_se.lib thostmduserapi_se.lib pdcurses.lib advapi32.lib user32.lib /OUT:vitrader.exe
+clean:
+	del *.obj vitrader.exe
