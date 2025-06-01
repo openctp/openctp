@@ -1,10 +1,6 @@
 # ctpping（ctp通讯链路检测工具）
 
-ctpping工具源码原发布在[TradingTechnology](https://github.com/krenx1983/TradingTechnology)仓库中，现移至openctp库，由于其代码极其简洁，可以作为ctp接口的demo程序。
-
-## 用途：
-
-检测CTP链路及通讯延时。
+ctpping工具通过ctpapi的登录接口测试ctp柜台系统响应情况。
 
 ## 实现方法：
 
