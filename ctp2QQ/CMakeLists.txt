@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(mdapi thostmduserapi_se_6.5.1_20200908)
+set(mdapi thostmduserapi_se)
 project(${mdapi})
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -13,16 +13,15 @@ endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-  add_definitions(-D ISLIB -D LIB_MD_API_EXPORT -D V6_5_1)
+  add_definitions(-D ISLIB -D LIB_MD_API_EXPORT)
 else()
   add_compile_options(-std=c++11 -pthread)
-  add_definitions(-D V6_5_1)
 endif()
 
-include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/.. ${boost_include})
+include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${boost_include})
 link_directories(${boost_lib})
 
-add_library(${mdapi} SHARED ../FtdcMdApiImpl.cpp)
+add_library(${mdapi} SHARED FtdcMdApiImpl.cpp)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   target_link_libraries(${mdapi} -lpthread -lboost_system -lboost_thread)
 endif()
