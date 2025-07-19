@@ -147,6 +147,11 @@
   <ItemGroup>
     <ClCompile Include="stpprint.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="STP\TORATstpTraderApi.h" />
+    <ClInclude Include="STP\TORATstpUserApiDataType.h" />
+    <ClInclude Include="STP\TORATstpUserApiStruct.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -26,6 +26,32 @@ public:
 		return std::move(str);
 	}
 
+	const std::string exchange_to_string(TTORATstpExchangeIDType	ExchangeID)
+	{
+		std::string exchange;
+
+		switch (ExchangeID)
+		{
+		case TORA_TSTP_EXD_SSE: ///上海交易所
+			exchange = "SSE";
+			break;
+		case TORA_TSTP_EXD_SZSE: ///深圳交易所
+			exchange = "SZSE";
+			break;
+		case TORA_TSTP_EXD_HK: ///香港交易所
+			exchange = "HKSE";
+			break;
+		case TORA_TSTP_EXD_BSE: ///北京证券交易所
+			exchange = "BSE";
+			break;
+		default:
+			exchange = "";
+			break;
+		}
+
+		return exchange;
+	}
+
 	int Run()
 	{
 		m_pUserApi->RegisterFront((char*)m_host.c_str());
@@ -102,8 +128,23 @@ public:
 	void OnRspQrySecurity(CTORATstpSecurityField* pSecurity, CTORATstpRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 	{
 		if (pSecurity)
-			printf("SecurityID:%s,SecurityName:%s,PriceTick:%lf,PreClosePrice:%lf,MarketID:%c\n", pSecurity->SecurityID, pSecurity->SecurityName, pSecurity->PriceTick, pSecurity->PreClosePrice, pSecurity->MarketID);
+			printf("OnRspQrySecurity:SecurityID:%s,SecurityName:%s,ExchangeID:%s,PriceTick:%lf,PreClosePrice:%lf,MarketID:%c\n", pSecurity->SecurityID, pSecurity->SecurityName, exchange_to_string(pSecurity->ExchangeID).c_str(), pSecurity->PriceTick, pSecurity->PreClosePrice, pSecurity->MarketID);
 
+		if (bIsLast) {
+			// 查询佣金费率
+			printf("查询佣金费率 ...\n");
+			CTORATstpQryInvestorTradingFeeField Req = { 0 };
+			m_pUserApi->ReqQryInvestorTradingFee(&Req, 0);
+		}
+	}
+
+	// 查询手续费应答
+	void OnRspQryInvestorTradingFee(CTORATstpInvestorTradingFeeField* pInvestorTradingFeeField, CTORATstpRspInfoField* pRspInfoField, int nRequestID, bool bIsLast)
+	{
+		if (pInvestorTradingFeeField)
+			printf("OnRspQryInvestorTradingFee:SecurityID:%s,ExchangeID:%s,SecurityType='%c',ProductID='%c',FeeByVolume:%lf,RatioByAmt:%lf,FeeMin:%lf,BizClass:'%c',InvestorID:%s\n", pInvestorTradingFeeField->SecurityID, exchange_to_string(pInvestorTradingFeeField->ExchangeID).c_str(), pInvestorTradingFeeField->SecurityType, pInvestorTradingFeeField->ProductID, pInvestorTradingFeeField->FeeByVolume, pInvestorTradingFeeField->RatioByAmt, pInvestorTradingFeeField->FeeMin, pInvestorTradingFeeField->BizClass, pInvestorTradingFeeField->InvestorID);
+
+		
 		if (bIsLast) {
 			// 查询订单
 			printf("查询订单 ...\n");
@@ -112,11 +153,11 @@ public:
 		}
 	}
 
-	//订单查询
+	//订单查询应答
 	void OnRspQryOrder(CTORATstpOrderField* pOrder, CTORATstpRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 	{
 		if (pOrder)
-			printf("OrderLocalID:%s,SecurityID:%s,Direction:%s,VolumeTotalOriginal:%d,LimitPrice:%lf,VolumeTraded:%d,VolumeCanceled:%d,OrderSysID:%s,FrontID:%d,SessionID:%d,OrderRef:%d,OrderStatus:%c,StatusMsg:%s,InsertTime:%s\n",
+			printf("OnRspQryOrder:OrderLocalID:%s,SecurityID:%s,Direction:%s,VolumeTotalOriginal:%d,LimitPrice:%lf,VolumeTraded:%d,VolumeCanceled:%d,OrderSysID:%s,FrontID:%d,SessionID:%d,OrderRef:%d,OrderStatus:%c,StatusMsg:%s,InsertTime:%s\n",
 				pOrder->OrderLocalID, pOrder->SecurityID, direction_to_string(pOrder->Direction).c_str(), pOrder->VolumeTotalOriginal, pOrder->LimitPrice, pOrder->VolumeTraded, pOrder->VolumeCanceled, pOrder->OrderSysID, pOrder->FrontID, pOrder->SessionID, pOrder->OrderRef, pOrder->OrderStatus, pOrder->StatusMsg, pOrder->InsertTime);
 
 		if (bIsLast) {
@@ -142,7 +183,7 @@ public:
 		}
 	}
 
-	//持仓查询
+	//持仓查询应答
 	void OnRspQryPosition(CTORATstpPositionField* pPosition, CTORATstpRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 	{
 		if (pPosition)
@@ -156,7 +197,7 @@ public:
 		}
 	}
 
-	//资金查询
+	//资金查询应答
 	void OnRspQryTradingAccount(CTORATstpTradingAccountField* pTradingAccount, CTORATstpRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 	{
 		if (pTradingAccount)

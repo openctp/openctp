@@ -13,10 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="TORA">
+      <UniqueIdentifier>{77cdc03c-a397-40a0-8f36-8f2122a4bd79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stpprint.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="STP\TORATstpTraderApi.h">
+      <Filter>TORA</Filter>
+    </ClInclude>
+    <ClInclude Include="STP\TORATstpUserApiDataType.h">
+      <Filter>TORA</Filter>
+    </ClInclude>
+    <ClInclude Include="STP\TORATstpUserApiStruct.h">
+      <Filter>TORA</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

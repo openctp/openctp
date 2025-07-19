@@ -93,6 +93,12 @@ public:
 		return 0;
 	}
 
+	void Stop()
+	{
+		m_pUserApi->RegisterSpi(NULL);
+		m_pUserApi->Release();
+	}
+
 	// 下单
 	int OrderInsert(const char* ExchangeID, const char* InstrumentID, TThostFtdcDirectionType Direction, TThostFtdcOffsetFlagType OffsetFlag, double Price, unsigned int Qty)
 	{
@@ -261,6 +267,7 @@ public:
 	{
 		if (pRspInfo && pRspInfo->ErrorID != 0) {
 			printf("Login failed. %d - %s\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+			_semaphore.signal();
 			return;
 		}
 		printf("Login succeeded.TradingDay:%s,FrontID=%d,SessionID=%d\n", pRspUserLogin->TradingDay, pRspUserLogin->FrontID, pRspUserLogin->SessionID);
@@ -971,6 +978,7 @@ int main(int argc, char* argv[])
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	printf("按任意键退出 ...\n");
 	getchar();
+	Spi.Stop();
 
 	return 0;
 }
