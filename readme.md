@@ -57,7 +57,6 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
   
   # 技术交流
 - QQ群：564385877
-- 微信群+v：openctp_helper
   
   # openctp官网
   
@@ -65,13 +64,12 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
   
   # openctp公众号
   
-  ![公众号二维码](https://github.com/user-attachments/assets/36a905db-745f-4df0-b55d-bb3c4c7b6b40)
+  ![公众号二维码](https://github.com/user-attachments/assets/14b3b875-acf9-4d27-940b-459401cc3401)
 
 # CTPAPI相关文章：
 
 - [CTP接口量化交易资料汇总](https://zhuanlan.zhihu.com/p/607325008)
 - [量化交易数据接口汇总](https://zhuanlan.zhihu.com/p/681814762)
-- [CTP接口开发“葵花宝典”](https://zhuanlan.zhihu.com/p/397359483)
 - [景色大佬的CTP接口开发技术讲解](https://www.zhihu.com/column/QuantRoad2019)
 - [秋水大佬的CTP接口开发技术讲解](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/mp/appmsgalbum%3F__biz%3DMzAxOTQ2ODA3OA%3D%3D%26action%3Dgetalbum%26album_id%3D1501810151681523713%26scene%3D173%26from_msgid%3D2247483738%26from_itemidx%3D1%26count%3D3%26nolastread%3D1%23wechat_redirect)
 - [krenx的CTP柜台系统相关技术讲解](https://www.zhihu.com/column/c_1356686503654109184)
@@ -80,14 +78,8 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
 - [发布QDP极速柜台CTPAPI](https://zhuanlan.zhihu.com/p/709307501)
 - [开放新浪行情CTPAPI接口源码](https://zhuanlan.zhihu.com/p/585724196)
 - [开放腾讯行情CTPAPI接口源码](https://zhuanlan.zhihu.com/p/583796057)
-- [CTPAPI哪些字段可以用来标识订单？](https://zhuanlan.zhihu.com/p/461809304)
-- [如何使用CTP开放平台提供的各项能力](https://zhuanlan.zhihu.com/p/451403422)
-- [发布一批CTP链路检测工具](https://zhuanlan.zhihu.com/p/447148174)
 - [发两个ctp开发者生产力工具](https://zhuanlan.zhihu.com/p/695782688)
 - [发布openctp数据中心接口](https://zhuanlan.zhihu.com/p/1899531333975375926)
-- [openctp的demo和tools](https://zhuanlan.zhihu.com/p/708647615)
-
-<u>*注：openctp不对模拟交易及相关服务作任何保证，使用openctp产品进行实盘交易的后果完全由使用者自己承担。*</u>
 
 # 友情推荐
 
