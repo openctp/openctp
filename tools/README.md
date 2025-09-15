@@ -8,9 +8,7 @@ CTP交易及行情通道检测工具，可通过替换dll方式连接CTP股票�
 
 ## prices
 
-CTP柜台行情显示工具，可通过替换dll方式连接CTP股票期权等其它各个通道。
-
-# 
+CTP柜台行情显示工具，可通过替换dll方式连接CTP股票期权等其它各个通道。 
 
 ## ctpdump
 
@@ -23,7 +21,3 @@ ctpcommand工具是一个互式命令行工具，像telnet一样通过命令与c
 ## ctpsettle
 
 ctpsettle将CTP结算单解析成json格式，方便各种用途。
-
-## ctpschema
-
-CTP接口函数与类型定义文件均通过模板生成，ctpschema根据CTP头文件中的代码规则反生成模板文件，方便通过模板自动生成相关的代码。
