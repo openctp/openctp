@@ -21,3 +21,7 @@ ctpcommand工具是一个互式命令行工具，像telnet一样通过命令与c
 ## ctpsettle
 
 ctpsettle将CTP结算单解析成json格式，方便各种用途。
+
+## FTD-XML
+
+openctp通过CTPAPI头文件将数据结构定义统一到一个xml定义文件中，通过jinja2等模板脚本可以批量生成相关代码，CTPAPI头文件本身也是从这样的xml定义文件生成出来的。
