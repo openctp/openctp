@@ -60,8 +60,11 @@ cmake --build . --config Release
 编译成功后，将生成的文件连同CTPOPT的so文件（soptthosttraderapi.so、soptthostmduserapi.so）拷贝到你的程序运行目录下即可：
 
 - soptthosttraderapi.py
+
 - soptthostmduserapi.py
+
 - _soptthostmduserapi.so
+
 - _soptthosttraderapi.so
   
   ```
@@ -105,5 +108,7 @@ cmake --build . --config Release
   ```
   
   ### 技术交流
+
 - QQ群：546977604
+
 - 

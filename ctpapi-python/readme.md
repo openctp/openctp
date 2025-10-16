@@ -60,8 +60,11 @@ cmake --build . --config Release
 编译成功后，将生成的文件连同CTPAPI的so文件（thosttraderapi.so、thostmduserapi.so）拷贝到你的程序运行目录下即可：
 
 - thosttraderapi.py
+
 - thostmduserapi.py
+
 - _thostmduserapi.so
+
 - _thosttraderapi.so
   
   ```
