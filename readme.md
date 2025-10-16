@@ -10,29 +10,53 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
 # 目录结构：
 
 - [TTS-CTPAPI](https://github.com/openctp/openctp/tree/master/TTS-CTPAPI)：openctp模拟环境TTS系统CTPAPI兼容接口。
+
 - [TTS-CTPOPT](https://github.com/openctp/openctp/tree/master/TTS-CTPOPT)：openctp模拟环境TTS系统CTP股票期权API兼容接口。
+
 - [CTPOPT-CTPAPI](https://github.com/openctp/openctp/tree/master/CTPOPT-CTPAPI)：CTP股票期权柜台CTPAPI兼容接口。
+
 - XTP-CTPAPI：中泰证券XTP柜台CTPAPI兼容接口。
+
 - TORA-CTPAPI：华鑫证券TORA奇点股票柜台CTPAPI兼容接口。
+
 - EMT-CTPAPI：东方财富EMT柜台CTPAPI兼容接口。
+
 - TORA_OPT-CTPAPI：华鑫证券TORA奇点股票期权柜台CTPAPI兼容接口。
+
 - OST-CTPAPI：东方证券OST柜台CTPAPI兼容接口。
+
 - YD-CTPAPI：易达柜台CTPAPI兼容接口。（易达官方提供）
+
 - IB-CTPAPI：盈透证券TWS平台CTPAPI兼容接口。
+
 - QDP-CTPAPI：量投QDP柜台CTPAPI兼容接口。
+
 - TAP-CTPAPI：易盛TAP启明星柜台CTPAPI兼容接口。
+
 - QQ-CTPAPI：腾讯行情CTPAPI兼容接口（含源码）。
+
 - SINA-CTPAPI：新浪行情CTPAPI兼容接口（含源码）。
+
 - demo：CTPAPI开发相关的demo及工具源码。
+
 - tools：小工具。
+
 - docs：开发文档及行业资料。
+
 - [ctpapi-python](https://github.com/openctp/openctp-ctp-python)：CTPAPI的Python接口（openctp官方开发）。
-- [ctpapi-opt-python](https://github.com/openctp/openctp-ctpopt-python)：CTP股票期权API的Python接口（openctp官方开发）。
+
+- [ctpopt-python](https://github.com/openctp/openctp-ctpopt-python)：CTP股票期权API的Python接口（openctp官方开发）。
+
 - ctpapi-java：CTPAPI的Java接口。
+
 - ctpapi-go：CTPAPI的Go接口。
+
 - ctpapi-c：CTPAPI的C语言接口。
+
 - ctpapi-rust：CTPAPI的Rust语言接口。
+
 - ctpapi-csharp：CTPAPI的C#语言接口。
+
 - widgets：基于CTPAPI的小应用。 
   
   # CTPAPI接口下载：
@@ -56,6 +80,7 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
   为帮助解决金融、互联网等行业就业问题，openctp提供了招聘、兼职服务，有招聘、兼职需求的甲乙方可联系openctp咨询，具体见：[就业](http://openctp.cn/Jobs.html)。
   
   # 技术交流
+
 - QQ群：564385877
   
   # openctp官网
