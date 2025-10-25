@@ -59,35 +59,26 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
 
 - widgets：基于CTPAPI的小应用。 
   
-  # CTPAPI接口下载：
+# CTPAPI接口：
   
-  [CTPAPI接口下载](http://www.openctp.cn/CTPAPI.html)
+CTPAPI是上期所旗下技术公司开发的CTP柜台开发接口，因CTP柜台技术先进、设计精湛，是国内投资者最喜欢的柜台，关于CTPAPI的更多信息参见：[CTPAPI及CTP股票期权API接口](http://www.openctp.cn/CTPAPI.html)
+
+# 策略开发框架
   
-  # openctp模拟环境
+CTPAPI接口专业性很强，原生接口开发有一定难度，持仓与资金的实时计算也很难处理，各种持仓与资金字段的冻结、计算等，openctp给出了一套轻量的Tick级CTPAPI策略交易框架源码，保持了原汁原味的CTP数据结构，代码很漂亮，不到5000行，简洁易懂，二次开发很容易，更多介绍见：[CTPAPI策略交易框架](http://openctp.cn/TTF.html)。  
+# TickTrader
+[TickTrader](http://www.openctp.cn/TickTrader.html)是openctp自研的交易客户端，简洁易用，支持点价下单、自动开平、图表等功能，支持CTP、CTP股票期权、TTS、量投QDP、易盛TAP、中泰XTP、华鑫奇点等柜台。
+<img width="3057" height="1280" alt="image" src="https://github.com/user-attachments/assets/edd62c12-477c-43bf-a871-ffd00aed402d" />
+
+# 模拟环境
   
-  openctp提供了3套CTPAPI兼容接口模拟环境，分别为7x24环境、仿真环境、vip仿真环境，具体信息见：[模拟交易](http://openctp.cn/Trading.html)。
+openctp提供了3套CTPAPI兼容接口模拟环境，分别为7x24环境、仿真环境、vip仿真环境，支持股票、期货、期权、股票期权等品种模拟交易，具体信息见：[openctp模拟交易环境](http://openctp.cn/Trading.html)。
   
-  # CTPAPI策略交易框架
-  
-  CTPAPI接口专业性很强，原生接口开发有一定难度，持仓与资金的实时计算也很难处理，各种持仓与资金字段的冻结、计算等，openctp给出了一套轻量的Tick级CTPAPI策略交易框架源码，保持了原汁原味的CTP数据结构，代码很漂亮，不到5000行，简洁易懂，二次开发很容易，更多介绍见：[CTPAPI策略交易框架](http://openctp.cn/TTF.html)。
-  
-  # 培训服务
-  
-  openctp提供证券期货交易开发方面的技术培训，也提供通用的基础技术培训，openctp的培训偏向于就业方向，比如想去私募或者科技公司从事量化或者柜台系统开发的比较适合，当然如果想自己学习一些技术帮助自己更好地做交易也是可以的。openctp的培训是迭代式的，会不断更新，补充更多的内容，同学可长期在相应课程的群内交流，具体见：[培训](http://openctp.cn/Learning.html)。
-  
-  # 就业服务
-  
-  为帮助解决金融、互联网等行业就业问题，openctp提供了招聘、兼职服务，有招聘、兼职需求的甲乙方可联系openctp咨询，具体见：[就业](http://openctp.cn/Jobs.html)。
-  
-  # 技术交流
+# 技术交流
 
 - QQ群：564385877
   
-  # openctp官网
-  
-  [www.openctp.cn](http://www.openctp.cn/)
-  
-  # openctp公众号
+# openctp公众号
   
   ![公众号二维码](https://github.com/user-attachments/assets/14b3b875-acf9-4d27-940b-459401cc3401)
 
