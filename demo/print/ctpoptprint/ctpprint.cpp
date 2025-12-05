@@ -1,13 +1,13 @@
 ﻿#include <stdio.h>
 #include <string>
-#include "./CTP/ThostFtdcTraderApi.h"
+#include "ThostFtdcTraderApi.h"
 
 #include <thread>
 #include <mutex>
 #include <functional>
 #include <condition_variable>
 
-#pragma comment (lib, "./CTP/soptthosttraderapi_se.lib")
+#pragma comment (lib, "soptthosttraderapi_se.lib")
 
 class semaphore
 {
