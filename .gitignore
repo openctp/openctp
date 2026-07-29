@@ -1,0 +1,35 @@
+# openctp 项目 .gitignore
+
+# === CMake 编译缓存 ===
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# === 编译产物 ===
+*.so
+*.o
+*.a
+*.pyd
+*.dll
+*.lib
+
+# === SWIG 生成物 ===
+*_wrap.cxx
+*_wrap.h
+thosttraderapi.py
+thostmduserapi.py
+soptthosttraderapi.py
+soptthostmduserapi.py
+
+# === IDE / 编辑器 ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === 临时文件 ===
+temp-validation/
+*.tmp
+*.log
