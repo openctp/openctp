@@ -44,7 +44,7 @@ public:
 
 	void OnFrontDisconnected(int nReason)
 	{
-		print_error(9999, "Disconnected.");
+		print_error(CTPCMD_ERR_CODE_DEFAULT, "Disconnected.");
 		exit(0);
 	}
 
@@ -56,7 +56,7 @@ public:
 		strncpy(Req.Password, m_Password.c_str(), sizeof(Req.Password) - 1);
 
 		if (m_pMdApi->ReqUserLogin(&Req, 0) != 0) {
-			print_error(9999, "Login failed.");
+			print_error(CTPCMD_ERR_CODE_DEFAULT, "Login failed.");
 			exit(0);
 		}
 	}
@@ -81,7 +81,7 @@ public:
 			count++;
 			if (count == sizeof(Instruments) / sizeof(TThostFtdcInstrumentIDType)) {
 				if (m_pMdApi->SubscribeMarketData(ppInstrumentID, count)!=0) {
-					print_error(9999, "Subscribe failed.");
+					print_error(CTPCMD_ERR_CODE_DEFAULT, "Subscribe failed.");
 					exit(0);
 				}
 				m_pMdApi->SubscribeMarketData(ppInstrumentID, count);
@@ -90,7 +90,7 @@ public:
 		}
 		if (count) {
 			if (m_pMdApi->SubscribeMarketData(ppInstrumentID, count) != 0) {
-				print_error(9999, "Subscribe failed.");
+				print_error(CTPCMD_ERR_CODE_DEFAULT, "Subscribe failed.");
 				exit(0);
 			}
 		}
@@ -281,7 +281,7 @@ std::string return_error(int err_code, const char* err_message)
 
 int main(int argc, char** argv)
 {
-	CLI::App app{ "ctpprice ¡ª price command" };
+	CLI::App app{ "ctpprice -- price command" };
 	CTPCMD cmd;
 	std::string config{ "brokers.xml" };
 	std::string channel;
