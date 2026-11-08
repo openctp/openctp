@@ -357,6 +357,10 @@ int main(int argc, char** argv)
 	CThostFtdcMdApi* pMdApi = CThostFtdcMdApi::CreateFtdcMdApi();
 	CCTPMdSpiImpl Spi(pMdApi, BrokerID, user, password, cmd, instruments);
 	pMdApi->RegisterSpi(&Spi);
+	if (Hosts.size() == 0) {
+		std::cout << "No host found for channel: " << channel << std::endl;
+		return -1;
+	}
 	for(auto host:Hosts)
 		pMdApi->RegisterFront((char*)host.c_str());
 	pMdApi->Init();
