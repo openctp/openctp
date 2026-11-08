@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 openctp
+ * BSD 3-Clause License, see LICENSE file for full terms.
+ * https://github.com/openctp/openctp/tree/master/tools/ctpcmd/ctpprice
+ */
+
 #include <iostream>
 #include <string>
 #include <map>
