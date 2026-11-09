@@ -24,16 +24,17 @@ enum CTPCMD
 	CTPCMD_SUBSCRIBE
 };
 
-void print_error(int ErrorID, const char* ErrorMsg)
+std::string error_message(int rsp_code, const char* rsp_message)
 {
 	using json = nlohmann::json;
 
 	json msg;
-	msg["rsp_code"] = ErrorID;
-	msg["rsp_message"] = ErrorMsg;
+	msg["rsp_code"] = rsp_code;
+	msg["rsp_message"] = rsp_message;
 
-	std::cout << msg.dump() << std::endl;
+	return msg.dump();
 }
+
 
 class CCTPMdSpiImpl :public CThostFtdcMdSpi
 {
@@ -50,7 +51,7 @@ public:
 
 	void OnFrontDisconnected(int nReason)
 	{
-		print_error(CTPCMD_ERR_CODE_DEFAULT, "Disconnected.");
+		std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "Disconnected.") << std::endl;
 		exit(0);
 	}
 
@@ -62,7 +63,7 @@ public:
 		strncpy(Req.Password, m_Password.c_str(), sizeof(Req.Password) - 1);
 
 		if (m_pMdApi->ReqUserLogin(&Req, 0) != 0) {
-			print_error(CTPCMD_ERR_CODE_DEFAULT, "Login failed.");
+			std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "Login failed.") << std::endl;
 			exit(0);
 		}
 	}
@@ -72,7 +73,7 @@ public:
 		using json = nlohmann::json;
 
 		if (pRspInfo && pRspInfo->ErrorID != 0) {
-			print_error(pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+			std::cout << error_message(pRspInfo->ErrorID, pRspInfo->ErrorMsg) << std::endl;
 			exit(0);
 		}
 
@@ -87,7 +88,7 @@ public:
 			count++;
 			if (count == sizeof(Instruments) / sizeof(TThostFtdcInstrumentIDType)) {
 				if (m_pMdApi->SubscribeMarketData(ppInstrumentID, count)!=0) {
-					print_error(CTPCMD_ERR_CODE_DEFAULT, "Subscribe failed.");
+					std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "Subscribe failed.") << std::endl;
 					exit(0);
 				}
 				m_pMdApi->SubscribeMarketData(ppInstrumentID, count);
@@ -96,7 +97,7 @@ public:
 		}
 		if (count) {
 			if (m_pMdApi->SubscribeMarketData(ppInstrumentID, count) != 0) {
-				print_error(CTPCMD_ERR_CODE_DEFAULT, "Subscribe failed.");
+				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "Subscribe failed.") << std::endl;
 				exit(0);
 			}
 		}
@@ -275,13 +276,6 @@ std::vector<std::pair<std::string, std::string>> parse_instrument_list(const std
 		result.emplace_back(exchange, instrument);
 	}
 	return result;
-}
-
-std::string return_error(int err_code, const char* err_message)
-{
-	std::string message;
-	
-	return message;
 }
 
 
