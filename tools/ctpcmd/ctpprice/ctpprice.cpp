@@ -13,7 +13,7 @@
 #include "CLI.hpp"
 #include "TinyXML2/tinyxml2.h"
 #include "nlohmann/json.hpp"
-#include "ThostFtdcMdApi.h"
+#include "CTPAPI/ThostFtdcMdApi.h"
 
 #define CTPCMD_ERR_CODE_DEFAULT 9999
 #define CTPCMD_PRICE_VERSION "1.0.0"
