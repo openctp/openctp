@@ -334,10 +334,10 @@ int main(int argc, char** argv)
 			continue;
 		}
 
-		BrokerID = element->FirstChildElement("BrokerID")->GetText() != nullptr ? element->FirstChildElement("BrokerID")->GetText() : "";
-		AppID = element->FirstChildElement("AppID")->GetText() != nullptr ? element->FirstChildElement("AppID")->GetText() : "";
-		AuthCode = element->FirstChildElement("AuthCode")->GetText() != nullptr ? element->FirstChildElement("AuthCode")->GetText() : "";
-		UserProductInfo = element->FirstChildElement("UserProductInfo")->GetText() != nullptr ? element->FirstChildElement("UserProductInfo")->GetText() : "";
+		BrokerID = element->FirstChildElement("BrokerID") != nullptr ? element->FirstChildElement("BrokerID")->GetText() : "";
+		AppID = element->FirstChildElement("AppID") != nullptr ? element->FirstChildElement("AppID")->GetText() : "";
+		AuthCode = element->FirstChildElement("AuthCode") != nullptr ? element->FirstChildElement("AuthCode")->GetText() : "";
+		UserProductInfo = element->FirstChildElement("UserProductInfo") != nullptr ? element->FirstChildElement("UserProductInfo")->GetText() : "";
 
 		tinyxml2::XMLElement* pNameServerElement = element->FirstChildElement("NameServer");
 		if (pNameServerElement) {

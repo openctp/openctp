@@ -91,13 +91,13 @@ ctpprice.exe --channel SimNow-7x24 query ag2612,fu2612
 ctpprice.exe [--config <file>] [--channel <name>] <query|subscribe> <instrument_list>
 ```
 
-| 参数  | 说明  | 默认值 |
-| --- | --- | --- |
-| `--config <file>` | 通道配置文件路径 | `brokers.xml` |
-| `--channel <name>` | 使用哪个行情通道，取值来自配置文件中的 channel 名 | 配置文件中的默认通道 |
-| `query` | 子命令：一次性查询快照，返回后退出 | —   |
-| `subscribe` | 子命令：订阅并持续输出 Tick | —   |
-| `<instrument_list>` | 合约列表，逗号分隔，位置参数 | 必填  |
+| 参数                  | 说明                            | 默认值           |
+| ------------------- | ----------------------------- | ------------- |
+| `--config <file>`   | 通道配置文件路径                      | `brokers.xml` |
+| `--channel <name>`  | 使用哪个行情通道，取值来自配置文件中的 channel 名 | 配置文件中的默认通道    |
+| `query`             | 子命令：一次性查询快照，返回后退出             | —             |
+| `subscribe`         | 子命令：订阅并持续输出 Tick              | —             |
+| `<instrument_list>` | 合约列表，逗号分隔，位置参数                | 必填            |
 
 ### 合约书写格式
 
@@ -151,41 +151,41 @@ ctpprice.exe --config my_brokers.xml --channel SimNow-7x24 query ag2612
 所有错误都是同样的 JSON 外形，只有 `rsp_code` / `rsp_message` 不同 —— 上层脚本**不需要区分"正常输出"和"错误输出"，统一按行读 JSON，判断 `rsp_code` 即可**。
 
 | rsp_code | 含义  |
-| --- | --- |
-| `0` | 成功  |
-| `9999` | 错误  |
+| -------- | --- |
+| `0`      | 成功  |
+| `9999`   | 错误  |
 
 ### 字段说明
 
 `data[]` 中每个对象的字段（与 CTP `CThostFtdcDepthMarketDataField` 一一对应，按字母序输出）：
 
-| 字段  | 类型  | 说明  |
-| --- | --- | --- |
-| `TradingDay` | string | 交易日 |
-| `ActionDay` | string | 自然日 |
-| `UpdateTime` | string | 更新时间 `HH:MM:SS` |
-| `UpdateMillisec` | int | 更新毫秒 |
-| `InstrumentID` | string | 合约代码 |
-| `ExchangeID` | string | 交易所代码（见下方说明） |
-| `LastPrice` | double | 最新价 |
-| `PreClosePrice` | double | 昨收盘 |
-| `OpenPrice` | double | 今开盘 |
-| `HighestPrice` | double | 最高价 |
-| `LowestPrice` | double | 最低价 |
-| `PreSettlementPrice` | double | 昨结算 |
-| `SettlementPrice` | double | 今结算（盘中通常为 0） |
-| `ClosePrice` | double | 收盘价（盘中通常为 0） |
-| `PreOpenInterest` | double | 昨持仓量 |
-| `OpenInterest` | double | 持仓量 |
-| `Volume` | int | 成交量 |
-| `Turnover` | double | 成交额 |
-| `AveragePrice` | double | 均价（部分品种为隐含值，仅供参考） |
-| `UpperLimitPrice` | double | 涨停价 |
-| `LowerLimitPrice` | double | 跌停价 |
-| `BidPrice1`~`BidPrice5` | double | 买一至买五价 |
-| `BidVolume1`~`BidVolume5` | int | 买一至买五量 |
-| `AskPrice1`~`AskPrice5` | double | 卖一至卖五价 |
-| `AskVolume1`~`AskVolume5` | int | 卖一至卖五量 |
+| 字段                        | 类型     | 说明                |
+| ------------------------- | ------ | ----------------- |
+| `TradingDay`              | string | 交易日               |
+| `ActionDay`               | string | 自然日               |
+| `UpdateTime`              | string | 更新时间 `HH:MM:SS`   |
+| `UpdateMillisec`          | int    | 更新毫秒              |
+| `InstrumentID`            | string | 合约代码              |
+| `ExchangeID`              | string | 交易所代码（见下方说明）      |
+| `LastPrice`               | double | 最新价               |
+| `PreClosePrice`           | double | 昨收盘               |
+| `OpenPrice`               | double | 今开盘               |
+| `HighestPrice`            | double | 最高价               |
+| `LowestPrice`             | double | 最低价               |
+| `PreSettlementPrice`      | double | 昨结算               |
+| `SettlementPrice`         | double | 今结算（盘中通常为 0）      |
+| `ClosePrice`              | double | 收盘价（盘中通常为 0）      |
+| `PreOpenInterest`         | double | 昨持仓量              |
+| `OpenInterest`            | double | 持仓量               |
+| `Volume`                  | int    | 成交量               |
+| `Turnover`                | double | 成交额               |
+| `AveragePrice`            | double | 均价（部分品种为隐含值，仅供参考） |
+| `UpperLimitPrice`         | double | 涨停价               |
+| `LowerLimitPrice`         | double | 跌停价               |
+| `BidPrice1`~`BidPrice5`   | double | 买一至买五价            |
+| `BidVolume1`~`BidVolume5` | int    | 买一至买五量            |
+| `AskPrice1`~`AskPrice5`   | double | 卖一至卖五价            |
+| `AskVolume1`~`AskVolume5` | int    | 卖一至卖五量            |
 
 > **关于 `ExchangeID`**：该字段取自 CTP 回调原值，部分柜台返回空字符串。工具不做额外推断，柜台给什么就输出什么；需要交易所信息时以自己传入的合约前缀为准。
 
@@ -355,6 +355,10 @@ vcpkg install cli11 nlohmann-json tinyxml2
 把 CTP 的 `thostmduserapi_se.dll` 与 `ctpprice.exe` 放在同一目录，然后按常规 CMake / VS 工程编译即可。
 
 ---
+
+## 下载
+
+可直接至openctp官网下载编译好的可执行文件：[ctpcmd工具链](http://www.openctp.cn/ctpcmd.html)
 
 ## 说明
 
