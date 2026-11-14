@@ -338,21 +338,14 @@ Windows 控制台先执行 `chcp 65001`（批处理里加在首行）。另外 `
 
 ## 编译
 
-依赖：
-
-- C++17 编译器（Windows 推荐 MSVC）
-- CTP 行情 API（`thostmduserapi_se`）
-- [CLI11](https://github.com/CLIUtils/CLI11)（命令行解析）
-- [nlohmann/json](https://github.com/nlohmann/json)（JSON 输出）
-- [tinyxml2](https://github.com/leethomason/tinyxml2)（读取 `brokers.xml`）
-
-用 vcpkg 装依赖：
+cmake编译步骤：
 
 ```bash
-vcpkg install cli11 nlohmann-json tinyxml2
+mkdir build
+cd build
+cmake ..
+make
 ```
-
-把 CTP 的 `thostmduserapi_se.dll` 与 `ctpprice.exe` 放在同一目录，然后按常规 CMake / VS 工程编译即可。
 
 ---
 
