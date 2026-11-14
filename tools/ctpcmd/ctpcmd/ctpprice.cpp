@@ -57,7 +57,7 @@ public:
 
 	void OnFrontConnected()
 	{
-		CThostFtdcReqUserLoginField Req = { 0 };
+		CThostFtdcReqUserLoginField Req{};
 		strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
 		strncpy(Req.UserID, m_UserID.c_str(), sizeof(Req.UserID) - 1);
 		strncpy(Req.Password, m_Password.c_str(), sizeof(Req.Password) - 1);
@@ -70,8 +70,6 @@ public:
 
 	void OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 	{
-		using json = nlohmann::json;
-
 		if (pRspInfo && pRspInfo->ErrorID != 0) {
 			std::cout << error_message(pRspInfo->ErrorID, pRspInfo->ErrorMsg) << std::endl;
 			exit(0);
@@ -110,7 +108,7 @@ public:
 		if (pRspInfo && pRspInfo->ErrorID != 0) {
 			if ( !pSpecificInstrument || strlen(pSpecificInstrument->InstrumentID)==0)
 				return;
-			CThostFtdcDepthMarketDataField DepthMarketData = { 0 };
+			CThostFtdcDepthMarketDataField DepthMarketData{};
 			strncpy(DepthMarketData.InstrumentID, pSpecificInstrument->InstrumentID, sizeof(DepthMarketData.InstrumentID) - 1);
 			m_prices[pSpecificInstrument->InstrumentID] = DepthMarketData;
 			return;
