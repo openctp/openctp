@@ -338,16 +338,17 @@ Windows 控制台先执行 `chcp 65001`（批处理里加在首行）。另外 `
 
 ## 编译
 
-cmake编译步骤：
+**Windows编译：**
+
+直接打开vs工程进行编译。
+
+**Linux与MacOS编译：**
+
+直接make。
 
 ```bash
-mkdir build
-cd build
-cmake ..
 make
 ```
-
----
 
 ## 下载
 
