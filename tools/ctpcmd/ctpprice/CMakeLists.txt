@@ -35,21 +35,10 @@ set(CTPPRICE_SRCS
     TinyXML2/tinyxml2.cpp
 )
 
-# ctporder
-set(CTPORDER_SRCS
-    ctporder.cpp
-    TinyXML2/tinyxml2.cpp
-)
-
 # -------------------------- Compile --------------------------
 add_executable(ctpprice ${CTPPRICE_SRCS})
-add_executable(ctporder ${CTPORDER_SRCS})
 
 # -------------------------- Link --------------------------
 target_link_libraries(ctpprice
     ${CTPAPI_MD_LIB}
-)
-
-target_link_libraries(ctporder
-    ${CTPAPI_TD_LIB}
 )

@@ -62,13 +62,7 @@ public:
 		strncpy(Req.UserID, m_UserID.c_str(), sizeof(Req.UserID) - 1);
 		strncpy(Req.Password, m_Password.c_str(), sizeof(Req.Password) - 1);
 
-#ifdef __APPLE__	/* Apple Mac OS X */
-		TThostFtdcSystemInfoLenType SystemInfoLen = 0;
-		TThostFtdcClientSystemInfoType ClientSystemInfo = { 0 };
-		if (m_pMdApi->ReqUserLogin(&Req, 0, SystemInfoLen, ClientSystemInfo) != 0) {
-#else
 		if (m_pMdApi->ReqUserLogin(&Req, 0) != 0) {
-#endif
 			std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "Login failed.") << std::endl;
 			exit(0);
 		}
