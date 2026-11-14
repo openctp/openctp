@@ -39,6 +39,16 @@ set(CTPPRICE_SRCS
 add_executable(ctpprice ${CTPPRICE_SRCS})
 
 # -------------------------- Link --------------------------
-target_link_libraries(ctpprice
-    ${CTPAPI_MD_LIB}
-)
+if(APPLE)
+    target_link_libraries(ctpprice
+	${CTPAPI_MD_LIB}
+	${CTPAPI_ROOT}/comunicationkeylib.a
+	${CTPAPI_ROOT}/libcrypto.a
+	${CTPAPI_ROOT}/libssl.a
+	)
+else()
+    target_link_libraries(ctpprice
+	${CTPAPI_MD_LIB}
+	)
+endif()
+

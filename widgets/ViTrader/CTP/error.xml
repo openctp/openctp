@@ -97,6 +97,11 @@
 	<error id="QUOTE_DERIVEDORDER_ACTIONERROR" value="92" prompt="CTP:报价衍生单要等待交易所返回才能撤单"/>
 	<error id="INSTRUMENTMAP_NOT_FOUND" value="93" prompt="CTP:找不到组合合约映射"/>
 	<error id="CANCELLATION_OF_OTC_DERIVED_ORDER_NOT_ALLOWED" value="94" prompt="CTP:不允许撤销OTC衍生报单"/>
+	<error id="BAD_PRICE_VALUE" value="95" prompt="CTP：不支持的价格"/>
+	 <!--SPBM-->
+   	<error id="SPBMFUTPARAM_NOT_FOUND" value="96" prompt="找不到SPBM期货合约参数"/>
+   	<error id="SPBMOPTPARAM_NOT_FOUND" value="97" prompt="找不到SPBM期权合约参数"/>
+   	<error id="SPBMINTRAPARAM_NOT_FOUND" value="98" prompt="找不到SPBM品种内对锁仓折扣参数"/>
 	<!--灾备系统错误代码 -->		
 	<error id="NO_TRADING_RIGHT_IN_SEPC_DR" value="101" prompt="CTP:用户在本系统没有报单权限"/>
 	<error id="NO_DR_NO" value="102" prompt="CTP:系统缺少灾备标示号"/>
@@ -111,8 +116,20 @@
 	<error id="PWD_OUT_OF_DATE" value="141" prompt="CTP:您当前密码已过期，请修改后登录"/>
 	<error id="PWD_MUST_DIFF" value="142" prompt="CTP:修改密码失败。新密码不允许与旧密码相同"/>
 	<error id="IP_FORBIDDEN" value="143" prompt="CTP:您登录失败次数过多，IP被禁止登入CTP"/>
-	<error id="IP_BLACK" value="144" prompt="CTP:您当前IP在黑名单中，被禁止登入CTP"/>
-	
+	<error id="IP_BLACK" value="144" prompt="CTP:您当前IP在黑名单中，被禁止登录和认证"/>
+	<error id="NO_AUTH_RIGHT_IN_SEPC_DR" value="145" prompt="CTP:终端在本系统没有认证权限"/>
+	<error id="INVESTOR_ID_IS_MISSING" value="146" prompt="CTP:缺少InvestorID字段，请填入InvestorID"/>
+	<error id="EXCHANGE_ID_IS_MISSING" value="147" prompt="CTP:缺少ExchangeID字段，请填入ExchangeID"/>
+	<error id="EXCHANGE_ID_IS_INVALID" value="148" prompt="CTP:无效的ExchangeID字段，请填入正确的ExchangeID"/>
+	<error id="ACCOUNT_ID_IS_MISSING" value="149" prompt="CTP:缺少AccountID字段，请填入AccountID"/>
+	<error id="EXCHANGE_ID_IS_WRONG" value="150" prompt="CTP:交易所代码错误"/>
+	<error id="DEL_COMB_ACTION_NO_REC" value="151" prompt="CTP:删除拆分组合指令：没有找到该记录"/>
+	<error id="DEL_COMB_ACTION_TOO_FAST" value="152" prompt="CTP:删除拆分组合指令：原指令需要等待30s 才能删除"/>
+	<error id="COMB_ACTION_SHORT_MONEY" value="153" prompt="CTP:拆分组合钱不足"/>
+	<error id="QK_BUSY" value="154" prompt="CTP:查询核心忙 请稍后重试"/>
+	<error id="CFMMC_NO_CONNECTION" value="155" prompt="CTP:未连接监控中心"/>
+	<error id="CLOSE_OPTION_NO_MONEY" value="156" prompt="CTP:平期权多头后资金为负（收益小于平仓手续费），只可由风控人员强平"/>
+	<error id="CANCEL_UNKNOWN_ORDER_UNSUPPORTED" value="157" prompt="CTP:该交易所不支持撤销未知单"/>
 	<!--转帐系统错误代码 -->
 	<error id="SEND_INSTITUTION_CODE_ERROR" value="1000" prompt="CTP:银期转账：发送机构代码错误"/>
 	<error id="NO_GET_PLATFORM_SN" value="1001" prompt="CTP:银期转账：取平台流水号错误"/>
@@ -158,6 +175,8 @@
   <error id="INVALID_RESERVE_OPEN_ACCOUNT" value="1041" prompt="CTP:银期转账：资金账户存在，预约开户失败"/>
   <error id="OPEN_ACCOUNT_NOT_DEFAULT_ACCOUNT" value="1042" prompt="CTP:银期转账：开户请求的银行卡号和预留的账号不同"/>
   <error id="BANK_SYSTEM_INTERNAL_ERROR" value="1043" prompt="银行系统内部错误"/>
+  <error id="OFFER_LOCALTIME_OFFSET_IS_TOO_LARGE" value="1044" prompt="银期转账：银期报盘机器时间偏移太大"/>
+  <error id="FUTURESERIAL_HAS_BEEN_PROCESSED" value="1045" prompt="银期转账：该期货流水号已经处理过"/>
 <!-- add for transfer begin -->
 	<error id="NO_VALID_BANKOFFER_AVAILABLE" value="2000" prompt="CTP:该报盘未连接到银行"/>
 	<error id="PASSWORD_MISMATCH" value="2001" prompt="CTP:资金密码错误"/>
@@ -175,8 +194,30 @@
 	<error id="RESERVE_OPEN_ACCOUNT_NOT_FUND" value="2016" prompt="CTP:找不到预约开户请求"/>
 	<error id="DUPLICATE_RESERVE_OPEN_ACCOUNT_NOT_FUND" value="2017" prompt="CTP:重复的预约开户请求"/>
 	<error id="WAITING_OFFER_RSP" value="999999" prompt="CTP:等待银期报盘处理结果"/>
-	
+
 	<!-- add for transfer end -->
+	<!--add 建行新一代银期-->
+  <error id="PW_PASSWORD" value="2050" prompt="建行银期：密码与认证(业务错误)"/> 
+  <error id="AL_AMOUNT_LIMITATION" value="2051" prompt="建行银期：数量与限额(业务错误)"/> 
+  <error id="AC_AUTHORITY_CONTROL" value="2052" prompt="建行银期：权限控制(业务错误)"/> 
+  <error id="DC_DATA_CONTEXT" value="2053" prompt="建行银期：信息滥缺(业务错误)或者数据内容相关(技术错误)"/> 
+  <error id="CE_CONTENT_ERROR" value="2054" prompt="建行银期：内容非法(业务错误)"/> 
+  <error id="DO_DUPLICATE_OPERATION" value="2055" prompt="建行银期：重复交易(业务错误)"/> 
+  <error id="TM_TIME" value="2056" prompt="建行银期： 时间与期限(业务错误)"/> 
+  <error id="RC_RISK_CONTROL" value="2057" prompt="建行银期：风险控制(业务错误)"/> 
+  <error id="BL_BUSINESS_LOGIC" value="2058" prompt="建行银期：业务逻辑(业务错误)"/> 
+  <error id="NA_NA" value="2059" prompt="建行银期： 不确定交易结果(技术错误)"/> 
+  <error id="HW_HARDWARE" value="2060" prompt="建行银期： 硬件错误(技术错误)"/> 
+  <error id="IO_IO" value="2062" prompt="建行银期： 读写相关(技术错误)"/> 
+  <error id="DB_DATABASE" value="2063" prompt="建行银期： 数据库相关(技术错误)"/> 
+  <error id="NC_NETWORK_COMMUNICATION" value="2064" prompt="建行银期：网络通讯(技术错误)"/> 
+  <error id="SS_SECURITY_SERVICE" value="2065" prompt="建行银期：安全服务(技术错误)"/> 
+  <error id="CM_COMPONENTS" value="2066" prompt="建行银期： 组件模块(技术错误)"/> 
+  <error id="FC_FLOW_CONTROL" value="2067" prompt="建行银期：流量控制(技术错误)"/> 
+  <error id="TL_TECHNICAL_LOGIC" value="2069" prompt="建行银期：技术逻辑(技术错误)"/> 
+  <error id="AT_ABSOLUTE_TECHNIQUE" value="2070" prompt="建行银期：纯技术性错误(技术错误)"/> 
+~
+	<!--end 建行新一代银期-->
 	<!--换汇系统错误代码 bgn-->
 	<error id="FBE_NO_GET_PLATFORM_SN" value="3001" prompt="CTP:银期换汇：取平台流水号错误"/>
 	<error id="FBE_ILLEGAL_TRANSFER_BANK" value="3002" prompt="CTP:银期换汇：不合法的转账银行"/>
@@ -212,5 +253,19 @@
   <error id="OPTION_SELF_CLOSE_STATUS_ERR" value="3045" prompt="CTP:期权对冲,履约对冲:对冲状态不对，不能撤销"/>
   <error id="OPTION_SELF_CLOSE_DOUBLE_SET_ERR" value="3046" prompt="CTP:期权对冲,履约对冲:不能重复设置，只能先撤销再设置"/>
   <error id="QUOTE_WRONG_HEDGE_TYPE" value="3047" prompt="CTP:报价不支持改投机套保类型"/>
+  <error id="API_FRONT_SHAKE_HAND_ERR" value="4040" prompt="CTP:API Front shake hand err"/>
+  <error id="DUPLICATE_SUBMIT" value="4041" prompt="CTP:DUPLICATE_SUBMIT"/>
+  <error id="AUTHIP_CHECK_ERR" value="4042" prompt="CTP:IP授权验证失败"/>
+  <error id="AUTHUSER_CHECK_ERR" value="4043" prompt="CTP:用户与客户端授权验证失败"/>
+  <error id="QUOTE_WRONG_REPALACE_SYSID" value="4050" prompt="CTP:报价指定的顶单编号不合法（中金所）"/>
+  <error id="AUTH_IP_FORBIDDEN" value="4060" prompt="CTP:您认证失败次数过多，IP进入认证禁止列表"/>
+
+   <error id="SCAPI_SSL_CONNECT_ERR" value="4100" prompt="CTP:SSL Connect Error."/>
+   <error id="SCAPI_WRONG_USERIDORNAME" value="4101" prompt="CTP:Wrong User ID or Name."/>
+   <error id="SCAPI_CERT_VERIFY_FAILED" value="4102" prompt="CTP:Cert Verify Failed."/>
+   <error id="SCAPI_CERT_PROCESS_TIMEOUT" value="4103" prompt="CTP:Cert Process Timeout."/>
+   <error id="SCAPI_LOGIN_ERROR" value="4104" prompt="CTP:Login Error."/>
+   
+
 
 </errors>
