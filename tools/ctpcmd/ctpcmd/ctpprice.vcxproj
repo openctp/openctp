@@ -92,7 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\CTPAPI_Win64;.\nlohmann;.\CLI;.\TinyXML2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\CTPAPI_Win32;.\nlohmann;.\CLI;.\TinyXML2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\CTPAPI_Win64;.\nlohmann;.\CLI;.\TinyXML2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\CTPAPI_Win32;.\nlohmann;.\CLI;.\TinyXML2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
