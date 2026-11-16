@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2026 openctp
  * BSD 3-Clause License, see LICENSE file for full terms.
- * https://github.com/openctp/openctp/tree/master/tools/ctpcmd/ctpprice
+ * https://github.com/openctp/openctp/tree/master/tools/ctpcmd/ctpcmd
  */
 
 #include <iostream>
@@ -26,7 +26,7 @@ enum CTPCMD
 
 std::string error_message(int rsp_code, const char* rsp_message)
 {
-	using json = nlohmann::json;
+	using json = nlohmann::ordered_json;
 
 	json msg;
 	msg["rsp_code"] = rsp_code;
@@ -117,7 +117,7 @@ public:
 
 	void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField* pDepthMarketData)
 	{
-		using json = nlohmann::json;
+		using json = nlohmann::ordered_json;
 
 
 		if (m_cmd == CTPCMD_QUERY) {
@@ -294,7 +294,7 @@ int main(int argc, char** argv)
 	std::vector<std::pair<std::string, std::string>> instruments;
 
 	app.add_option("--config", config, "config file[brokers.xml]");
-	app.add_option("--channel", channel, "channel name");
+	app.add_option("--channel", channel, "channel name")->required();
 	app.add_option("--user", user);
 	app.add_option("--password", password);
 	app.require_subcommand(1);
@@ -332,10 +332,10 @@ int main(int argc, char** argv)
 			continue;
 		}
 
-		BrokerID = element->FirstChildElement("BrokerID") != nullptr ? element->FirstChildElement("BrokerID")->GetText() : "";
-		AppID = element->FirstChildElement("AppID") != nullptr ? element->FirstChildElement("AppID")->GetText() : "";
-		AuthCode = element->FirstChildElement("AuthCode") != nullptr ? element->FirstChildElement("AuthCode")->GetText() : "";
-		UserProductInfo = element->FirstChildElement("UserProductInfo") != nullptr ? element->FirstChildElement("UserProductInfo")->GetText() : "";
+		BrokerID = element->FirstChildElement("BrokerID") && element->FirstChildElement("BrokerID")->GetText() ? element->FirstChildElement("BrokerID")->GetText() : "";
+		AppID = element->FirstChildElement("AppID") && element->FirstChildElement("AppID")->GetText() ? element->FirstChildElement("AppID")->GetText() : "";
+		AuthCode = element->FirstChildElement("AuthCode") && element->FirstChildElement("AuthCode")->GetText() ? element->FirstChildElement("AuthCode")->GetText() : "";
+		UserProductInfo = element->FirstChildElement("UserProductInfo") && element->FirstChildElement("UserProductInfo")->GetText() ? element->FirstChildElement("UserProductInfo")->GetText() : "";
 
 		tinyxml2::XMLElement* pNameServerElement = element->FirstChildElement("NameServer");
 		if (pNameServerElement) {

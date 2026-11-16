@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='GB2312'?>
+<brokers>
+	<broker name="SimNow-7x24">
+		<BrokerID>9999</BrokerID>
+		<AppID>simnow_client_test</AppID>
+		<AuthCode>0000000000000000</AuthCode>
+		<UserProductInfo>ctpcmd</UserProductInfo>
+		<tradefront>
+			<addresses>
+				<address>tcp://182.254.243.31:40001</address>
+			</addresses>
+		</tradefront>
+		<marketfront>
+			<addresses>
+				<address>tcp://182.254.243.31:40011</address>
+			</addresses>
+		</marketfront>
+	</broker>
+	<broker name="SimNow-仿真">
+		<BrokerID>9999</BrokerID>
+		<AppID>simnow_client_test</AppID>
+		<AuthCode>0000000000000000</AuthCode>
+		<UserProductInfo>ctpcmd</UserProductInfo>
+		<tradefront>
+			<addresses>
+				<address>tcp://182.254.243.31:30001</address>
+				<address>tcp://182.254.243.31:30002</address>
+				<address>tcp://182.254.243.31:30003</address>
+			</addresses>
+		</tradefront>
+		<marketfront>
+			<addresses>
+				<address>tcp://182.254.243.31:30011</address>
+				<address>tcp://182.254.243.31:30012</address>
+				<address>tcp://182.254.243.31:30013</address>
+			</addresses>
+		</marketfront>
+	</broker>
+</brokers>

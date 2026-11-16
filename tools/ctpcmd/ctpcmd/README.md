@@ -1,9 +1,20 @@
-# ctpprice
+# ctpcmd - 命令行程序化交易
 
-> 一个轻量、单文件、命令行直接调用的 CTP 行情工具。  
-> 一条命令拿到合约的最新价、涨跌停价、昨结算价与五档盘口，输出标准 JSON，供脚本、策略和运维工具直接消费。
+> 一个极其轻量的命令行式无需语言无需框架的程序化交易新范式。  
+> 通过ctpprice命令拿到合约的最新行情，输出标准 JSON，通过shell、Python等脚本语言抓取JSON文本，进行行情分析，产生交易信号后通过ctporder命令获取持仓、资金等信息并进行下单。
 
-**和线上 `dict.openctp.cn/prices` 接口返回结构完全一致** —— 同一套解析代码，线上 HTTP 接口与本地 CTP 直连可以无缝切换，切换成本几乎为零。
+---
+
+## ctpcmd命令集
+
+ctpcmd工具链主要包含四个命令，分别是CTP接口的ctporder与ctpprice、CTP股票期权接口的ctpoptorder与ctpoptprice。
+
+> 注意：CTP接口命令与CTP股票期权接口命令默认的配置文件名不一样，分别是brokers.xml、optbrokers.xml，修改配置时请注意确认。
+
+- **ctporder**：CTP接口下单命令。
+- **ctpprice**：CTP接口行情命令。
+- **ctpoptorder**：CTP股票期权接口下单命令。
+- **ctpoptprice**：CTP股票期权接口行情命令。
 
 ---
 
@@ -33,7 +44,7 @@
 - **批量查询**：一条命令传多个合约，逗号分隔
 - **完整字段**：CTP `CThostFtdcDepthMarketDataField` 全字段输出，含五档买卖盘、持仓、成交额、涨跌停价
 - **标准 JSON**：一行一条 JSON，管道给 `jq` / Python / 任何语言都能直接解析
-- **格式对齐**：与 `dict.openctp.cn/prices` 报文结构一致，线上线下随时切
+- **格式对齐**：与 [openctp数据中心](http://www.openctp.cn/DataCenter.html)报文结构一致
 - **异常也有结构化输出**：断线、参数错误都返回带 `rsp_code` 的 JSON，不会只抛一句日志就崩掉
 - **多通道**：通过 `brokers.xml` 配置多个行情前置通道，`--channel` 指定用哪个
 
@@ -43,14 +54,7 @@
 
 ### 1. 获取程序
 
-从 Release 页面下载预编译版本（Windows x64）：
-
-```
-ctpprice.exe
-brokers.xml
-```
-
-两个文件放在同一个目录即可运行。
+从[openctp官网](http://www.openctp.cn/ctpcmd.html)下载预编译版本ctpcmd工具：
 
 ### 2. 运行
 
@@ -358,12 +362,12 @@ make
 
 - 本工具是**本地自用命令行工具**，用于策略开发、风控校验、盘前盘后参数核对；
 - 行情数据仅在本地使用，不对外分发、不对外提供行情服务；
-- 需要线上可调用的静态基准参数接口，请使用 `dict.openctp.cn/prices`（本工具输出结构与其一致）。
+- 需要线上可调用的静态基准参数接口，请使用 `www.openctp.cn/DataCenter.html`（本工具输出结构与其一致）。
 
 ## 相关
 
 - openctp：<http://www.openctp.cn>
-- 线上价格接口：`http://dict.openctp.cn/prices`
+- openctp数据中心接口：`http://www.openctp.cn/DataCenter.html`
 
 ## License
 
