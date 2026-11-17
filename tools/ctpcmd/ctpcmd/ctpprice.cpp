@@ -10,6 +10,11 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <iconv.h>
+#endif
 #include "CLI.hpp"
 #include "tinyxml2.h"
 #include "json.hpp"
@@ -24,13 +29,57 @@ enum CTPCMD
 	CTPCMD_SUBSCRIBE
 };
 
+// GBK -> UTF-8
+std::string GBKToUTF8(const std::string& gbk)
+{
+	if (gbk.empty()) return std::string();
+
+#ifdef _WIN32
+	// ---- Windows: (GBK -> UTF-16 -> UTF-8) ----
+	// 1. GBK -> UTF-16
+	int wlen = MultiByteToWideChar(936, 0, gbk.c_str(), (int)gbk.size(), nullptr, 0);
+	if (wlen <= 0) return std::string();
+
+	std::wstring wstr(wlen, L'\0');
+	MultiByteToWideChar(936, 0, gbk.c_str(), (int)gbk.size(), &wstr[0], wlen);
+
+	// 2. UTF-16 -> UTF-8
+	int ulen = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), wlen, nullptr, 0, nullptr, nullptr);
+	if (ulen <= 0) return std::string();
+
+	std::string utf8(ulen, '\0');
+	WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), wlen, &utf8[0], ulen, nullptr, nullptr);
+	return utf8;
+
+#else
+	// ---- Linux/macOS: iconv ----
+	iconv_t cd = iconv_open("UTF-8", "GBK");
+	if (cd == (iconv_t)-1) return std::string();
+
+	size_t inLeft = gbk.size();
+	size_t outLeft = gbk.size() * 4 + 4;
+	std::string utf8(outLeft, '\0');
+
+	char* inBuf = const_cast<char*>(gbk.data());
+	char* outBuf = &utf8[0];
+
+	size_t ret = iconv(cd, &inBuf, &inLeft, &outBuf, &outLeft);
+	iconv_close(cd);
+
+	if (ret == (size_t)-1) return std::string();
+
+	utf8.resize(utf8.size() - outLeft);
+	return utf8;
+#endif
+}
+
 std::string error_message(int rsp_code, const char* rsp_message)
 {
 	using json = nlohmann::ordered_json;
 
 	json msg;
 	msg["rsp_code"] = rsp_code;
-	msg["rsp_message"] = rsp_message;
+	msg["rsp_message"] = GBKToUTF8(rsp_message);
 
 	return msg.dump();
 }
@@ -279,7 +328,7 @@ std::vector<std::pair<std::string, std::string>> parse_instrument_list(const std
 
 int main(int argc, char** argv)
 {
-	CLI::App app{ "ctpprice -- price command" };
+	CLI::App app{ "ctpprice -- ctp command-line market tool" };
 	CTPCMD cmd;
 	std::string config{ "brokers.xml" };
 	std::string channel;

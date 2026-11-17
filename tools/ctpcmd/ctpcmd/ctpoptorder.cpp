@@ -21,7 +21,7 @@
 #include "ThostFtdcTraderApi.h"
 
 #define CTPCMD_ERR_CODE_DEFAULT 9999
-#define CTPCMD_PRICE_VERSION "1.0.0"
+#define CTPCMD_OPTORDER_VERSION "1.0.0"
 
 enum CTPCMD
 {
@@ -35,7 +35,7 @@ std::string GBKToUTF8(const std::string& gbk)
 	if (gbk.empty()) return std::string();
 
 #ifdef _WIN32
-	// ---- Windows: 用 WideChar 作为中转 (GBK -> UTF-16 -> UTF-8) ----
+	// ---- Windows: (GBK -> UTF-16 -> UTF-8) ----
 	// 1. GBK -> UTF-16
 	int wlen = MultiByteToWideChar(936, 0, gbk.c_str(), (int)gbk.size(), nullptr, 0);
 	if (wlen <= 0) return std::string();
@@ -52,11 +52,10 @@ std::string GBKToUTF8(const std::string& gbk)
 	return utf8;
 
 #else
-	// ---- Linux/macOS: 用 iconv ----
+	// ---- Linux/macOS: iconv ----
 	iconv_t cd = iconv_open("UTF-8", "GBK");
 	if (cd == (iconv_t)-1) return std::string();
 
-	// 输出缓冲区：GBK 每字符最多 2 字节，UTF-8 最多 3 字节，留足空间
 	size_t inLeft = gbk.size();
 	size_t outLeft = gbk.size() * 4 + 4;
 	std::string utf8(outLeft, '\0');
@@ -303,7 +302,7 @@ public:
 
 int main(int argc, char** argv)
 {
-	CLI::App app{ "ctpprice -- price command" };
+	CLI::App app{ "ctpoptorder -- ctpopt command-line trading tool" };
 	CTPCMD cmd;
 	std::string config{ "optbrokers.xml" };
 	std::string channel;
