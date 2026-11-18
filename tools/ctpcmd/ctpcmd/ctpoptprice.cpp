@@ -73,23 +73,14 @@ std::string GBKToUTF8(const std::string& gbk)
 #endif
 }
 
-std::string error_message(int rsp_code, const char* rsp_message)
-{
-	using json = nlohmann::ordered_json;
-
-	json msg;
-	msg["rsp_code"] = rsp_code;
-	msg["rsp_message"] = GBKToUTF8(rsp_message);
-
-	return msg.dump();
-}
+#define DBLMAX_TO_NULL(value) (value == DBL_MAX ? json(nullptr) : json(value))
 
 using namespace ctp_sopt;
 
 class CCTPMdSpiImpl :public CThostFtdcMdSpi
 {
 public:
-	CCTPMdSpiImpl(CThostFtdcMdApi* pMdApi, std::string BrokerID, std::string UserID, std::string Password, CTPCMD cmd, std::vector<std::pair<std::string,std::string>> instruments):
+	CCTPMdSpiImpl(CThostFtdcMdApi* pMdApi, std::string BrokerID, std::string UserID, std::string Password, CTPCMD cmd, std::vector<std::pair<std::string,std::string>> instruments, bool pretty_print):
 		m_pMdApi(pMdApi),
 		m_BrokerID(std::move(BrokerID)),
 		m_UserID(std::move(UserID)),
@@ -97,6 +88,21 @@ public:
 		m_cmd(cmd),
 		m_instruments(std::move(instruments))
 	{
+		if (pretty_print)
+			m_json_indent = 2;
+		else
+			m_json_indent = -1;
+	}
+
+	std::string error_message(int rsp_code, const char* rsp_message)
+	{
+		using json = nlohmann::ordered_json;
+
+		json msg;
+		msg["rsp_code"] = rsp_code;
+		msg["rsp_message"] = GBKToUTF8(rsp_message);
+
+		return msg.dump(m_json_indent);
 	}
 
 	void OnFrontDisconnected(int nReason)
@@ -183,52 +189,52 @@ public:
 					json price;
 					price["ExchangeID"] = item.second.ExchangeID;
 					price["InstrumentID"] = item.second.InstrumentID;
-					price["LastPrice"] = item.second.LastPrice;
-					price["OpenPrice"] = item.second.OpenPrice;
-					price["HighestPrice"] = item.second.HighestPrice;
-					price["LowestPrice"] = item.second.LowestPrice;
-					price["ClosePrice"] = item.second.ClosePrice;
-					price["SettlementPrice"] = item.second.SettlementPrice;
-					price["AveragePrice"] = item.second.AveragePrice;
+					price["LastPrice"] = DBLMAX_TO_NULL(item.second.LastPrice);
+					price["OpenPrice"] = DBLMAX_TO_NULL(item.second.OpenPrice);
+					price["HighestPrice"] = DBLMAX_TO_NULL(item.second.HighestPrice);
+					price["LowestPrice"] = DBLMAX_TO_NULL(item.second.LowestPrice);
+					price["ClosePrice"] = DBLMAX_TO_NULL(item.second.ClosePrice);
+					price["SettlementPrice"] = DBLMAX_TO_NULL(item.second.SettlementPrice);
+					price["AveragePrice"] = DBLMAX_TO_NULL(item.second.AveragePrice);
 					price["Volume"] = item.second.Volume;
-					price["Turnover"] = item.second.Turnover;
+					price["Turnover"] = DBLMAX_TO_NULL(item.second.Turnover);
 					price["OpenInterest"] = item.second.OpenInterest;
-					price["PreSettlementPrice"] = item.second.PreSettlementPrice;
-					price["PreClosePrice"] = item.second.PreClosePrice;
+					price["PreSettlementPrice"] = DBLMAX_TO_NULL(item.second.PreSettlementPrice);
+					price["PreClosePrice"] = DBLMAX_TO_NULL(item.second.PreClosePrice);
 					price["PreOpenInterest"] = item.second.PreOpenInterest;
-					price["UpperLimitPrice"] = item.second.UpperLimitPrice;
-					price["LowerLimitPrice"] = item.second.LowerLimitPrice;
+					price["UpperLimitPrice"] = DBLMAX_TO_NULL(item.second.UpperLimitPrice);
+					price["LowerLimitPrice"] = DBLMAX_TO_NULL(item.second.LowerLimitPrice);
 					price["ActionDay"] = item.second.ActionDay;
 					price["UpdateTime"] = item.second.UpdateTime;
 					price["UpdateMillisec"] = item.second.UpdateMillisec;
 					price["TradingDay"] = item.second.TradingDay;
 
-					price["BidPrice1"] = item.second.BidPrice1;
+					price["BidPrice1"] = DBLMAX_TO_NULL(item.second.BidPrice1);
 					price["BidVolume1"] = item.second.BidVolume1;
-					price["BidPrice2"] = item.second.BidPrice2;
+					price["BidPrice2"] = DBLMAX_TO_NULL(item.second.BidPrice2);
 					price["BidVolume2"] = item.second.BidVolume2;
-					price["BidPrice3"] = item.second.BidPrice3;
+					price["BidPrice3"] = DBLMAX_TO_NULL(item.second.BidPrice3);
 					price["BidVolume3"] = item.second.BidVolume3;
-					price["BidPrice4"] = item.second.BidPrice4;
+					price["BidPrice4"] = DBLMAX_TO_NULL(item.second.BidPrice4);
 					price["BidVolume4"] = item.second.BidVolume4;
-					price["BidPrice5"] = item.second.BidPrice5;
+					price["BidPrice5"] = DBLMAX_TO_NULL(item.second.BidPrice5);
 					price["BidVolume5"] = item.second.BidVolume5;
 
-					price["AskPrice1"] = item.second.AskPrice1;
+					price["AskPrice1"] = DBLMAX_TO_NULL(item.second.AskPrice1);
 					price["AskVolume1"] = item.second.AskVolume1;
-					price["AskPrice2"] = item.second.AskPrice2;
+					price["AskPrice2"] = DBLMAX_TO_NULL(item.second.AskPrice2);
 					price["AskVolume2"] = item.second.AskVolume2;
-					price["AskPrice3"] = item.second.AskPrice3;
+					price["AskPrice3"] = DBLMAX_TO_NULL(item.second.AskPrice3);
 					price["AskVolume3"] = item.second.AskVolume3;
-					price["AskPrice4"] = item.second.AskPrice4;
+					price["AskPrice4"] = DBLMAX_TO_NULL(item.second.AskPrice4);
 					price["AskVolume4"] = item.second.AskVolume4;
-					price["AskPrice5"] = item.second.AskPrice5;
+					price["AskPrice5"] = DBLMAX_TO_NULL(item.second.AskPrice5);
 					price["AskVolume5"] = item.second.AskVolume5;
 
 					msg["data"].push_back(price);
 				}
 
-				std::cout << msg.dump() << std::endl;
+				std::cout << msg.dump(m_json_indent) << std::endl;
 				exit(0);
 			}
 
@@ -236,57 +242,57 @@ public:
 		}
 
 		json msg;
-		msg["rsp_code"] = 0;
-		msg["rsp_message"] = "";
+		msg["event"] = "DepthMarketData";
 
 		json price;
 		price["ExchangeID"] = pDepthMarketData->ExchangeID;
 		price["InstrumentID"] = pDepthMarketData->InstrumentID;
-		price["LastPrice"] = pDepthMarketData->LastPrice;
-		price["OpenPrice"] = pDepthMarketData->OpenPrice;
-		price["HighestPrice"] = pDepthMarketData->HighestPrice;
-		price["LowestPrice"] = pDepthMarketData->LowestPrice;
-		price["ClosePrice"] = pDepthMarketData->ClosePrice;
-		price["SettlementPrice"] = pDepthMarketData->SettlementPrice;
-		price["AveragePrice"] = pDepthMarketData->AveragePrice;
+		price["LastPrice"] = DBLMAX_TO_NULL(pDepthMarketData->LastPrice);
+		price["OpenPrice"] = DBLMAX_TO_NULL(pDepthMarketData->OpenPrice);
+		price["HighestPrice"] = DBLMAX_TO_NULL(pDepthMarketData->HighestPrice);
+		price["LowestPrice"] = DBLMAX_TO_NULL(pDepthMarketData->LowestPrice);
+		price["ClosePrice"] = DBLMAX_TO_NULL(pDepthMarketData->ClosePrice);
+		price["SettlementPrice"] = DBLMAX_TO_NULL(pDepthMarketData->SettlementPrice);
+		price["AveragePrice"] = DBLMAX_TO_NULL(pDepthMarketData->AveragePrice);
 		price["Volume"] = pDepthMarketData->Volume;
-		price["Turnover"] = pDepthMarketData->Turnover;
+		price["Turnover"] = DBLMAX_TO_NULL(pDepthMarketData->Turnover);
 		price["OpenInterest"] = pDepthMarketData->OpenInterest;
-		price["PreSettlementPrice"] = pDepthMarketData->PreSettlementPrice;
-		price["PreClosePrice"] = pDepthMarketData->PreClosePrice;
+		price["PreSettlementPrice"] = DBLMAX_TO_NULL(pDepthMarketData->PreSettlementPrice);
+		price["PreClosePrice"] = DBLMAX_TO_NULL(pDepthMarketData->PreClosePrice);
 		price["PreOpenInterest"] = pDepthMarketData->PreOpenInterest;
-		price["UpperLimitPrice"] = pDepthMarketData->UpperLimitPrice;
-		price["LowerLimitPrice"] = pDepthMarketData->LowerLimitPrice;
+		price["UpperLimitPrice"] = DBLMAX_TO_NULL(pDepthMarketData->UpperLimitPrice);
+		price["LowerLimitPrice"] = DBLMAX_TO_NULL(pDepthMarketData->LowerLimitPrice);
+
 		price["ActionDay"] = pDepthMarketData->ActionDay;
 		price["UpdateTime"] = pDepthMarketData->UpdateTime;
 		price["UpdateMillisec"] = pDepthMarketData->UpdateMillisec;
 		price["TradingDay"] = pDepthMarketData->TradingDay;
 
-		price["BidPrice1"] = pDepthMarketData->BidPrice1;
+		price["BidPrice1"] = DBLMAX_TO_NULL(pDepthMarketData->BidPrice1);
 		price["BidVolume1"] = pDepthMarketData->BidVolume1;
-		price["BidPrice2"] = pDepthMarketData->BidPrice2;
+		price["BidPrice2"] = DBLMAX_TO_NULL(pDepthMarketData->BidPrice2);
 		price["BidVolume2"] = pDepthMarketData->BidVolume2;
-		price["BidPrice3"] = pDepthMarketData->BidPrice3;
+		price["BidPrice3"] = DBLMAX_TO_NULL(pDepthMarketData->BidPrice3);
 		price["BidVolume3"] = pDepthMarketData->BidVolume3;
-		price["BidPrice4"] = pDepthMarketData->BidPrice4;
+		price["BidPrice4"] = DBLMAX_TO_NULL(pDepthMarketData->BidPrice4);
 		price["BidVolume4"] = pDepthMarketData->BidVolume4;
-		price["BidPrice5"] = pDepthMarketData->BidPrice5;
+		price["BidPrice5"] = DBLMAX_TO_NULL(pDepthMarketData->BidPrice5);
 		price["BidVolume5"] = pDepthMarketData->BidVolume5;
 
-		price["AskPrice1"] = pDepthMarketData->AskPrice1;
+		price["AskPrice1"] = DBLMAX_TO_NULL(pDepthMarketData->AskPrice1);
 		price["AskVolume1"] = pDepthMarketData->AskVolume1;
-		price["AskPrice2"] = pDepthMarketData->AskPrice2;
+		price["AskPrice2"] = DBLMAX_TO_NULL(pDepthMarketData->AskPrice2);
 		price["AskVolume2"] = pDepthMarketData->AskVolume2;
-		price["AskPrice3"] = pDepthMarketData->AskPrice3;
+		price["AskPrice3"] = DBLMAX_TO_NULL(pDepthMarketData->AskPrice3);
 		price["AskVolume3"] = pDepthMarketData->AskVolume3;
-		price["AskPrice4"] = pDepthMarketData->AskPrice4;
+		price["AskPrice4"] = DBLMAX_TO_NULL(pDepthMarketData->AskPrice4);
 		price["AskVolume4"] = pDepthMarketData->AskVolume4;
-		price["AskPrice5"] = pDepthMarketData->AskPrice5;
+		price["AskPrice5"] = DBLMAX_TO_NULL(pDepthMarketData->AskPrice5);
 		price["AskVolume5"] = pDepthMarketData->AskVolume5;
 
-		msg["data"].push_back(price);
+		msg["data"] = price;
 
-		std::cout << msg.dump() << std::endl;
+		std::cout << msg.dump(m_json_indent) << std::endl;
 	}
 
 
@@ -295,6 +301,8 @@ public:
 	std::string m_UserID;
 	std::string m_Password;
 	CTPCMD m_cmd;
+	int m_json_indent;
+
 	std::vector<std::pair<std::string, std::string>> m_instruments;
 	std::map<std::string, CThostFtdcDepthMarketDataField> m_prices;
 };
@@ -331,6 +339,8 @@ int main(int argc, char** argv)
 {
 	CLI::App app{ "ctpoptprice -- ctpopt command-line market tool" };
 	CTPCMD cmd;
+	bool no_pretty_print = false;
+
 	std::string config{ "optbrokers.xml" };
 	std::string channel;
 	std::string user;
@@ -347,6 +357,7 @@ int main(int argc, char** argv)
 	app.add_option("--channel", channel, "channel name")->required();
 	app.add_option("--user", user);
 	app.add_option("--password", password);
+	app.add_flag("--no-pretty", no_pretty_print, "no pretty json");
 	app.require_subcommand(1);
 
 	std::string instrument_list;
@@ -403,7 +414,7 @@ int main(int argc, char** argv)
 	}
 
 	CThostFtdcMdApi* pMdApi = CThostFtdcMdApi::CreateFtdcMdApi();
-	CCTPMdSpiImpl Spi(pMdApi, BrokerID, user, password, cmd, instruments);
+	CCTPMdSpiImpl Spi(pMdApi, BrokerID, user, password, cmd, instruments, !no_pretty_print);
 	pMdApi->RegisterSpi(&Spi);
 	if (Hosts.size() == 0) {
 		std::cout << "No host found for channel: " << channel << std::endl;

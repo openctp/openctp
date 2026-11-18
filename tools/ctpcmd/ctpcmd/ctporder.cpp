@@ -1812,8 +1812,8 @@ int main(int argc, char** argv)
 	CLI::App app{ "ctporder -- ctp command-line trading tool" };
 	CTPCMD cmd;
 	CTPCMD_Parameters params;
+	bool no_pretty_print = false;
 
-	bool pretty_print = false;
 	std::string config{ "brokers.xml" };
 	std::string channel;
 	std::string user;
@@ -1829,7 +1829,7 @@ int main(int argc, char** argv)
 	app.add_option("--channel", channel, "channel name")->required();
 	app.add_option("--user", user);
 	app.add_option("--password", password);
-	app.add_flag("--pretty", pretty_print, "pretty json");
+	app.add_flag("--no-pretty", no_pretty_print, "no pretty json");
 	app.require_subcommand(1);
 
 	THOST_TE_RESUME_TYPE nResumeType = THOST_TERT_NONE;
@@ -1845,10 +1845,8 @@ int main(int argc, char** argv)
 			nResumeType = THOST_TERT_RESUME;
 		else if (ResumeType == "quick")
 			nResumeType = THOST_TERT_QUICK;
-		else {
+		else
 			std::cout << "Invalid subscribe mode, valid mode: restart/resume/quick" << std::endl;
-			return -1;
-		}
 		});
 
 	app.add_subcommand("query_settlement", "QrySettlementInfo")->callback([&]() {
@@ -1982,7 +1980,7 @@ int main(int argc, char** argv)
 	}
 
 	CThostFtdcTraderApi* pTdApi = CThostFtdcTraderApi::CreateFtdcTraderApi();
-	CCTPTdSpiImpl Spi(pTdApi, BrokerID, AppID, AuthCode, UserProductInfo, user, password, cmd, params, pretty_print);
+	CCTPTdSpiImpl Spi(pTdApi, BrokerID, AppID, AuthCode, UserProductInfo, user, password, cmd, params, !no_pretty_print);
 	pTdApi->RegisterSpi(&Spi);
 	
 	switch (cmd)
