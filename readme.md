@@ -2,9 +2,8 @@
 
 [openctp](http://www.openctp.cn)是一个以CTP生态为依托的技术服务平台，既提供了华鑫证券奇点、中泰证券XTP、东方财富EMT、东方证券OST等柜台的[CTPAPI](http://openctp.cn/CTPAPI.html)兼容接口，也提供了一套与上期技术SimNow模拟环境类似的模拟环境，也支持CTPAPI接口，不仅提供国内各期货交易所的期货与期权品种模拟交易，还提供了A股的股票、基金、债券以及股票期权模拟交易，也支持港股、美股等市场模拟交易。
 
-openctp提供了[CTPAPI的Python接口](https://github.com/openctp/openctp/tree/master/ctpapi-python)以及[CTP股票期权API的Python接口](https://github.com/openctp/openctp/tree/master/ctpopt-python)，CTPAPI命令行交易客户端[ViTrader](https://github.com/openctp/openctp/tree/master/widgets/ViTrader)，还有图形界面交易客户端[TickTrader](http://www.openctp.cn/TickTrader.html)，以及Mini版的[TickTraderMini](http://www.openctp.cn/TickTrader.html)都支持openctp、CTP、CTP股票期权、中泰XTP、华鑫奇点股票与股票期权等柜台，[TickTraderMini](http://www.openctp.cn/TickTrader.html)采用openctp的CTPAPI兼容接口技术支持了CTP、TTS、华鑫证券股票与股票期权等柜台，无需自己再替换dll。
+openctp提供了[CTPAPI的Python接口](https://github.com/openctp/openctp/tree/master/ctpapi-python)以及[CTP股票期权API的Python接口](https://github.com/openctp/openctp/tree/master/ctpopt-python)，CTPAPI命令行交易客户端[ViTrader](https://github.com/openctp/openctp/tree/master/widgets/ViTrader)，还有图形界面交易客户端[TickTrader](http://www.openctp.cn/TickTrader.html)，支持TTS、CTP、CTP股票期权、中泰XTP、华鑫奇点等柜台。
 
-openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询和培训以及柜台系统等的开发培训服务。
 ![CTPAPI兼容接口结构图](https://github.com/user-attachments/assets/5974ae64-ae18-4f2a-b459-d5f73243037a)
 
 # 目录结构：
@@ -35,13 +34,11 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
 
 - TAP-CTPAPI：易盛TAP启明星柜台CTPAPI兼容接口。
 
-- QQ-CTPAPI：腾讯行情CTPAPI兼容接口（含源码）。
-
-- SINA-CTPAPI：新浪行情CTPAPI兼容接口（含源码）。
-
 - demo：CTPAPI开发相关的demo及工具源码。
 
 - tools：小工具。
+
+- [tools/ctpcmd](https://github.com/openctp/openctp/tree/master/tools/ctpcmd/ctpcmd)：CTP命令行程序化交易工具链。
 
 - docs：开发文档及行业资料。
 
@@ -60,29 +57,38 @@ openctp还提供了CTP、华鑫奇点、中泰XTP等柜台接口的开发咨询�
 - ctpapi-csharp：CTPAPI的C#语言接口。
 
 - widgets：基于CTPAPI的小应用。 
-  
-# CTPAPI接口：
-  
+
+# CTPAPI接口
+
 CTPAPI是上期所旗下技术公司开发的CTP柜台开发接口，因CTP柜台技术先进、设计精湛，是国内投资者最喜欢的柜台，关于CTPAPI的更多信息参见：[CTPAPI及CTP股票期权API接口](http://www.openctp.cn/CTPAPI.html)
 
-# 模拟环境
-  
+# CTPAPI兼容接口
+
+CTPAPI兼容接口是以CTPAPI头文件定义为标准适配各大柜台系统的接口，以CTPAPI标准接口进行开发的应用理论上只需要替换同版本号的"thosttraderapi_se.dll"和"thostmduserapi_se.dll"两个动态库文件即可对接到不同柜台，程序不需要重新编译。易达、融航、杰宜斯、量投GTS等柜台系统与资管系统均直接提供了CTPAPI兼容接口，以便CTP程序可以无缝迁移，并且可以直接使用CTP生态的各种框架、脚本、工具等应用。关于CTPAPI兼容接口的更多信息见：[CTPAPI兼容接口](http://www.openctp.cn/CTPCTP.html)
+
+# ctpcmd - 命令行程序化交易
+
+[ctpcmd](https://github.com/openctp/openctp/tree/master/tools/ctpcmd/ctpcmd)是openctp开发的一套命令行程序化交易工具链，包括ctporder、ctpprice等命令，命令以参数为输入，输出为json文本，可以通过shell脚本结合各种基础命令编写强大的策略脚本。
+
+# 模拟交易环境
+
 openctp提供了3套CTPAPI兼容接口模拟环境，分别为7x24环境、仿真环境、vip仿真环境，支持股票、期货、期权、股票期权等品种模拟交易，具体信息见：[openctp模拟交易环境](http://openctp.cn/Trading.html)。
 
 # TickTrader
+
 [TickTrader](http://www.openctp.cn/TickTrader.html)是openctp自研的交易客户端，简洁易用，支持点价下单、自动开平、图表等功能，支持CTP、CTP股票期权、TTS、量投QDP、易盛TAP、中泰XTP、华鑫奇点等柜台。
 <img width="3057" height="1280" alt="image" src="https://github.com/user-attachments/assets/edd62c12-477c-43bf-a871-ffd00aed402d" />
 
 # 数据中心
-  
+
 [openctp数据中心](http://openctp.cn/DataCenter.html)支持国内期货、商品期权及股票期权等全市场全品种基础数据查询，通过极简的RESTful接口+json数据形式对外提供服务，无需注册，无访问限制。
-  
+
 # 技术交流
 
 - QQ群：564385877
-  
+
 # openctp公众号
-  
+
   ![公众号二维码](https://github.com/user-attachments/assets/14b3b875-acf9-4d27-940b-459401cc3401)
 
 # CTPAPI相关文章：
@@ -95,10 +101,9 @@ openctp提供了3套CTPAPI兼容接口模拟环境，分别为7x24环境、仿�
 - [发布CTPAPI-Python源码](https://zhuanlan.zhihu.com/p/12295276223)
 - [发布CTP股票期权柜台CTPAPI](https://zhuanlan.zhihu.com/p/709700501)
 - [发布QDP极速柜台CTPAPI](https://zhuanlan.zhihu.com/p/709307501)
-- [开放新浪行情CTPAPI接口源码](https://zhuanlan.zhihu.com/p/585724196)
-- [开放腾讯行情CTPAPI接口源码](https://zhuanlan.zhihu.com/p/583796057)
 - [发两个ctp开发者生产力工具](https://zhuanlan.zhihu.com/p/695782688)
 - [发布openctp数据中心接口](https://zhuanlan.zhihu.com/p/1899531333975375926)
+- [AI时代的0语言0框架量化交易新范式](https://mp.weixin.qq.com/s/xJ-xkjL8sbfzCr9VuZPXOA)
 
 # 友情推荐
 
