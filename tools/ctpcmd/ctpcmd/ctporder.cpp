@@ -61,6 +61,7 @@ struct CTPCMD_Parameters {
 	std::string ExchangeID;
 	std::string ProductID;
 	std::string OrderSysID;
+	std::string TradingDay;
 };
 
 // GBK -> UTF-8
@@ -107,7 +108,8 @@ std::string GBKToUTF8(const std::string& gbk)
 #endif
 }
 
-#define DBLMAX_TO_NULL(value) (value == DBL_MAX ? json(nullptr) : json(value))
+#define DBLMAX_TO_NULL(value) ((value) == DBL_MAX ? json(nullptr) : json(value))
+#define ZERO_TO_EMPTY_STR(value) ((value) == '\0' ? json("") : json(std::string(1, value)))
 
 class CCTPTdSpiImpl :public CThostFtdcTraderSpi
 {
@@ -202,6 +204,7 @@ public:
 
 			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
 			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.TradingDay, m_params.TradingDay.c_str(), sizeof(Req.TradingDay) - 1);
 
 			if (m_pTdApi->ReqQrySettlementInfo(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QrySettlementInfo failed.") << std::endl;
@@ -281,6 +284,8 @@ public:
 
 			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
 			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
 
 			if (m_pTdApi->ReqQryInvestorPosition(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryInvestorPosition failed.") << std::endl;
@@ -294,6 +299,8 @@ public:
 
 			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
 			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
 
 			if (m_pTdApi->ReqQryInvestorPositionDetail(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryInvestorPositionDetail failed.") << std::endl;
@@ -307,7 +314,10 @@ public:
 
 			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
 			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
-
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
+			strncpy(Req.OrderSysID, m_params.OrderSysID.c_str(), sizeof(Req.OrderSysID) - 1);
+			
 			if (m_pTdApi->ReqQryOrder(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryOrder failed.") << std::endl;
 				exit(0);
@@ -320,6 +330,8 @@ public:
 
 			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
 			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
 
 			if (m_pTdApi->ReqQryTrade(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryTrade failed.") << std::endl;
@@ -331,6 +343,8 @@ public:
 		{
 			CThostFtdcQryExchangeField Req{};
 
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+
 			if (m_pTdApi->ReqQryExchange(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryExchange failed.") << std::endl;
 				exit(0);
@@ -340,6 +354,9 @@ public:
 		case CTPCMD_QryProduct:
 		{
 			CThostFtdcQryProductField Req{};
+
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.ProductID, m_params.ProductID.c_str(), sizeof(Req.ProductID) - 1);
 
 			if (m_pTdApi->ReqQryProduct(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryProduct failed.") << std::endl;
@@ -378,6 +395,11 @@ public:
 		{
 			CThostFtdcQryInstrumentCommissionRateField Req{};
 
+			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
+			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
+
 			if (m_pTdApi->ReqQryInstrumentCommissionRate(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryInstrumentCommissionRate failed.") << std::endl;
 				exit(0);
@@ -387,6 +409,10 @@ public:
 		case CTPCMD_QryInstrumentOrderCommRate:
 		{
 			CThostFtdcQryInstrumentOrderCommRateField Req{};
+
+			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
+			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
 
 			if (m_pTdApi->ReqQryInstrumentOrderCommRate(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryInstrumentOrderCommRate failed.") << std::endl;
@@ -398,6 +424,11 @@ public:
 		{
 			CThostFtdcQryOptionInstrCommRateField Req{};
 
+			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
+			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
+
 			if (m_pTdApi->ReqQryOptionInstrCommRate(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryOptionInstrCommRate failed.") << std::endl;
 				exit(0);
@@ -407,6 +438,11 @@ public:
 		case CTPCMD_QryInstrumentMarginRate:
 		{
 			CThostFtdcQryInstrumentMarginRateField Req{};
+
+			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
+			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
 
 			if (m_pTdApi->ReqQryInstrumentMarginRate(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryInstrumentMarginRate failed.") << std::endl;
@@ -418,6 +454,8 @@ public:
 		{
 			CThostFtdcQryTransferSerialField Req{};
 
+			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
+
 			if (m_pTdApi->ReqQryTransferSerial(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryTransferSerial failed.") << std::endl;
 				exit(0);
@@ -427,6 +465,8 @@ public:
 		case CTPCMD_QryAccountregister:
 		{
 			CThostFtdcQryAccountregisterField Req{};
+
+			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
 
 			if (m_pTdApi->ReqQryAccountregister(&Req, 0) != 0) {
 				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "QryAccountregister failed.") << std::endl;
@@ -593,7 +633,7 @@ public:
 				rsp["BrokerID"] = item.BrokerID;
 				rsp["InvestorGroupID"] = item.InvestorGroupID;
 				rsp["InvestorName"] = GBKToUTF8(item.InvestorName);
-				rsp["IdentifiedCardType"] = std::string(1, item.IdentifiedCardType);
+				rsp["IdentifiedCardType"] = ZERO_TO_EMPTY_STR(item.IdentifiedCardType);
 				rsp["IdentifiedCardNo"] = item.IdentifiedCardNo;
 				rsp["IsActive"] = item.IsActive;
 				rsp["Telephone"] = item.Telephone;
@@ -602,8 +642,8 @@ public:
 				rsp["Mobile"] = item.Mobile;
 				rsp["CommModelID"] = item.CommModelID;
 				rsp["MarginModelID"] = item.MarginModelID;
-				rsp["IsOrderFreq"] = std::string(1, item.IsOrderFreq);
-				rsp["IsOpenVolLimit"] = std::string(1, item.IsOpenVolLimit);
+				rsp["IsOrderFreq"] = ZERO_TO_EMPTY_STR(item.IsOrderFreq);
+				rsp["IsOpenVolLimit"] = ZERO_TO_EMPTY_STR(item.IsOpenVolLimit);
 
 				msg["data"].push_back(rsp);
 			}
@@ -638,9 +678,9 @@ public:
 				rsp["ExchangeID"] = item.ExchangeID;
 				rsp["ClientID"] = item.ClientID;
 				rsp["IsActive"] = item.IsActive;
-				rsp["ClientIDType"] = std::string(1, item.ClientIDType);
+				rsp["ClientIDType"] = ZERO_TO_EMPTY_STR(item.ClientIDType);
 				rsp["BranchID"] = item.BranchID;
-				rsp["BizType"] = std::string(1, item.BizType);
+				rsp["BizType"] = ZERO_TO_EMPTY_STR(item.BizType);
 				rsp["InvestUnitID"] = item.InvestUnitID;
 
 				msg["data"].push_back(rsp);
@@ -717,7 +757,7 @@ public:
 				rsp["SpecProductCloseProfit"] = item.SpecProductCloseProfit;
 				rsp["SpecProductPositionProfitByAlg"] = item.SpecProductPositionProfitByAlg;
 				rsp["SpecProductExchangeMargin"] = item.SpecProductExchangeMargin;
-				rsp["BizType"] = std::string(1, item.BizType);
+				rsp["BizType"] = ZERO_TO_EMPTY_STR(item.BizType);
 				rsp["FrozenSwap"] = item.FrozenSwap;
 				rsp["RemainSwap"] = item.RemainSwap;
 
@@ -751,9 +791,9 @@ public:
 				json rsp;
 				rsp["BrokerID"] = item.BrokerID;
 				rsp["InvestorID"] = item.InvestorID;
-				rsp["PosiDirection"] = std::string(1, item.PosiDirection);
-				rsp["HedgeFlag"] = std::string(1, item.HedgeFlag);
-				rsp["PositionDate"] = std::string(1, item.PositionDate);
+				rsp["PosiDirection"] = ZERO_TO_EMPTY_STR(item.PosiDirection);
+				rsp["HedgeFlag"] = ZERO_TO_EMPTY_STR(item.HedgeFlag);
+				rsp["PositionDate"] = ZERO_TO_EMPTY_STR(item.PositionDate);
 				rsp["YdPosition"] = item.YdPosition;
 				rsp["Position"] = item.Position;
 				rsp["LongFrozen"] = item.LongFrozen;
@@ -829,15 +869,15 @@ public:
 				json rsp;
 				rsp["BrokerID"] = item.BrokerID;
 				rsp["InvestorID"] = item.InvestorID;
-				rsp["HedgeFlag"] = std::string(1, item.HedgeFlag);
-				rsp["Direction"] = std::string(1, item.Direction);
+				rsp["HedgeFlag"] = ZERO_TO_EMPTY_STR(item.HedgeFlag);
+				rsp["Direction"] = ZERO_TO_EMPTY_STR(item.Direction);
 				rsp["OpenDate"] = item.OpenDate;
 				rsp["TradeID"] = item.TradeID;
 				rsp["Volume"] = item.Volume;
 				rsp["OpenPrice"] = item.OpenPrice;
 				rsp["TradingDay"] = item.TradingDay;
 				rsp["SettlementID"] = item.SettlementID;
-				rsp["TradeType"] = std::string(1, item.TradeType);
+				rsp["TradeType"] = ZERO_TO_EMPTY_STR(item.TradeType);
 				rsp["ExchangeID"] = item.ExchangeID;
 				rsp["CloseProfitByDate"] = item.CloseProfitByDate;
 				rsp["CloseProfitByTrade"] = item.CloseProfitByTrade;
@@ -853,7 +893,7 @@ public:
 				rsp["CloseAmount"] = item.CloseAmount;
 				rsp["TimeFirstVolume"] = item.TimeFirstVolume;
 				rsp["InvestUnitID"] = item.InvestUnitID;
-				rsp["SpecPosiType"] = std::string(1, item.SpecPosiType);
+				rsp["SpecPosiType"] = ZERO_TO_EMPTY_STR(item.SpecPosiType);
 				rsp["InstrumentID"] = item.InstrumentID;
 				rsp["CombInstrumentID"] = item.CombInstrumentID;
 
@@ -889,19 +929,19 @@ public:
 				rsp["InvestorID"] = item.InvestorID;
 				rsp["OrderRef"] = item.OrderRef;
 				rsp["UserID"] = item.UserID;
-				rsp["OrderPriceType"] = std::string(1, item.OrderPriceType);
-				rsp["Direction"] = std::string(1, item.Direction);
+				rsp["OrderPriceType"] = ZERO_TO_EMPTY_STR(item.OrderPriceType);
+				rsp["Direction"] = ZERO_TO_EMPTY_STR(item.Direction);
 				rsp["CombOffsetFlag"] = item.CombOffsetFlag;
 				rsp["CombHedgeFlag"] = item.CombHedgeFlag;
 				rsp["LimitPrice"] = item.LimitPrice;
 				rsp["VolumeTotalOriginal"] = item.VolumeTotalOriginal;
-				rsp["TimeCondition"] = std::string(1, item.TimeCondition);
+				rsp["TimeCondition"] = ZERO_TO_EMPTY_STR(item.TimeCondition);
 				rsp["GTDDate"] = item.GTDDate;
-				rsp["VolumeCondition"] = std::string(1, item.VolumeCondition);
+				rsp["VolumeCondition"] = ZERO_TO_EMPTY_STR(item.VolumeCondition);
 				rsp["MinVolume"] = item.MinVolume;
-				rsp["ContingentCondition"] = std::string(1, item.ContingentCondition);
+				rsp["ContingentCondition"] = ZERO_TO_EMPTY_STR(item.ContingentCondition);
 				rsp["StopPrice"] = item.StopPrice;
-				rsp["ForceCloseReason"] = std::string(1, item.ForceCloseReason);
+				rsp["ForceCloseReason"] = ZERO_TO_EMPTY_STR(item.ForceCloseReason);
 				rsp["IsAutoSuspend"] = item.IsAutoSuspend;
 				rsp["BusinessUnit"] = item.BusinessUnit;
 				rsp["RequestID"] = item.RequestID;
@@ -911,14 +951,14 @@ public:
 				rsp["ClientID"] = item.ClientID;
 				rsp["TraderID"] = item.TraderID;
 				rsp["InstallID"] = item.InstallID;
-				rsp["OrderSubmitStatus"] = std::string(1, item.OrderSubmitStatus);
+				rsp["OrderSubmitStatus"] = ZERO_TO_EMPTY_STR(item.OrderSubmitStatus);
 				rsp["NotifySequence"] = item.NotifySequence;
 				rsp["TradingDay"] = item.TradingDay;
 				rsp["SettlementID"] = item.SettlementID;
 				rsp["OrderSysID"] = item.OrderSysID;
-				rsp["OrderSource"] = std::string(1, item.OrderSource);
-				rsp["OrderStatus"] = std::string(1, item.OrderStatus);
-				rsp["OrderType"] = std::string(1, item.OrderType);
+				rsp["OrderSource"] = ZERO_TO_EMPTY_STR(item.OrderSource);
+				rsp["OrderStatus"] = ZERO_TO_EMPTY_STR(item.OrderStatus);
+				rsp["OrderType"] = ZERO_TO_EMPTY_STR(item.OrderType);
 				rsp["VolumeTraded"] = item.VolumeTraded;
 				rsp["VolumeTotal"] = item.VolumeTotal;
 				rsp["InsertDate"] = item.InsertDate;
@@ -983,19 +1023,19 @@ public:
 				rsp["UserID"] = item.UserID;
 				rsp["ExchangeID"] = item.ExchangeID;
 				rsp["TradeID"] = item.TradeID;
-				rsp["Direction"] = std::string(1, item.Direction);
+				rsp["Direction"] = ZERO_TO_EMPTY_STR(item.Direction);
 				rsp["OrderSysID"] = item.OrderSysID;
 				rsp["ParticipantID"] = item.ParticipantID;
 				rsp["ClientID"] = item.ClientID;
-				rsp["TradingRole"] = std::string(1, item.TradingRole);
-				rsp["OffsetFlag"] = std::string(1, item.OffsetFlag);
-				rsp["HedgeFlag"] = std::string(1, item.HedgeFlag);
+				rsp["TradingRole"] = ZERO_TO_EMPTY_STR(item.TradingRole);
+				rsp["OffsetFlag"] = ZERO_TO_EMPTY_STR(item.OffsetFlag);
+				rsp["HedgeFlag"] = ZERO_TO_EMPTY_STR(item.HedgeFlag);
 				rsp["Price"] = item.Price;
 				rsp["Volume"] = item.Volume;
 				rsp["TradeDate"] = item.TradeDate;
 				rsp["TradeTime"] = item.TradeTime;
-				rsp["TradeType"] = std::string(1, item.TradeType);
-				rsp["PriceSource"] = std::string(1, item.PriceSource);
+				rsp["TradeType"] = ZERO_TO_EMPTY_STR(item.TradeType);
+				rsp["PriceSource"] = ZERO_TO_EMPTY_STR(item.PriceSource);
 				rsp["TraderID"] = item.TraderID;
 				rsp["OrderLocalID"] = item.OrderLocalID;
 				rsp["ClearingPartID"] = item.ClearingPartID;
@@ -1004,7 +1044,7 @@ public:
 				rsp["TradingDay"] = item.TradingDay;
 				rsp["SettlementID"] = item.SettlementID;
 				rsp["BrokerOrderSeq"] = item.BrokerOrderSeq;
-				rsp["TradeSource"] = std::string(1, item.TradeSource);
+				rsp["TradeSource"] = ZERO_TO_EMPTY_STR(item.TradeSource);
 				rsp["InvestUnitID"] = item.InvestUnitID;
 				rsp["InstrumentID"] = item.InstrumentID;
 				rsp["ExchangeInstID"] = item.ExchangeInstID;
@@ -1039,7 +1079,7 @@ public:
 				json rsp;
 				rsp["ExchangeID"] = item.ExchangeID;
 				rsp["ExchangeName"] = GBKToUTF8(item.ExchangeName);
-				rsp["ExchangeProperty"] = std::string(1, item.ExchangeProperty);
+				rsp["ExchangeProperty"] = ZERO_TO_EMPTY_STR(item.ExchangeProperty);
 
 				msg["data"].push_back(rsp);
 			}
@@ -1071,18 +1111,18 @@ public:
 				json rsp;
 				rsp["ProductName"] = GBKToUTF8(item.ProductName);
 				rsp["ExchangeID"] = item.ExchangeID;
-				rsp["ProductClass"] = std::string(1, item.ProductClass);
+				rsp["ProductClass"] = ZERO_TO_EMPTY_STR(item.ProductClass);
 				rsp["VolumeMultiple"] = item.VolumeMultiple;
 				rsp["PriceTick"] = item.PriceTick;
 				rsp["MaxMarketOrderVolume"] = item.MaxMarketOrderVolume;
 				rsp["MinMarketOrderVolume"] = item.MinMarketOrderVolume;
 				rsp["MaxLimitOrderVolume"] = item.MaxLimitOrderVolume;
 				rsp["MinLimitOrderVolume"] = item.MinLimitOrderVolume;
-				rsp["PositionType"] = std::string(1, item.PositionType);
-				rsp["PositionDateType"] = std::string(1, item.PositionDateType);
-				rsp["CloseDealType"] = std::string(1, item.CloseDealType);
+				rsp["PositionType"] = ZERO_TO_EMPTY_STR(item.PositionType);
+				rsp["PositionDateType"] = ZERO_TO_EMPTY_STR(item.PositionDateType);
+				rsp["CloseDealType"] = ZERO_TO_EMPTY_STR(item.CloseDealType);
 				rsp["TradeCurrencyID"] = item.TradeCurrencyID;
-				rsp["MortgageFundUseRange"] = std::string(1, item.MortgageFundUseRange);
+				rsp["MortgageFundUseRange"] = ZERO_TO_EMPTY_STR(item.MortgageFundUseRange);
 				rsp["UnderlyingMultiple"] = item.UnderlyingMultiple;
 				rsp["ProductID"] = item.ProductID;
 				rsp["ExchangeProductID"] = item.ExchangeProductID;
@@ -1120,7 +1160,7 @@ public:
 
 				rsp["ExchangeID"] = item.ExchangeID;
 				rsp["InstrumentName"] = GBKToUTF8(item.InstrumentName);
-				rsp["ProductClass"] = std::string(1, item.ProductClass);
+				rsp["ProductClass"] = ZERO_TO_EMPTY_STR(item.ProductClass);
 				rsp["DeliveryYear"] = item.DeliveryYear;
 				rsp["DeliveryMonth"] = item.DeliveryMonth;
 				rsp["MaxMarketOrderVolume"] = item.MaxMarketOrderVolume;
@@ -1134,17 +1174,17 @@ public:
 				rsp["ExpireDate"] = item.ExpireDate;
 				rsp["StartDelivDate"] = item.StartDelivDate;
 				rsp["EndDelivDate"] = item.EndDelivDate;
-				rsp["InstLifePhase"] = std::string(1, item.InstLifePhase);
+				rsp["InstLifePhase"] = ZERO_TO_EMPTY_STR(item.InstLifePhase);
 				rsp["IsTrading"] = item.IsTrading;
-				rsp["PositionType"] = std::string(1, item.PositionType);
-				rsp["PositionDateType"] = std::string(1, item.PositionDateType);
+				rsp["PositionType"] = ZERO_TO_EMPTY_STR(item.PositionType);
+				rsp["PositionDateType"] = ZERO_TO_EMPTY_STR(item.PositionDateType);
 				rsp["LongMarginRatio"] = DBLMAX_TO_NULL(item.LongMarginRatio);
 				rsp["ShortMarginRatio"] = DBLMAX_TO_NULL(item.ShortMarginRatio);
-				rsp["MaxMarginSideAlgorithm"] = std::string(1, item.MaxMarginSideAlgorithm);
+				rsp["MaxMarginSideAlgorithm"] = ZERO_TO_EMPTY_STR(item.MaxMarginSideAlgorithm);
 				rsp["StrikePrice"] = DBLMAX_TO_NULL(item.StrikePrice);
-				rsp["OptionsType"] = item.OptionsType == 0 ? json("") : json(std::string(1, item.OptionsType));
+				rsp["OptionsType"] = ZERO_TO_EMPTY_STR(item.OptionsType);
 				rsp["UnderlyingMultiple"] = item.UnderlyingMultiple;
-				rsp["CombinationType"] = std::string(1, item.CombinationType);
+				rsp["CombinationType"] = ZERO_TO_EMPTY_STR(item.CombinationType);
 				rsp["InstrumentID"] = item.InstrumentID;
 				rsp["ExchangeInstID"] = item.ExchangeInstID;
 				rsp["ProductID"] = item.ProductID;
@@ -1253,7 +1293,7 @@ public:
 
 			for (auto item : m_vInstrumentCommissionRate) {
 				json rsp;
-				rsp["InvestorRange"] = std::string(1, item.InvestorRange);
+				rsp["InvestorRange"] = ZERO_TO_EMPTY_STR(item.InvestorRange);
 				rsp["BrokerID"] = item.BrokerID;
 				rsp["InvestorID"] = item.InvestorID;
 				rsp["OpenRatioByMoney"] = item.OpenRatioByMoney;
@@ -1263,7 +1303,7 @@ public:
 				rsp["CloseTodayRatioByMoney"] = item.CloseTodayRatioByMoney;
 				rsp["CloseTodayRatioByVolume"] = item.CloseTodayRatioByVolume;
 				rsp["ExchangeID"] = item.ExchangeID;
-				rsp["BizType"] = std::string(1, item.BizType);
+				rsp["BizType"] = ZERO_TO_EMPTY_STR(item.BizType);
 				rsp["InvestUnitID"] = item.InvestUnitID;
 				rsp["InstrumentID"] = item.InstrumentID;
 
@@ -1295,7 +1335,7 @@ public:
 
 			for (auto item : m_vOptionInstrCommRate) {
 				json rsp;
-				rsp["InvestorRange"] = std::string(1, item.InvestorRange);
+				rsp["InvestorRange"] = ZERO_TO_EMPTY_STR(item.InvestorRange);
 				rsp["BrokerID"] = item.BrokerID;
 				rsp["InvestorID"] = item.InvestorID;
 				rsp["OpenRatioByMoney"] = item.OpenRatioByMoney;
@@ -1338,10 +1378,10 @@ public:
 
 			for (auto item : m_vInstrumentOrderCommRate) {
 				json rsp;
-				rsp["InvestorRange"] = std::string(1, item.InvestorRange);
+				rsp["InvestorRange"] = ZERO_TO_EMPTY_STR(item.InvestorRange);
 				rsp["BrokerID"] = item.BrokerID;
 				rsp["InvestorID"] = item.InvestorID;
-				rsp["HedgeFlag"] = std::string(1, item.HedgeFlag);
+				rsp["HedgeFlag"] = ZERO_TO_EMPTY_STR(item.HedgeFlag);
 				rsp["OrderCommByVolume"] = item.OrderCommByVolume;
 				rsp["OrderActionCommByVolume"] = item.OrderActionCommByVolume;
 				rsp["ExchangeID"] = item.ExchangeID;
@@ -1378,10 +1418,10 @@ public:
 
 			for (auto item : m_vInstrumentMarginRate) {
 				json rsp;
-				rsp["InvestorRange"] = std::string(1, item.InvestorRange);
+				rsp["InvestorRange"] = ZERO_TO_EMPTY_STR(item.InvestorRange);
 				rsp["BrokerID"] = item.BrokerID;
 				rsp["InvestorID"] = item.InvestorID;
-				rsp["HedgeFlag"] = std::string(1, item.HedgeFlag);
+				rsp["HedgeFlag"] = ZERO_TO_EMPTY_STR(item.HedgeFlag);
 				rsp["LongMarginRatioByMoney"] = item.LongMarginRatioByMoney;
 				rsp["LongMarginRatioByVolume"] = item.LongMarginRatioByVolume;
 				rsp["ShortMarginRatioByMoney"] = item.ShortMarginRatioByMoney;
@@ -1426,22 +1466,22 @@ public:
 				rsp["SessionID"] = item.SessionID;
 				rsp["BankID"] = item.BankID;
 				rsp["BankBranchID"] = item.BankBranchID;
-				rsp["BankAccType"] = std::string(1, item.BankAccType);
+				rsp["BankAccType"] = ZERO_TO_EMPTY_STR(item.BankAccType);
 				rsp["BankAccount"] = item.BankAccount;
 				rsp["BankSerial"] = item.BankSerial;
 				rsp["BrokerID"] = item.BrokerID;
 				rsp["BrokerBranchID"] = item.BrokerBranchID;
-				rsp["FutureAccType"] = std::string(1, item.FutureAccType);
+				rsp["FutureAccType"] = ZERO_TO_EMPTY_STR(item.FutureAccType);
 				rsp["AccountID"] = item.AccountID;
 				rsp["InvestorID"] = item.InvestorID;
 				rsp["FutureSerial"] = item.FutureSerial;
-				rsp["IdCardType"] = std::string(1, item.IdCardType);
+				rsp["IdCardType"] = ZERO_TO_EMPTY_STR(item.IdCardType);
 				rsp["IdentifiedCardNo"] = item.IdentifiedCardNo;
 				rsp["CurrencyID"] = item.CurrencyID;
 				rsp["TradeAmount"] = item.TradeAmount;
 				rsp["CustFee"] = item.CustFee;
 				rsp["BrokerFee"] = item.BrokerFee;
-				rsp["AvailabilityFlag"] = std::string(1, item.AvailabilityFlag);
+				rsp["AvailabilityFlag"] = ZERO_TO_EMPTY_STR(item.AvailabilityFlag);
 				rsp["OperatorCode"] = item.OperatorCode;
 				rsp["BankNewAccount"] = item.BankNewAccount;
 				rsp["ErrorID"] = item.ErrorID;
@@ -1482,16 +1522,16 @@ public:
 				rsp["BrokerID"] = item.BrokerID;
 				rsp["BrokerBranchID"] = item.BrokerBranchID;
 				rsp["AccountID"] = item.AccountID;
-				rsp["IdCardType"] = std::string(1, item.IdCardType);
+				rsp["IdCardType"] = ZERO_TO_EMPTY_STR(item.IdCardType);
 				rsp["IdentifiedCardNo"] = item.IdentifiedCardNo;
 				rsp["CustomerName"] = GBKToUTF8(item.CustomerName);
 				rsp["CurrencyID"] = item.CurrencyID;
-				rsp["OpenOrDestroy"] = std::string(1, item.OpenOrDestroy);
+				rsp["OpenOrDestroy"] = ZERO_TO_EMPTY_STR(item.OpenOrDestroy);
 				rsp["RegDate"] = item.RegDate;
 				rsp["OutDate"] = item.OutDate;
 				rsp["TID"] = item.TID;
-				rsp["CustType"] = std::string(1, item.CustType);
-				rsp["BankAccType"] = std::string(1, item.BankAccType);
+				rsp["CustType"] = ZERO_TO_EMPTY_STR(item.CustType);
+				rsp["BankAccType"] = ZERO_TO_EMPTY_STR(item.BankAccType);
 				rsp["LongCustomerName"] = GBKToUTF8(item.LongCustomerName);
 
 				msg["data"].push_back(rsp);
@@ -1548,19 +1588,19 @@ public:
 		rsp["InvestorID"] = pOrder->InvestorID;
 		rsp["OrderRef"] = pOrder->OrderRef;
 		rsp["UserID"] = pOrder->UserID;
-		rsp["OrderPriceType"] = std::string(1, pOrder->OrderPriceType);
-		rsp["Direction"] = std::string(1, pOrder->Direction);
+		rsp["OrderPriceType"] = ZERO_TO_EMPTY_STR(pOrder->OrderPriceType);
+		rsp["Direction"] = ZERO_TO_EMPTY_STR(pOrder->Direction);
 		rsp["CombOffsetFlag"] = pOrder->CombOffsetFlag;
 		rsp["CombHedgeFlag"] = pOrder->CombHedgeFlag;
 		rsp["LimitPrice"] = pOrder->LimitPrice;
 		rsp["VolumeTotalOriginal"] = pOrder->VolumeTotalOriginal;
-		rsp["TimeCondition"] = std::string(1, pOrder->TimeCondition);
+		rsp["TimeCondition"] = ZERO_TO_EMPTY_STR(pOrder->TimeCondition);
 		rsp["GTDDate"] = pOrder->GTDDate;
-		rsp["VolumeCondition"] = std::string(1, pOrder->VolumeCondition);
+		rsp["VolumeCondition"] = ZERO_TO_EMPTY_STR(pOrder->VolumeCondition);
 		rsp["MinVolume"] = pOrder->MinVolume;
-		rsp["ContingentCondition"] = std::string(1, pOrder->ContingentCondition);
+		rsp["ContingentCondition"] = ZERO_TO_EMPTY_STR(pOrder->ContingentCondition);
 		rsp["StopPrice"] = pOrder->StopPrice;
-		rsp["ForceCloseReason"] = std::string(1, pOrder->ForceCloseReason);
+		rsp["ForceCloseReason"] = ZERO_TO_EMPTY_STR(pOrder->ForceCloseReason);
 		rsp["IsAutoSuspend"] = pOrder->IsAutoSuspend;
 		rsp["BusinessUnit"] = pOrder->BusinessUnit;
 		rsp["RequestID"] = pOrder->RequestID;
@@ -1570,14 +1610,14 @@ public:
 		rsp["ClientID"] = pOrder->ClientID;
 		rsp["TraderID"] = pOrder->TraderID;
 		rsp["InstallID"] = pOrder->InstallID;
-		rsp["OrderSubmitStatus"] = std::string(1, pOrder->OrderSubmitStatus);
+		rsp["OrderSubmitStatus"] = ZERO_TO_EMPTY_STR(pOrder->OrderSubmitStatus);
 		rsp["NotifySequence"] = pOrder->NotifySequence;
 		rsp["TradingDay"] = pOrder->TradingDay;
 		rsp["SettlementID"] = pOrder->SettlementID;
 		rsp["OrderSysID"] = pOrder->OrderSysID;
-		rsp["OrderSource"] = std::string(1, pOrder->OrderSource);
-		rsp["OrderStatus"] = std::string(1, pOrder->OrderStatus);
-		rsp["OrderType"] = std::string(1, pOrder->OrderType);
+		rsp["OrderSource"] = ZERO_TO_EMPTY_STR(pOrder->OrderSource);
+		rsp["OrderStatus"] = ZERO_TO_EMPTY_STR(pOrder->OrderStatus);
+		rsp["OrderType"] = ZERO_TO_EMPTY_STR(pOrder->OrderType);
 		rsp["VolumeTraded"] = pOrder->VolumeTraded;
 		rsp["VolumeTotal"] = pOrder->VolumeTotal;
 		rsp["InsertDate"] = pOrder->InsertDate;
@@ -1627,19 +1667,19 @@ public:
 		rsp["UserID"] = pTrade->UserID;
 		rsp["ExchangeID"] = pTrade->ExchangeID;
 		rsp["TradeID"] = pTrade->TradeID;
-		rsp["Direction"] = std::string(1, pTrade->Direction);
+		rsp["Direction"] = ZERO_TO_EMPTY_STR(pTrade->Direction);
 		rsp["OrderSysID"] = pTrade->OrderSysID;
 		rsp["ParticipantID"] = pTrade->ParticipantID;
 		rsp["ClientID"] = pTrade->ClientID;
-		rsp["TradingRole"] = std::string(1, pTrade->TradingRole);
-		rsp["OffsetFlag"] = std::string(1, pTrade->OffsetFlag);
-		rsp["HedgeFlag"] = std::string(1, pTrade->HedgeFlag);
+		rsp["TradingRole"] = ZERO_TO_EMPTY_STR(pTrade->TradingRole);
+		rsp["OffsetFlag"] = ZERO_TO_EMPTY_STR(pTrade->OffsetFlag);
+		rsp["HedgeFlag"] = ZERO_TO_EMPTY_STR(pTrade->HedgeFlag);
 		rsp["Price"] = pTrade->Price;
 		rsp["Volume"] = pTrade->Volume;
 		rsp["TradeDate"] = pTrade->TradeDate;
 		rsp["TradeTime"] = pTrade->TradeTime;
-		rsp["TradeType"] = std::string(1, pTrade->TradeType);
-		rsp["PriceSource"] = std::string(1, pTrade->PriceSource);
+		rsp["TradeType"] = ZERO_TO_EMPTY_STR(pTrade->TradeType);
+		rsp["PriceSource"] = ZERO_TO_EMPTY_STR(pTrade->PriceSource);
 		rsp["TraderID"] = pTrade->TraderID;
 		rsp["OrderLocalID"] = pTrade->OrderLocalID;
 		rsp["ClearingPartID"] = pTrade->ClearingPartID;
@@ -1648,7 +1688,7 @@ public:
 		rsp["TradingDay"] = pTrade->TradingDay;
 		rsp["SettlementID"] = pTrade->SettlementID;
 		rsp["BrokerOrderSeq"] = pTrade->BrokerOrderSeq;
-		rsp["TradeSource"] = std::string(1, pTrade->TradeSource);
+		rsp["TradeSource"] = ZERO_TO_EMPTY_STR(pTrade->TradeSource);
 		rsp["InvestUnitID"] = pTrade->InvestUnitID;
 		rsp["InstrumentID"] = pTrade->InstrumentID;
 		rsp["ExchangeInstID"] = pTrade->ExchangeInstID;
@@ -1672,19 +1712,19 @@ public:
 		rsp["InvestorID"] = pInputOrder->InvestorID;
 		rsp["OrderRef"] = pInputOrder->OrderRef;
 		rsp["UserID"] = pInputOrder->UserID;
-		rsp["OrderPriceType"] = std::string(1, pInputOrder->OrderPriceType);
-		rsp["Direction"] = std::string(1, pInputOrder->Direction);
+		rsp["OrderPriceType"] = ZERO_TO_EMPTY_STR(pInputOrder->OrderPriceType);
+		rsp["Direction"] = ZERO_TO_EMPTY_STR(pInputOrder->Direction);
 		rsp["CombOffsetFlag"] = pInputOrder->CombOffsetFlag;
 		rsp["CombHedgeFlag"] = pInputOrder->CombHedgeFlag;
 		rsp["LimitPrice"] = pInputOrder->LimitPrice;
 		rsp["VolumeTotalOriginal"] = pInputOrder->VolumeTotalOriginal;
-		rsp["TimeCondition"] = std::string(1, pInputOrder->TimeCondition);
+		rsp["TimeCondition"] = ZERO_TO_EMPTY_STR(pInputOrder->TimeCondition);
 		rsp["GTDDate"] = pInputOrder->GTDDate;
-		rsp["VolumeCondition"] = std::string(1, pInputOrder->VolumeCondition);
+		rsp["VolumeCondition"] = ZERO_TO_EMPTY_STR(pInputOrder->VolumeCondition);
 		rsp["MinVolume"] = pInputOrder->MinVolume;
-		rsp["ContingentCondition"] = std::string(1, pInputOrder->ContingentCondition);
+		rsp["ContingentCondition"] = ZERO_TO_EMPTY_STR(pInputOrder->ContingentCondition);
 		rsp["StopPrice"] = pInputOrder->StopPrice;
-		rsp["ForceCloseReason"] = std::string(1, pInputOrder->ForceCloseReason);
+		rsp["ForceCloseReason"] = ZERO_TO_EMPTY_STR(pInputOrder->ForceCloseReason);
 		rsp["IsAutoSuspend"] = pInputOrder->IsAutoSuspend;
 		rsp["BusinessUnit"] = pInputOrder->BusinessUnit;
 		rsp["RequestID"] = pInputOrder->RequestID;
@@ -1723,7 +1763,7 @@ public:
 		rsp["SessionID"] = pOrderAction->SessionID;
 		rsp["ExchangeID"] = pOrderAction->ExchangeID;
 		rsp["OrderSysID"] = pOrderAction->OrderSysID;
-		rsp["ActionFlag"] = std::string(1, pOrderAction->ActionFlag);
+		rsp["ActionFlag"] = ZERO_TO_EMPTY_STR(pOrderAction->ActionFlag);
 		rsp["LimitPrice"] = pOrderAction->LimitPrice;
 		rsp["VolumeChange"] = pOrderAction->VolumeChange;
 		rsp["ActionDate"] = pOrderAction->ActionDate;
@@ -1735,7 +1775,7 @@ public:
 		rsp["ParticipantID"] = pOrderAction->ParticipantID;
 		rsp["ClientID"] = pOrderAction->ClientID;
 		rsp["BusinessUnit"] = pOrderAction->BusinessUnit;
-		rsp["OrderActionStatus"] = std::string(1, pOrderAction->OrderActionStatus);
+		rsp["OrderActionStatus"] = ZERO_TO_EMPTY_STR(pOrderAction->OrderActionStatus);
 		rsp["UserID"] = pOrderAction->UserID;
 		rsp["StatusMsg"] = GBKToUTF8(pOrderAction->StatusMsg);
 		rsp["BranchID"] = pOrderAction->BranchID;
@@ -1759,10 +1799,10 @@ public:
 		json rsp;
 		rsp["ExchangeID"] = pInstrumentStatus->ExchangeID;
 		rsp["SettlementGroupID"] = pInstrumentStatus->SettlementGroupID;
-		rsp["InstrumentStatus"] = std::string(1, pInstrumentStatus->InstrumentStatus);
+		rsp["InstrumentStatus"] = ZERO_TO_EMPTY_STR(pInstrumentStatus->InstrumentStatus);
 		rsp["TradingSegmentSN"] = pInstrumentStatus->TradingSegmentSN;
 		rsp["EnterTime"] = pInstrumentStatus->EnterTime;
-		rsp["EnterReason"] = std::string(1, pInstrumentStatus->EnterReason);
+		rsp["EnterReason"] = ZERO_TO_EMPTY_STR(pInstrumentStatus->EnterReason);
 		rsp["ExchangeInstID"] = pInstrumentStatus->ExchangeInstID;
 		rsp["InstrumentID"] = pInstrumentStatus->InstrumentID;
 
@@ -1810,6 +1850,9 @@ public:
 int main(int argc, char** argv)
 {
 	CLI::App app{ "ctporder -- ctp command-line trading tool" };
+	app.set_help_flag("-h,--help", "Show this help message");
+	app.set_help_all_flag("--help-all", "Show full help of all subcommands");
+
 	CTPCMD cmd;
 	CTPCMD_Parameters params;
 	bool no_pretty_print = false;
@@ -1834,8 +1877,8 @@ int main(int argc, char** argv)
 
 	THOST_TE_RESUME_TYPE nResumeType = THOST_TERT_NONE;
 	std::string ResumeType = "quick";
-	auto cmdSubscribe = app.add_subcommand("subscribe", "Subscribe events[restart/resume/quick]");
-	cmdSubscribe->add_option("mode", ResumeType, "Subscribe Mode");
+	auto cmdSubscribe = app.add_subcommand("subscribe", "Subscribe events");
+	cmdSubscribe->add_option("mode", ResumeType, "Subscribe Mode[restart/resume/quick]");
 	cmdSubscribe->callback([&]() {
 		cmd = CTPCMD_Subscribe;
 
@@ -1849,7 +1892,9 @@ int main(int argc, char** argv)
 			std::cout << "Invalid subscribe mode, valid mode: restart/resume/quick" << std::endl;
 		});
 
-	app.add_subcommand("query_settlement", "QrySettlementInfo")->callback([&]() {
+	auto cmdQrySettlementInfo = app.add_subcommand("query_settlement", "QrySettlementInfo");
+	cmdQrySettlementInfo->add_option("--tradingday", params.TradingDay, "TradingDay");
+	cmdQrySettlementInfo->callback([&]() {
 		cmd = CTPCMD_QrySettlementInfo;
 		});
 
@@ -1873,27 +1918,45 @@ int main(int argc, char** argv)
 		cmd = CTPCMD_QryTradingAccount;
 		});
 
-	app.add_subcommand("query_position", "QryInvestorPosition")->callback([&]() {
+	auto cmdQryInvestorPosition = app.add_subcommand("query_position", "QryInvestorPosition");
+	cmdQryInvestorPosition->add_option("--exchange", params.ExchangeID, "ExchangeID");
+	cmdQryInvestorPosition->add_option("--instrument", params.InstrumentID, "InstrumentID");
+	cmdQryInvestorPosition->callback([&]() {
 		cmd = CTPCMD_QryInvestorPosition;
 		});
 
-	app.add_subcommand("query_detail", "QryInvestorPositionDetail")->callback([&]() {
+	auto cmdQryPositionDetail = app.add_subcommand("query_detail", "QryInvestorPositionDetail");
+	cmdQryPositionDetail->add_option("--exchange", params.ExchangeID, "ExchangeID");
+	cmdQryPositionDetail->add_option("--instrument", params.InstrumentID, "InstrumentID");
+	cmdQryPositionDetail->callback([&]() {
 		cmd = CTPCMD_QryInvestorPositionDetail;
 		});
 
-	app.add_subcommand("query_order", "QryOrder")->callback([&]() {
+	auto cmdQryOrder = app.add_subcommand("query_order", "QryOrder");
+	cmdQryOrder->add_option("--exchange", params.ExchangeID, "ExchangeID");
+	cmdQryOrder->add_option("--instrument", params.InstrumentID, "InstrumentID");
+	cmdQryOrder->add_option("--orderid", params.OrderSysID, "OrderSysID");
+	cmdQryOrder->callback([&]() {
 		cmd = CTPCMD_QryOrder;
 		});
 
-	app.add_subcommand("query_trade", "QryTrade")->callback([&]() {
+	auto cmdQryTrade = app.add_subcommand("query_trade", "QryTrade");
+	cmdQryTrade->add_option("--exchange", params.ExchangeID, "ExchangeID");
+	cmdQryTrade->add_option("--instrument", params.InstrumentID, "InstrumentID");
+	cmdQryTrade->callback([&]() {
 		cmd = CTPCMD_QryTrade;
 		});
 
-	app.add_subcommand("query_exchange", "QryExchange")->callback([&]() {
+	auto cmdQryExchange = app.add_subcommand("query_exchange", "QryExchange");
+	cmdQryExchange->add_option("--exchange", params.ExchangeID, "ExchangeID");
+	cmdQryExchange->callback([&]() {
 		cmd = CTPCMD_QryExchange;
 		});
 
-	app.add_subcommand("query_product", "QryProduct")->callback([&]() {
+	auto cmdQryProduct = app.add_subcommand("query_product", "QryProduct");
+	cmdQryProduct->add_option("--exchange", params.ExchangeID, "ExchangeID");
+	cmdQryProduct->add_option("--product", params.ProductID, "ProductID");
+	cmdQryProduct->callback([&]() {
 		cmd = CTPCMD_QryProduct;
 		});
 
@@ -1912,19 +1975,30 @@ int main(int argc, char** argv)
 		cmd = CTPCMD_QryDepthMarketData;
 		});
 
-	app.add_subcommand("query_fee", "QryInstrumentCommissionRate")->callback([&]() {
+	auto cmdQryInstrumentCommissionRate = app.add_subcommand("query_fee", "QryInstrumentCommissionRate");
+	cmdQryInstrumentCommissionRate->add_option("--exchange", params.ExchangeID, "ExchangeID");
+	cmdQryInstrumentCommissionRate->add_option("--instrument", params.InstrumentID, "InstrumentID");
+	cmdQryInstrumentCommissionRate->callback([&]() {
 		cmd = CTPCMD_QryInstrumentCommissionRate;
 		});
 
-	app.add_subcommand("query_optionfee", "QryOptionInstrCommRate")->callback([&]() {
+	auto cmdQryOptionInstrCommRate = app.add_subcommand("query_optionfee", "QryOptionInstrCommRate");
+	cmdQryOptionInstrCommRate->add_option("--exchange", params.ExchangeID, "ExchangeID");
+	cmdQryOptionInstrCommRate->add_option("--instrument", params.InstrumentID, "InstrumentID");
+	cmdQryOptionInstrCommRate->callback([&]() {
 		cmd = CTPCMD_QryOptionInstrCommRate;
 		});
 
-	app.add_subcommand("query_orderfee", "QryInstrumentOrderCommRate")->callback([&]() {
+	auto cmdQryInstrumentOrderCommRate = app.add_subcommand("query_orderfee", "QryInstrumentOrderCommRate");
+	cmdQryInstrumentOrderCommRate->add_option("--exchange", params.ExchangeID, "ExchangeID");
+	cmdQryInstrumentOrderCommRate->callback([&]() {
 		cmd = CTPCMD_QryInstrumentOrderCommRate;
 		});
 
-	app.add_subcommand("query_margin", "QryInstrumentMarginRate")->callback([&]() {
+	auto cmdQryInstrumentMarginRate = app.add_subcommand("query_margin", "QryInstrumentMarginRate");
+	cmdQryInstrumentMarginRate->add_option("--exchange", params.ExchangeID, "ExchangeID");
+	cmdQryInstrumentMarginRate->add_option("--instrument", params.InstrumentID, "InstrumentID");
+	cmdQryInstrumentMarginRate->callback([&]() {
 		cmd = CTPCMD_QryInstrumentMarginRate;
 		});
 
@@ -1993,15 +2067,17 @@ int main(int argc, char** argv)
 	case CTPCMD_SellCloseToday:
 	case CTPCMD_Cancel:
 		pTdApi->SubscribePrivateTopic(THOST_TERT_QUICK);
-		pTdApi->SubscribePublicTopic(THOST_TERT_NONE);
+		//pTdApi->SubscribePublicTopic(THOST_TERT_NONE);
 		break;
 	case CTPCMD_Subscribe:
-		pTdApi->SubscribePrivateTopic(nResumeType);
-		pTdApi->SubscribePublicTopic(nResumeType);
+		if (nResumeType != THOST_TERT_NONE) {
+			pTdApi->SubscribePrivateTopic(nResumeType);
+			pTdApi->SubscribePublicTopic(nResumeType);
+		}
 		break;
 	default:
-		pTdApi->SubscribePrivateTopic(THOST_TERT_NONE);
-		pTdApi->SubscribePublicTopic(THOST_TERT_NONE);
+		//pTdApi->SubscribePrivateTopic(THOST_TERT_NONE);
+		//pTdApi->SubscribePublicTopic(THOST_TERT_NONE);
 		break;
 	}
 

@@ -73,7 +73,8 @@ std::string GBKToUTF8(const std::string& gbk)
 #endif
 }
 
-#define DBLMAX_TO_NULL(value) (value == DBL_MAX ? json(nullptr) : json(value))
+#define DBLMAX_TO_NULL(value) ((value) == DBL_MAX ? json(nullptr) : json(value))
+#define ZERO_TO_EMPTY_STR(value) ((value) == '\0' ? json("") : json(std::string(1, value)))
 
 class CCTPMdSpiImpl :public CThostFtdcMdSpi
 {
@@ -336,6 +337,9 @@ std::vector<std::pair<std::string, std::string>> parse_instrument_list(const std
 int main(int argc, char** argv)
 {
 	CLI::App app{ "ctpprice -- ctp command-line market tool" };
+	app.set_help_flag("-h,--help", "Show this help message");
+	app.set_help_all_flag("--help-all", "Show full help of all subcommands");
+
 	CTPCMD cmd;
 	bool no_pretty_print = false;
 
