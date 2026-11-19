@@ -1938,7 +1938,7 @@ int main(int argc, char** argv)
 	bool no_pretty_print = false;
 
 	std::string flowpath{ "" };
-	std::string config{ "optbrokers.xml" };
+	std::string config{ "brokers_opt.xml" };
 	std::string channel;
 	std::string user;
 	std::string password;
@@ -1951,7 +1951,7 @@ int main(int argc, char** argv)
 
 	app.add_flag("--no-pretty", no_pretty_print, "no pretty json");
 	app.add_option("--flowpath", flowpath, "flow path");
-	app.add_option("--config", config, "config file[optbrokers.xml]");
+	app.add_option("--config", config, "config file[brokers_opt.xml]");
 	app.add_option("--channel", channel, "channel name")->required();
 	app.add_option("--user", user)->required();
 	app.add_option("--password", password)->required();
