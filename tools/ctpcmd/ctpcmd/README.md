@@ -39,14 +39,13 @@ ctpcmd工具链主要包含四个命令，分别是CTP接口的ctporder与ctppri
 
 ## 特性
 
+- **人机共用**：默认以格式化形式输出Json报文，适合人工测试与运维等场景，`--no-pretty` 以单行形式输出Json报文，适合自动化测试、程序化交易等场景。
 - **两种模式**：`query` 一次性快照，`subscribe` 持续 Tick 推送
 - **合约写法双兼容**：`ag2612`（简写）和 `SHFE.fu2612`（带交易所前缀）都认
-- **批量查询**：一条命令传多个合约，逗号分隔
-- **完整字段**：CTP `CThostFtdcDepthMarketDataField` 全字段输出，含五档买卖盘、持仓、成交额、涨跌停价
 - **标准 JSON**：一行一条 JSON，管道给 `jq` / Python / 任何语言都能直接解析
-- **格式对齐**：与 [openctp数据中心](http://www.openctp.cn/DataCenter.html)报文结构一致
+- **对齐CTPAPI数据定义**：字段定义与CTPAPI完全一致。
 - **异常也有结构化输出**：断线、参数错误都返回带 `rsp_code` 的 JSON，不会只抛一句日志就崩掉
-- **多通道**：通过 `brokers.xml` 配置多个行情前置通道，`--channel` 指定用哪个
+- **多通道**：通过 `brokers.xml` 配置多个通道，`--channel` 指定用哪个，AppID、AuthCode等信息全部从配置中加载。
 
 ---
 
@@ -62,7 +61,7 @@ ctpcmd工具链主要包含四个命令，分别是CTP接口的ctporder与ctppri
 ctpprice.exe --channel SimNow-7x24 query ag2612,fu2612
 ```
 
-输出（已格式化，实际是一行）：
+输出（默认为美化格式，单行格式请用--no-pretty选项）：
 
 ```json
 {
@@ -92,16 +91,18 @@ ctpprice.exe --channel SimNow-7x24 query ag2612,fu2612
 ## 命令行参数
 
 ```
-ctpprice.exe [--config <file>] [--channel <name>] <query|subscribe> <instrument_list>
+ctpprice.exe [--no-pretty] [--config <file>] [--channel <name>] <query|subscribe> <instrument_list>
 ```
 
-| 参数                  | 说明                            | 默认值           |
-| ------------------- | ----------------------------- | ------------- |
-| `--config <file>`   | 通道配置文件路径                      | `brokers.xml` |
-| `--channel <name>`  | 使用哪个行情通道，取值来自配置文件中的 channel 名 | 配置文件中的默认通道    |
-| `query`             | 子命令：一次性查询快照，返回后退出             | —             |
-| `subscribe`         | 子命令：订阅并持续输出 Tick              | —             |
-| `<instrument_list>` | 合约列表，逗号分隔，位置参数                | 必填            |
+| 参数                  | 说明                            | 默认值                  |
+| ------------------- | ----------------------------- | -------------------- |
+| `--flowpath`        | CTPAPI的Flow文件存放路径             | 默认为当前目录              |
+| `--no-pretty`       | 以单行形式输出Json报文，适合程序化场景         | 默认以美化形式输出Json报文，便于阅读 |
+| `--config <file>`   | 通道配置文件路径                      | `brokers.xml`        |
+| `--channel <name>`  | 使用哪个行情通道，取值来自配置文件中的 channel 名 | 配置文件中的默认通道           |
+| `query`             | 子命令：一次性查询快照，返回后退出             | —                    |
+| `subscribe`         | 子命令：订阅并持续输出 Tick              | —                    |
+| `<instrument_list>` | 合约列表，逗号分隔，位置参数                | 必填                   |
 
 ### 合约书写格式
 
@@ -206,7 +207,7 @@ ctpprice.exe --config my_brokers.xml --channel SimNow-7x24 query ag2612
 ```bat
 @echo off
 chcp 65001 >nul
-ctpprice.exe --channel SimNow-7x24 query ag2612,fu2612,CFFEX.IF2612,DCE.i2701 ^
+ctpprice.exe --no-pretty --channel SimNow-7x24 query ag2612,fu2612,CFFEX.IF2612,DCE.i2701 ^
   | jq ".data[] | {InstrumentID,LastPrice,UpdateTime,TradingDay}"
 echo.
 pause
@@ -239,6 +240,7 @@ import subprocess
 proc = subprocess.Popen(
     [
         "ctpprice.exe",
+        "--no-pretty",
         "--channel", "SimNow-7x24",
         "subscribe",
         "ag2612,fu2612,CFFEX.IF2612,DCE.i2701",
@@ -275,7 +277,7 @@ import time
 
 
 def query(instruments):
-    cmd = ["ctpprice.exe", "--channel", "SimNow-7x24", "query", instruments]
+    cmd = ["ctpprice.exe", "--no-pretty", "--channel", "SimNow-7x24", "query", instruments]
     out = subprocess.run(cmd, capture_output=True, text=True).stdout.strip()
     if not out:
         return None
