@@ -21,7 +21,7 @@
 #include "ThostFtdcTraderApi.h"
 
 #define CTPCMD_ERR_CODE_DEFAULT 9999
-#define CTPCMD_OPTORDER_VERSION "1.0.0"
+#define CTPCMD_VERSION "1.0.0"
 
 enum CTPCMD
 {
@@ -112,7 +112,6 @@ std::string GBKToUTF8(const std::string& gbk)
 #define ZERO_TO_EMPTY_STR(value) ((value) == '\0' ? json("") : json(std::string(1, value)))
 
 using namespace ctp_sopt;
-#define THOST_TERT_NONE 3
 
 class CCTPTdSpiImpl :public CThostFtdcTraderSpi
 {
@@ -594,6 +593,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vSettlementInfoConfirm) {
 				json rsp;
 				rsp["BrokerID"] = item.BrokerID;
@@ -630,6 +630,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vInvestor) {
 				json rsp;
 				rsp["InvestorID"] = item.InvestorID;
@@ -672,6 +673,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vTradingCode) {
 				json rsp;
 				rsp["InvestorID"] = item.InvestorID;
@@ -710,6 +712,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vTradingAccount) {
 				json rsp;
 				rsp["BrokerID"] = item.BrokerID;
@@ -788,6 +791,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vInvestorPosition) {
 				json rsp;
 				rsp["BrokerID"] = item.BrokerID;
@@ -863,6 +867,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vInvestorPositionDetail) {
 				json rsp;
 				rsp["BrokerID"] = item.BrokerID;
@@ -919,6 +924,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vOrder) {
 				json rsp;
 				rsp["BrokerID"] = item.BrokerID;
@@ -1011,6 +1017,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vTrade) {
 				json rsp;
 				rsp["BrokerID"] = item.BrokerID;
@@ -1071,6 +1078,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vExchange) {
 				json rsp;
 				rsp["ExchangeID"] = item.ExchangeID;
@@ -1103,6 +1111,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vProduct) {
 				json rsp;
 				rsp["ProductName"] = GBKToUTF8(item.ProductName);
@@ -1149,6 +1158,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vInstrument) {
 				json rsp;
 
@@ -1210,6 +1220,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vDepthMarketData) {
 				json rsp;
 				rsp["TradingDay"] = item.TradingDay;
@@ -1283,6 +1294,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vInstrumentCommissionRate) {
 				json rsp;
 				rsp["InvestorRange"] = ZERO_TO_EMPTY_STR(item.InvestorRange);
@@ -1325,6 +1337,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vOptionInstrCommRate) {
 				json rsp;
 				rsp["InvestorRange"] = ZERO_TO_EMPTY_STR(item.InvestorRange);
@@ -1368,6 +1381,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vInstrumentOrderCommRate) {
 				json rsp;
 				rsp["InvestorRange"] = ZERO_TO_EMPTY_STR(item.InvestorRange);
@@ -1406,6 +1420,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vInstrumentMarginRate) {
 				json rsp;
 				rsp["InvestorRange"] = ZERO_TO_EMPTY_STR(item.InvestorRange);
@@ -1446,6 +1461,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vTransferSerial) {
 				json rsp;
 				rsp["PlateSerial"] = item.PlateSerial;
@@ -1503,6 +1519,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vAccountregister) {
 				json rsp;
 				rsp["TradeDay"] = item.TradeDay;
@@ -1549,6 +1566,7 @@ public:
 			msg["rsp_code"] = 0;
 			msg["rsp_message"] = "";
 
+			msg["data"] = json::array();
 			for (auto item : m_vTransferBank) {
 				json rsp;
 				rsp["BankID"] = item.BankID;
@@ -1567,6 +1585,22 @@ public:
 
 	void OnRtnOrder(CThostFtdcOrderField * pOrder)
 	{
+		switch (m_cmd)
+		{
+		case CTPCMD_BuyOpen:
+		case CTPCMD_BuyClose:
+		case CTPCMD_BuyCloseToday:
+		case CTPCMD_SellOpen:
+		case CTPCMD_SellClose:
+		case CTPCMD_SellCloseToday:
+		case CTPCMD_Cancel:
+			break;
+		case CTPCMD_Subscribe:
+			break;
+		default:
+			return;
+		}
+
 		using json = nlohmann::ordered_json;
 
 		json msg;
@@ -1644,6 +1678,22 @@ public:
 
 	void OnRtnTrade(CThostFtdcTradeField * pTrade)
 	{
+		switch (m_cmd)
+		{
+		case CTPCMD_BuyOpen:
+		case CTPCMD_BuyClose:
+		case CTPCMD_BuyCloseToday:
+		case CTPCMD_SellOpen:
+		case CTPCMD_SellClose:
+		case CTPCMD_SellCloseToday:
+		case CTPCMD_Cancel:
+			break;
+		case CTPCMD_Subscribe:
+			break;
+		default:
+			return;
+		}
+
 		using json = nlohmann::ordered_json;
 
 		json msg;
@@ -1689,6 +1739,22 @@ public:
 
 	void OnErrRtnOrderInsert(CThostFtdcInputOrderField * pInputOrder, CThostFtdcRspInfoField * pRspInfo)
 	{
+		switch (m_cmd)
+		{
+		case CTPCMD_BuyOpen:
+		case CTPCMD_BuyClose:
+		case CTPCMD_BuyCloseToday:
+		case CTPCMD_SellOpen:
+		case CTPCMD_SellClose:
+		case CTPCMD_SellCloseToday:
+		case CTPCMD_Cancel:
+			break;
+		case CTPCMD_Subscribe:
+			break;
+		default:
+			return;
+		}
+
 		using json = nlohmann::ordered_json;
 
 		json msg;
@@ -1735,6 +1801,22 @@ public:
 
 	void OnErrRtnOrderAction(CThostFtdcOrderActionField * pOrderAction, CThostFtdcRspInfoField * pRspInfo)
 	{
+		switch (m_cmd)
+		{
+		case CTPCMD_BuyOpen:
+		case CTPCMD_BuyClose:
+		case CTPCMD_BuyCloseToday:
+		case CTPCMD_SellOpen:
+		case CTPCMD_SellClose:
+		case CTPCMD_SellCloseToday:
+		case CTPCMD_Cancel:
+			break;
+		case CTPCMD_Subscribe:
+			break;
+		default:
+			return;
+		}
+
 		using json = nlohmann::ordered_json;
 
 		json msg;
@@ -1780,6 +1862,14 @@ public:
 
 	void OnRtnInstrumentStatus(CThostFtdcInstrumentStatusField * pInstrumentStatus)
 	{
+		switch (m_cmd)
+		{
+		case CTPCMD_Subscribe:
+			break;
+		default:
+			return;
+		}
+
 		using json = nlohmann::ordered_json;
 
 		json msg;
@@ -1841,11 +1931,13 @@ int main(int argc, char** argv)
 	CLI::App app{ "ctpoptorder -- ctpopt command-line trading tool" };
 	app.set_help_flag("-h,--help", "Show this help message");
 	app.set_help_all_flag("--help-all", "Show full help of all subcommands");
+	app.set_version_flag("-v,--version", CTPCMD_VERSION, "show program's version and exit");
 
 	CTPCMD cmd;
 	CTPCMD_Parameters params;
 	bool no_pretty_print = false;
 
+	std::string flowpath{ "" };
 	std::string config{ "optbrokers.xml" };
 	std::string channel;
 	std::string user;
@@ -1857,17 +1949,18 @@ int main(int argc, char** argv)
 	std::string NameServer;
 	std::vector<std::string> Hosts;
 
+	app.add_flag("--no-pretty", no_pretty_print, "no pretty json");
+	app.add_option("--flowpath", flowpath, "flow path");
 	app.add_option("--config", config, "config file[optbrokers.xml]");
 	app.add_option("--channel", channel, "channel name")->required();
-	app.add_option("--user", user);
-	app.add_option("--password", password);
-	app.add_flag("--no-pretty", no_pretty_print, "no pretty json");
+	app.add_option("--user", user)->required();
+	app.add_option("--password", password)->required();
 	app.require_subcommand(1);
 
-	THOST_TE_RESUME_TYPE nResumeType = (THOST_TE_RESUME_TYPE)THOST_TERT_NONE;
+	THOST_TE_RESUME_TYPE nResumeType;
 	std::string ResumeType = "quick";
 	auto cmdSubscribe = app.add_subcommand("subscribe", "Subscribe events");
-	cmdSubscribe->add_option("mode", ResumeType, "Subscribe Mode[restart/resume/quick]");
+	cmdSubscribe->add_option("mode", ResumeType, "Subscribe Mode[restart/resume/quick]")->required();
 	cmdSubscribe->callback([&]() {
 		cmd = CTPCMD_Subscribe;
 
@@ -2041,10 +2134,11 @@ int main(int argc, char** argv)
 		break;
 	}
 
-	CThostFtdcTraderApi* pTdApi = CThostFtdcTraderApi::CreateFtdcTraderApi();
+	CThostFtdcTraderApi* pTdApi = CThostFtdcTraderApi::CreateFtdcTraderApi(flowpath.c_str());
 	CCTPTdSpiImpl Spi(pTdApi, BrokerID, AppID, AuthCode, UserProductInfo, user, password, cmd, params, !no_pretty_print);
 	pTdApi->RegisterSpi(&Spi);
 
+	// THOST_TERT_NONE is not supported on both topics
 	switch (cmd)
 	{
 	case CTPCMD_BuyOpen:
@@ -2055,17 +2149,15 @@ int main(int argc, char** argv)
 	case CTPCMD_SellCloseToday:
 	case CTPCMD_Cancel:
 		pTdApi->SubscribePrivateTopic(THOST_TERT_QUICK);
-		//pTdApi->SubscribePublicTopic(THOST_TERT_NONE);
+		pTdApi->SubscribePublicTopic(THOST_TERT_QUICK);
 		break;
 	case CTPCMD_Subscribe:
-		if (nResumeType != THOST_TERT_NONE) {
-			pTdApi->SubscribePrivateTopic(nResumeType);
-			pTdApi->SubscribePublicTopic(nResumeType);
-		}
+		pTdApi->SubscribePrivateTopic(nResumeType);
+		pTdApi->SubscribePublicTopic(nResumeType);
 		break;
 	default:
-		//pTdApi->SubscribePrivateTopic(THOST_TERT_NONE);
-		//pTdApi->SubscribePublicTopic(THOST_TERT_NONE);
+		pTdApi->SubscribePrivateTopic(THOST_TERT_QUICK);
+		pTdApi->SubscribePublicTopic(THOST_TERT_QUICK);
 		break;
 	}
 

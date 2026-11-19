@@ -21,7 +21,7 @@
 #include "ThostFtdcMdApi.h"
 
 #define CTPCMD_ERR_CODE_DEFAULT 9999
-#define CTPCMD_PRICE_VERSION "1.0.0"
+#define CTPCMD_VERSION "1.0.0"
 
 enum CTPCMD
 {
@@ -339,10 +339,12 @@ int main(int argc, char** argv)
 	CLI::App app{ "ctpprice -- ctp command-line market tool" };
 	app.set_help_flag("-h,--help", "Show this help message");
 	app.set_help_all_flag("--help-all", "Show full help of all subcommands");
+	app.set_version_flag("-v,--version", CTPCMD_VERSION, "show program's version and exit");
 
 	CTPCMD cmd;
 	bool no_pretty_print = false;
 
+	std::string flowpath{ "" };
 	std::string config{ "brokers.xml" };
 	std::string channel;
 	std::string user;
@@ -355,11 +357,12 @@ int main(int argc, char** argv)
 	std::vector<std::string> Hosts;
 	std::vector<std::pair<std::string, std::string>> instruments;
 
+	app.add_flag("--no-pretty", no_pretty_print, "no pretty json");
+	app.add_option("--flowpath", flowpath, "flow path");
 	app.add_option("--config", config, "config file[brokers.xml]");
 	app.add_option("--channel", channel, "channel name")->required();
 	app.add_option("--user", user);
 	app.add_option("--password", password);
-	app.add_flag("--no-pretty", no_pretty_print, "no pretty json");
 	app.require_subcommand(1);
 
 	std::string instrument_list;
@@ -415,7 +418,7 @@ int main(int argc, char** argv)
 		break;
 	}
 
-	CThostFtdcMdApi* pMdApi = CThostFtdcMdApi::CreateFtdcMdApi();
+	CThostFtdcMdApi* pMdApi = CThostFtdcMdApi::CreateFtdcMdApi(flowpath.c_str());
 	CCTPMdSpiImpl Spi(pMdApi, BrokerID, user, password, cmd, instruments, !no_pretty_print);
 	pMdApi->RegisterSpi(&Spi);
 	if (Hosts.size() == 0) {
