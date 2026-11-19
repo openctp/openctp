@@ -9,7 +9,7 @@
 
 ctpcmd工具链主要包含四个命令，分别是CTP接口的ctporder与ctpprice、CTP股票期权接口的ctpoptorder与ctpoptprice。
 
-> 注意：CTP接口命令与CTP股票期权接口命令默认的配置文件名不一样，分别是brokers.xml、optbrokers.xml，修改配置时请注意确认。
+> 注意：CTP接口命令与CTP股票期权接口命令默认的配置文件名不一样，分别是brokers.xml、brokers_opt.xml，修改配置时请注意确认。
 
 - **ctporder**：CTP接口下单命令。
 - **ctpprice**：CTP接口行情命令。
@@ -344,7 +344,11 @@ Windows 控制台先执行 `chcp 65001`（批处理里加在首行）。另外 `
 
 **Windows编译：**
 
-直接打开vs工程进行编译。
+打开Virtual Studio命令行用nmake进行编译。
+
+```bash
+nmake -f makefile.mk
+```
 
 **Linux与MacOS编译：**
 
