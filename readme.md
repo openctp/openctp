@@ -42,9 +42,9 @@ openctp提供了[CTPAPI的Python接口](https://github.com/openctp/openctp/tree/
 
 - docs：开发文档及行业资料。
 
-- [ctpapi-python](https://github.com/openctp/openctp-ctp-python)：CTPAPI的Python接口。
+- [ctpapi-python](https://github.com/openctp/openctp/tree/master/ctpapi-python)：CTPAPI的Python接口。
 
-- [ctpopt-python](https://github.com/openctp/openctp-ctpopt-python)：CTP股票期权API的Python接口。
+- [ctpopt-python](https://github.com/openctp/openctp/tree/master/ctpopt-python)：CTP股票期权API的Python接口。
 
 - ctpapi-java：CTPAPI的Java接口。
 
@@ -66,9 +66,72 @@ CTPAPI是上期所旗下技术公司开发的CTP柜台开发接口，因CTP柜�
 
 CTPAPI兼容接口是以CTPAPI头文件定义为标准适配各大柜台系统的接口，以CTPAPI标准接口进行开发的应用理论上只需要替换同版本号的"thosttraderapi_se.dll"和"thostmduserapi_se.dll"两个动态库文件即可对接到不同柜台，程序不需要重新编译。易达、融航、杰宜斯、量投GTS等柜台系统与资管系统均直接提供了CTPAPI兼容接口，以便CTP程序可以无缝迁移，并且可以直接使用CTP生态的各种框架、脚本、工具等应用。关于CTPAPI兼容接口的更多信息见：[CTPAPI兼容接口](http://www.openctp.cn/CTPCTP.html)
 
+# CTPAPI-Python接口
+
+上期技术官方并未发布Python语言版的CTPAPI接口，openctp使用SWIG技术开发出了6.3.15~6.7.11等各版本CTPAPI的Python版，只要一条pip install命令即可完成CTPAPI-Python库的安装，同时也提供了CTP股票期权接口的Python版，具体见[CTPAPI-Python](https://github.com/openctp/openctp/tree/master/ctpapi-python)、[CTPOPT-Python](https://github.com/openctp/openctp/tree/master/ctpopt-python)。
+
 # ctpcmd - 命令行程序化交易
 
 [ctpcmd](https://github.com/openctp/openctp/tree/master/tools/ctpcmd/ctpcmd)是openctp开发的一套命令行程序化交易工具链，包括ctporder、ctpprice等命令，命令以参数为输入，输出为json文本，可以通过shell脚本结合各种基础命令编写强大的策略脚本。
+
+**例，查询ag2612、fu2612最新行情：** ctpprice --channel SimNow-7x24 query ag2612,fu2612
+
+```json
+{
+  "rsp_code": 0,
+  "rsp_message": "",
+  "data": [
+    {
+      "ExchangeID": "",
+      "InstrumentID": "ag2612",
+      "LastPrice": 9983.0,
+      "OpenPrice": 10752.0,
+      "HighestPrice": 10868.0,
+      "LowestPrice": 9751.0,
+      "ClosePrice": 0.0,
+      "SettlementPrice": 0.0,
+      "AveragePrice": 155025.19914516385,
+      "Volume": 284265,
+      "Turnover": 44068238235.0,
+      "OpenInterest": 95855.0,
+      "PreSettlementPrice": 10783.0,
+      "PreClosePrice": 10778.0,
+      "PreOpenInterest": 107508.0,
+      "UpperLimitPrice": 12939.0,
+      "LowerLimitPrice": 8626.0,
+      "ActionDay": "20261119",
+      "UpdateTime": "18:27:14",
+      "UpdateMillisec": 0,
+      "TradingDay": "20261120"
+    },
+    {
+      "ExchangeID": "",
+      "InstrumentID": "fu2612",
+      "LastPrice": 3871.0,
+      "OpenPrice": 4110.0,
+      "HighestPrice": 4110.0,
+      "LowestPrice": 3835.0,
+      "ClosePrice": 0.0,
+      "SettlementPrice": 0.0,
+      "AveragePrice": 39579.590324438475,
+      "Volume": 26045,
+      "Turnover": 1030850430.0,
+      "OpenInterest": 9641.0,
+      "PreSettlementPrice": 4100.0,
+      "PreClosePrice": 4089.0,
+      "PreOpenInterest": 15214.0,
+      "UpperLimitPrice": 4838.0,
+      "LowerLimitPrice": 3362.0,
+      "ActionDay": "20261119",
+      "UpdateTime": "18:27:14",
+      "UpdateMillisec": 0,
+      "TradingDay": "20261120"
+    }
+  ]
+}
+```
+
+
 
 # 模拟交易环境
 
@@ -82,6 +145,50 @@ openctp提供了3套CTPAPI兼容接口模拟环境，分别为7x24环境、仿�
 # 数据中心
 
 [openctp数据中心](http://openctp.cn/DataCenter.html)支持国内期货、商品期权及股票期权等全市场全品种基础数据查询，通过极简的RESTful接口+json数据形式对外提供服务，无需注册，无访问限制。
+
+**例，查询au、rb、IF、IM品种所有合约交易参数：** http://dict.openctp.cn/instruments?types=futures&markets=SHFE,CFFEX&products=au,rb,IF,IM
+
+```json
+{
+  "rsp_code": 0,
+  "rsp_message": "succeed",
+  "data": [
+    {
+      "ExchangeID": "CFFEX", // 交易所ID
+      "InstrumentID": "IF2505", // 合约ID
+      "InstrumentName": "股指2505", // 合约名称
+      "ProductClass": "1", // 商品类别（'1'-期货，'2'-期权，'3'-组合，'8'-股票，'f'-基金,'b'-债券,'i'-指数）
+      "ProductID": "IF", // 品种ID
+      "VolumeMultiple": 300, // 合约乘数
+      "PriceTick": 0.2, // 最小变动价位
+      "MinLimitOrderVolume": 1, // 最小下单量/笔
+      "MaxLimitOrderVolume": 20, // 最大下单量/笔
+      "LongMarginRatioByMoney": 0.12, // 做多保证金率
+      "ShortMarginRatioByMoney": 0.12, // 做空保证金率
+      "LongMarginRatioByVolume": 0, // 做多保证金/手
+      "ShortMarginRatioByVolume": 0, // 做空保证金/手
+      "OpenRatioByMoney": 0.0000238, // 开仓手续费率
+      "OpenRatioByVolume": 0.01, // 开仓手续费/手
+      "CloseRatioByMoney": 0.0000238, // 平仓手续费率
+      "CloseRatioByVolume": 0.01, // 平仓手续费/手
+      "CloseTodayRatioByMoney": 0.0002308, // 平今手续费
+      "CloseTodayRatioByVolume": 0.01, // 平今手续费/手
+      "DeliveryYear": 2025, // 交割年份
+      "DeliveryMonth": 5, // 交割月份
+      "OpenDate": "2025-03-24", // 上市日期
+      "ExpireDate": "2025-05-16", // 最后交易日
+      "DeliveryDate": "2025-05-16", // 交割日
+      "UnderlyingInstrID": "IF", // 标的合约ID
+      "UnderlyingMultiple": 1, // 标的合约乘数
+      "OptionsType": "", // 期权类型（'1'-认购，'2'-认沽）
+      "StrikePrice": null, // 行权价
+      "InstLifePhase": "1" // 合约状态（'0'-未上市，'1'-上市，'2'-停牌，'3'-到期/退市）
+    }
+  ]
+}
+```
+
+
 
 # 技术交流
 
