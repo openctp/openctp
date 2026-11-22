@@ -28,3 +28,17 @@ options:
 python ctpxls.py --channel SimNow-7x24 --user 123456 --password xxx
 
 python ctpxls.py --template template.xlsx --out 账户_20261121.xlsx  --channel SimNow-7x24 --user 123456 --password xxx
+
+# 效果
+
+## 资金
+<img width="1709" height="950" alt="5815c239e5d3976192b2039a2285c237" src="https://github.com/user-attachments/assets/d22a05e9-54d0-4269-8f8d-80206afa0272" />
+
+## 持仓
+<img width="1709" height="950" alt="6505d2bc-6a9b-4a54-86bb-bb3a09a8e738" src="https://github.com/user-attachments/assets/9a7db0f2-6c72-44e8-a87c-beee5d6d6ca2" />
+
+## 订单
+<img width="1709" height="950" alt="1fdce613e037127aea9bbe79e2c434bb" src="https://github.com/user-attachments/assets/72240336-8170-4543-8857-8aaa954c9233" />
+
+## 统计分析
+<img width="1709" height="950" alt="c7d1cdc40cb13638915814110ef59773" src="https://github.com/user-attachments/assets/fda8e033-d598-45a9-857f-35fac3399da5" />
