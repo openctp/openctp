@@ -7,7 +7,12 @@
 CTP柜台行情显示工具，可通过替换dll方式连接CTP股票期权等其它各个通道。 
 
 ## ctpcmd
+
 ctpcmd是一套开源的命令行程序化交易工具，包括ctporder、ctpprice等命令，命令以参数为输入，输出为json文本，可以通过shell脚本结合各种基础命令编写强大的策略脚本。
+
+## ctpxls
+
+ctpcmd是一个用ctpcmd工具查询交易数据并存入Excel文档以便复盘分析的工具。
 
 ## ctpcommand
 
