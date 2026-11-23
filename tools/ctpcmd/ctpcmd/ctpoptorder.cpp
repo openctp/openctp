@@ -1950,11 +1950,11 @@ int main(int argc, char** argv)
 	std::vector<std::string> Hosts;
 
 	app.add_flag("--no-pretty", no_pretty_print, "no pretty json");
-	app.add_option("--flowpath", flowpath, "flow path");
-	app.add_option("--config", config, "config file[brokers_opt.xml]");
-	app.add_option("--channel", channel, "channel name")->required();
-	app.add_option("--user", user)->required();
-	app.add_option("--password", password)->required();
+	app.add_option("--flowpath", flowpath, "flow path")->envname("CTPCMD_FLOWPATH");
+	app.add_option("--config", config, "config file[brokers_opt.xml]")->envname("CTPCMD_CONFIG");
+	app.add_option("--channel", channel, "channel name")->envname("CTPCMD_CHANNEL")->required();
+	app.add_option("--user", user)->envname("CTPCMD_USER")->required();
+	app.add_option("--password", password)->envname("CTPCMD_PASSWORD")->required();
 	app.require_subcommand(1);
 
 	THOST_TE_RESUME_TYPE nResumeType;
