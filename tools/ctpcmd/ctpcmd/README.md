@@ -1,51 +1,27 @@
 # ctpcmd - 命令行程序化交易
 
-> 一个极其轻量的命令行式无需语言无需框架的程序化交易新范式。  
-> 通过ctpprice命令拿到合约的最新行情，输出标准 JSON，通过shell、Python等脚本语言抓取JSON文本，进行行情分析，产生交易信号后通过ctporder命令获取持仓、资金等信息并进行下单。
+ctpcmd是openctp开发的一套命令行程序化交易工具链，包括ctporder、ctpprice、ctpoptorder、ctpoptprice等命令，从命令行选项获取参数调用CTPAPI发起请求，将响应信息以Json文本形式输出到命令行，可以通过bat、bash、Python等脚本语言结合基础命令编写出强大的策略或自动化工具。
 
 ---
 
-## ctpcmd命令集
+## ctporder、ctpoptorder
 
-ctpcmd工具链主要包含四个命令，分别是CTP接口的ctporder与ctpprice、CTP股票期权接口的ctpoptorder与ctpoptprice。
+CTP及CTP股票期权柜台交易命令，支持查询资金、持仓、订单、合约、行情等数据，也支持自然语言式下单撤单，如：
 
-> 注意：CTP接口命令与CTP股票期权接口命令默认的配置文件名不一样，分别是brokers.xml、brokers_opt.xml，修改配置时请注意确认。
+```shell
+ctporder buy open 1 share of SHFE.fu2701 at 3500.0
+ctporder sell close 3 shares of CZCE.MA701 at market
+ctporder cancel "    157620" of CFFEX.IF2612
+```
 
-- **ctporder**：CTP接口下单命令。
-- **ctpprice**：CTP接口行情命令。
-- **ctpoptorder**：CTP股票期权接口下单命令。
-- **ctpoptprice**：CTP股票期权接口行情命令。
+## ctpprice、ctpoptprice
 
----
+CTP及CTP股票期权柜台报价命令，支持查询行情、订阅行情，支持一次查询/订阅多个合约，如：
 
-## 为什么会有这个工具
-
-日常写策略、做风控、跑批量校验的时候，往往只需要一件事：
-
-> "把 fu2612、ag2612 这几个合约现在的价格给我，我拿来算保证金、校验涨跌停、核对昨结算。"
-
-这件事用 CTP API 做起来不算难，但每次都要：
-
-1. 拉一个行情 API 实例，登录、订阅；
-2. 等 `OnRtnDepthMarketData` 回调把数据凑齐；
-3. 写一堆结构体解析代码，把 30 多个字段转成自己想要的格式；
-4. 处理断线、合约写错、非交易时段等等异常分支。
-
-`ctpprice` 把这一整套封装成了一条命令：不用写 CTP 代码，不用管回调，标准输出直接给 JSON。
-
-它作为 [openctp](http://www.openctp.cn) 生态里的一个小工具，设计目标是**低复杂度、低依赖、可脚本化**：一个 exe，一个配置文件，没有服务端、没有数据库、没有 Web 界面，跑完即退。
-
----
-
-## 特性
-
-- **人机共用**：默认以格式化形式输出Json报文，适合人工测试与运维等场景，`--no-pretty` 以单行形式输出Json报文，适合自动化测试、程序化交易等场景。
-- **两种模式**：`query` 一次性快照，`subscribe` 持续 Tick 推送
-- **合约写法双兼容**：`ag2612`（简写）和 `SHFE.fu2612`（带交易所前缀）都认
-- **标准 JSON**：一行一条 JSON，管道给 `jq` / Python / 任何语言都能直接解析
-- **对齐CTPAPI数据定义**：字段定义与CTPAPI完全一致。
-- **异常也有结构化输出**：断线、参数错误都返回带 `rsp_code` 的 JSON，不会只抛一句日志就崩掉
-- **多通道**：通过 `brokers.xml` 配置多个通道，`--channel` 指定用哪个，AppID、AuthCode等信息全部从配置中加载。
+```shell
+ctpprice query CFFEX.IF2612,SHFE.ag2701,MA701,i2612
+ctpprice subscribe fu2701,rb2612,cu2701,AP612
+```
 
 ---
 
@@ -53,7 +29,7 @@ ctpcmd工具链主要包含四个命令，分别是CTP接口的ctporder与ctppri
 
 ### 1. 获取程序
 
-从[openctp官网](http://www.openctp.cn/ctpcmd.html)下载预编译版本ctpcmd工具：
+从[openctp官网](http://www.openctp.cn/ctpcmd.html)下载预编译版本ctpcmd工具。
 
 ### 2. 运行
 
@@ -88,7 +64,7 @@ ctpprice.exe --channel SimNow-7x24 query ag2612,fu2612
 
 ---
 
-## 命令行参数
+## ctpprice命令用法
 
 ```
 ctpprice.exe [--no-pretty] [--config <file>] [--channel <name>] <query|subscribe> <instrument_list>
@@ -119,9 +95,7 @@ ctpprice.exe --channel SimNow-7x24 query SHFE.fu2612,DCE.i2701,CFFEX.IF2612
 ctpprice.exe --channel SimNow-7x24 query SHFE.fu2612,ag2612
 ```
 
-> 支持的前缀：`SHFE`、`DCE`、`CZCE`、`CFFEX`、`INE`、`GFEX`。
-
-### 通道配置（brokers.xml）
+### 通道配置（brokers.xml、brokers_opt.xml）
 
 `--channel` 的取值来自 `brokers.xml` 中定义的通道，配置文件里包含行情前置地址、BrokerID、认证信息等。切换通道只需换 `--channel` 名字，不用改命令行其他部分。
 
@@ -135,19 +109,94 @@ ctpprice.exe --config my_brokers.xml --channel SimNow-7x24 query ag2612
 
 ---
 
-## 输出格式
+## ctporder命令用法
 
-### 成功
+ctporder命令支持查询与确认结算单、查询资金、持仓、订单、成交及下单撤单等功能。
 
-```json
-{"data":[{...},{...}],"rsp_code":0,"rsp_message":""}
+```shell
+> ctporder --help
+ctporder -- ctp command-line trading tool
+
+
+ctporder [OPTIONS] SUBCOMMAND
+
+
+OPTIONS:
+  -h,     --help              Show this help message
+          --help-all          Show full help of all subcommands
+  -v,     --version           show program's version and exit
+          --no-pretty         no pretty json
+          --flowpath TEXT (Env:CTPCMD_FLOWPATH)
+                              flow path
+          --config TEXT (Env:CTPCMD_CONFIG)
+                              config file[brokers.xml]
+          --channel TEXT REQUIRED (Env:CTPCMD_CHANNEL)
+                              channel name
+          --user TEXT REQUIRED (Env:CTPCMD_USER)
+          --password TEXT REQUIRED (Env:CTPCMD_PASSWORD)
+
+SUBCOMMANDS:
+  subscribe                   Subscribe events
+  query_settlement            QrySettlementInfo
+  confirm_settlement          SettlementInfoConfirm
+  query_confirm               QrySettlementInfoConfirm
+  query_investor              QryInvestor
+  query_code                  QryTradingCode
+  query_account               QryTradingAccount
+  query_position              QryInvestorPosition
+  query_detail                QryInvestorPositionDetail
+  query_order                 QryOrder
+  query_trade                 QryTrade
+  query_exchange              QryExchange
+  query_product               QryProduct
+  query_instrument            QryInstrument
+  query_price                 QryDepthMarketData
+  query_fee                   QryInstrumentCommissionRate
+  query_optionfee             QryOptionInstrCommRate
+  query_orderfee              QryInstrumentOrderCommRate
+  query_margin                QryInstrumentMarginRate
+  query_cashflow              QryTransferSerial
+  query_register              QryAccountRegister
+  query_bank                  QryTransferBank
+  buy                         Order Buy
+  sell                        Order Sell
+  cancel                      Order Cancel
 ```
 
-- `data`：数组，每个合约一个对象，字段为 CTP 行情结构体全字段
+查询持仓、订单、合约、行情等子命令均有相应的子命令选项如`--instrument xxx`、`--exchange xxx`等以查询指定合约或交易所的数据。
+
+```shell
+> ctporder --channel SimNow-7x24 --user 058762 --password xxx query_position --instrument ag2701
+```
+
+## 输出格式
+
+### 查询响应
+
+```json
+{
+"rsp_code":0,
+"rsp_message":"",
+"data":
+[{...},
+{...}]
+}
+```
+
+### 行情推送
+
+```json
+{
+"event":"DepthMarketData",
+"data":{...}
+}
+```
+
+- `data`：查询行情响应为记录，data为数组，行情推送时为单记录，data为结构体{}，字段定义与 CTP数据结构定义完全一致
 - `rsp_code`：`0` 表示成功
 - `rsp_message`：成功时为空字符串
 
-### 异常
+### 错误处理
 
 ```json
 {"rsp_code":9999,"rsp_message":"Disconnected."}
@@ -160,60 +209,36 @@ ctpprice.exe --config my_brokers.xml --channel SimNow-7x24 query ag2612
 | `0`      | 成功  |
 | `9999`   | 错误  |
 
-### 字段说明
+## 字符集
 
-`data[]` 中每个对象的字段（与 CTP `CThostFtdcDepthMarketDataField` 一一对应，按字母序输出）：
+ctpcmd响应的Json文本编码格式为UTF-8。
 
-| 字段                        | 类型     | 说明                |
-| ------------------------- | ------ | ----------------- |
-| `TradingDay`              | string | 交易日               |
-| `ActionDay`               | string | 自然日               |
-| `UpdateTime`              | string | 更新时间 `HH:MM:SS`   |
-| `UpdateMillisec`          | int    | 更新毫秒              |
-| `InstrumentID`            | string | 合约代码              |
-| `ExchangeID`              | string | 交易所代码（见下方说明）      |
-| `LastPrice`               | double | 最新价               |
-| `PreClosePrice`           | double | 昨收盘               |
-| `OpenPrice`               | double | 今开盘               |
-| `HighestPrice`            | double | 最高价               |
-| `LowestPrice`             | double | 最低价               |
-| `PreSettlementPrice`      | double | 昨结算               |
-| `SettlementPrice`         | double | 今结算（盘中通常为 0）      |
-| `ClosePrice`              | double | 收盘价（盘中通常为 0）      |
-| `PreOpenInterest`         | double | 昨持仓量              |
-| `OpenInterest`            | double | 持仓量               |
-| `Volume`                  | int    | 成交量               |
-| `Turnover`                | double | 成交额               |
-| `AveragePrice`            | double | 均价（部分品种为隐含值，仅供参考） |
-| `UpperLimitPrice`         | double | 涨停价               |
-| `LowerLimitPrice`         | double | 跌停价               |
-| `BidPrice1`~`BidPrice5`   | double | 买一至买五价            |
-| `BidVolume1`~`BidVolume5` | int    | 买一至买五量            |
-| `AskPrice1`~`AskPrice5`   | double | 卖一至卖五价            |
-| `AskVolume1`~`AskVolume5` | int    | 卖一至卖五量            |
+## --no-pretty
 
-> **关于 `ExchangeID`**：该字段取自 CTP 回调原值，部分柜台返回空字符串。工具不做额外推断，柜台给什么就输出什么；需要交易所信息时以自己传入的合约前缀为准。
+默认Json响应信息以美化格式显示，以便人工使用，如果需要程序获取并解析Json文本，请加--no-pretty命令行选项使命令以单行模式输出。
 
-> **关于五档为 0**：SimNow 及部分模拟环境只推送一档盘口，`BidPrice2`~`5`、`AskPrice2`~`5` 为 0 属正常现象，不是解析问题。生产环境 CTP 五档为完整值。
+```json
+> ctpprice --no-pretty --channel SimNow-7x24 query ag2612
+{"rsp_code":0,"rsp_message":"","data":[{"ExchangeID":"","InstrumentID":"ag2612","LastPrice":10122.0,"OpenPrice":10020.0,"HighestPrice":10185.0,"LowestPrice":9637.0,"ClosePrice":0.0,"SettlementPrice":0.0,"AveragePrice":148710.60385022112,"Volume":249648,"Turnover":37125304830.0,"OpenInterest":85853.0,"PreSettlementPrice":10320.0,"PreClosePrice":10015.0,"PreOpenInterest":93721.0,"UpperLimitPrice":12384.0,"LowerLimitPrice":8256.0,"ActionDay":"20261123","UpdateTime":"00:32:32","UpdateMillisec":0,"TradingDay":"20261123","BidPrice1":10120.0,"BidVolume1":6,"BidPrice2":0.0,"BidVolume2":0,"BidPrice3":0.0,"BidVolume3":0,"BidPrice4":0.0,"BidVolume4":0,"BidPrice5":0.0,"BidVolume5":0,"AskPrice1":10124.0,"AskVolume1":2,"AskPrice2":0.0,"AskVolume2":0,"AskPrice3":0.0,"AskVolume3":0,"AskPrice4":0.0,"AskVolume4":0,"AskPrice5":0.0,"AskVolume5":0}]}
+```
 
 ---
 
 ## 使用示例
 
-### 示例一：Windows 批处理 + jq（单次查询）
+### 示例一：Windows 批处理 + jq工具解析Json（查询行情快照）
 
 `query_prices.bat`
 
 ```bat
-@echo off
-chcp 65001 >nul
+chcp 65001
 ctpprice.exe --no-pretty --channel SimNow-7x24 query ag2612,fu2612,CFFEX.IF2612,DCE.i2701 ^
   | jq ".data[] | {InstrumentID,LastPrice,UpdateTime,TradingDay}"
-echo.
+
 pause
 ```
 
-`chcp 65001` 保证中文与 UTF-8 输出不乱码；`pause` 防止窗口一闪而过。
+`chcp 65001` 切换字符集以显示 UTF-8 中文信息。
 
 提取结果：
 
@@ -226,10 +251,7 @@ pause
 }
 ```
 
-> 没有安装 `jq` 的话，直接去掉 `| jq ...` 部分，输出完整原始 JSON。`jq` 是 GitHub 上的单文件 exe（`jq-windows-amd64.exe`），下载后改名为 `jq.exe` 放到同目录即可，无需安装。
-> 注意：Windows 批处理里 jq 表达式外层用**双引号**（Linux/PowerShell 下用单引号）。
-
-### 示例二：Python 订阅 Tick
+### 示例二：Python 订阅实时行情
 
 `subscribe_prices.py`
 
@@ -239,7 +261,7 @@ import subprocess
 
 proc = subprocess.Popen(
     [
-        "ctpprice.exe",
+        "ctpprice",
         "--no-pretty",
         "--channel", "SimNow-7x24",
         "subscribe",
@@ -251,94 +273,106 @@ proc = subprocess.Popen(
 
 for line in proc.stdout:
     line = line.strip()
-    if not line:
+    if not line or (not line.startswith("{") or not line.endswith("}")):
         continue
-    tick = json.loads(line)
-    if tick["rsp_code"] != 0:
-        print("行情异常：", tick["rsp_message"])
-        break
-    for item in tick["data"]:
+    msg = json.loads(line)
+    if msg.get("event") == "DepthMarketData":
+        tick = msg["data"]
+        
         print({
-            "InstrumentID": item["InstrumentID"],
-            "LastPrice": item["LastPrice"],
-            "UpdateTime": item["UpdateTime"],
-            "TradingDay": item["TradingDay"],
+            "InstrumentID": tick["InstrumentID"],
+            "LastPrice": tick["LastPrice"],
+            "UpdateTime": tick["UpdateTime"],
+            "TradingDay": tick["TradingDay"],
         })
 ```
 
-> `subprocess` 列表参数里，`--channel` 和它的值必须拆成两个元素。写成 `"--channel SimNow-7x24"` 会被当成一个完整参数，程序认不出来。
+### 示例三：下单（命令行）
 
-### 示例三：Python 单次查询 + 断线重连
-
-```python
-import json
-import subprocess
-import time
-
-
-def query(instruments):
-    cmd = ["ctpprice.exe", "--no-pretty", "--channel", "SimNow-7x24", "query", instruments]
-    out = subprocess.run(cmd, capture_output=True, text=True).stdout.strip()
-    if not out:
-        return None
-    return json.loads(out)
-
-
-while True:
-    msg = query("ag2612,fu2612")
-    if msg and msg["rsp_code"] == 0:
-        for item in msg["data"]:
-            print(item["InstrumentID"], item["LastPrice"], item["UpperLimitPrice"])
-        break
-    print("查询失败，3 秒后重试：", msg and msg["rsp_message"])
-    time.sleep(3)
+```batch
+> ctporder --channel SimNow-7x24 --user 058762 --password xxx sell open 1 share of SHFE.ag2701 at 10500.0
+Connect to 182.254.243.31:40001
+Session -1512636415 Connected
+{
+  "rsp_code": 0,
+  "rsp_message": "",
+  "data": {
+    "BrokerID": "9999",
+    "UserID": "058762",
+    "InvestorID": "058762",
+    "ExchangeID": "SHFE",
+    "InstrumentID": "ag2701",
+    "FrontID": 1,
+    "SessionID": -1512600288,
+    "OrderRef": "1",
+    "OrderSysID": "       20219"
+  }
+}
 ```
 
-### 示例四：涨跌停与保证金校验
+### 示例四：撤单（命令行）
 
-```python
-price = item["LastPrice"]
-upper = item["UpperLimitPrice"]
-lower = item["LowerLimitPrice"]
-
-if price >= upper * 0.995:
-    print(f"{item['InstrumentID']} 逼近涨停 {price}/{upper}")
-elif price <= lower * 1.005:
-    print(f"{item['InstrumentID']} 逼近跌停 {price}/{lower}")
+```batch
+> ctporder --channel SimNow-7x24 --user 058762 --password xxx cancel "       20219" of SHFE.ag2701
+Connect to 182.254.243.31:40001
+Session -1511129087 Connected
+{
+  "rsp_code": 0,
+  "rsp_message": "",
+  "data": {
+    "BrokerID": "9999",
+    "UserID": "058762",
+    "InvestorID": "058762",
+    "ExchangeID": "SHFE",
+    "InstrumentID": "ag2701",
+    "FrontID": 1,
+    "SessionID": -1512600288,
+    "OrderRef": "1",
+    "OrderSysID": "       20219",
+    "VolumeTraded": 0,
+    "VolumeTotal": 1,
+    "OrderStatus": "5",
+    "StatusMsg": "已撤单"
+  }
 ```
 
 ---
 
-## 常见问题
+### 示例五：回报订阅（命令行）
 
-**Q：订阅了一个写错的合约，为什么没有任何报错？**
-
-CTP 原生行情前置的 `SubscribeMarketData` 只表示"订阅报文投递成功"，**不校验合约是否存在**。合约代码写错、已摘牌时，应答依然返回成功，只是永远不会推送 `OnRtnDepthMarketData`，看起来就是"没反应"。
-
-- 使用 **TTS 柜台**：无效合约会直接返回"合约不存在"，可以立即识别；
-- 使用 **原生 CTP 前置**：需要靠"超时未收到行情"来判断，并按自己业务逻辑处理；
-
-**Q：`query` 一直没有返回？**
-
-`query` 需要等待每个合约的首次行情回推才输出。常见原因：
-
-1. 合约代码写错或不存在的合约（见上一条，永远等不到）；
-2. 当前非交易时段，没有 Tick 推送（夜盘/日盘之外查询会卡住）；
-3. 通道地址填错或网络不通（此时应返回 `rsp_code 9999`）。
-
-建议在用 `query` 前确认：合约代码正确、当前处于该品种交易时段。
-
-**Q：五档盘口后面的档位全是 0？**
-
-模拟环境（如 SimNow）多数只推一档，属正常现象。
-
-**Q：输出中文乱码 / JSON 解析失败？**
-
-Windows 控制台先执行 `chcp 65001`（批处理里加在首行）。另外 `subscribe` 模式下每条消息都是一行完整 JSON，按行拆分解析，不要按字节流随意切。
-
-**Q：`instruments is required` 报错？**
-
-合约列表必须跟着子命令一起给，形如 `query ag2612,fu2612`，不能只写 `query`。
+```batch
+>ctporder --channel SimNow-7x24 --user 058762 --password xxx subscribe quick
+Connect to 182.254.243.31:40001
+Session -1223098367 Connected
+{
+  "event": "Order",
+  "data": {
+    "BrokerID": "9999",
+    "InvestorID": "058762",
+    "OrderRef": "1",
+    "UserID": "058762",
+    "OrderPriceType": "2",
+    "Direction": "1",
+    "CombOffsetFlag": "0",
+    "CombHedgeFlag": "1",
+    "LimitPrice": 10500.0,
+    "VolumeTotalOriginal": 1,
+    "ExchangeID": "SHFE",
+    "OrderSubmitStatus": "3",
+    "OrderSysID": "       22865",
+    "OrderStatus": "3",
+    "VolumeTraded": 0,
+    "VolumeTotal": 1,
+    "InsertDate": "20261123",
+    "InsertTime": "00:17:45",
+    "FrontID": 1,
+    "SessionID": -1222598518,
+    "UserProductInfo": "ctpcmd",
+    "StatusMsg": "未成交",
+    "InstrumentID": "ag2701"
+  }
+}
+```
 
 ---
 
@@ -362,18 +396,7 @@ make
 
 ## 下载
 
-可直接至openctp官网下载编译好的可执行文件：[ctpcmd工具链](http://www.openctp.cn/ctpcmd.html)
-
-## 说明
-
-- 本工具是**本地自用命令行工具**，用于策略开发、风控校验、盘前盘后参数核对；
-- 行情数据仅在本地使用，不对外分发、不对外提供行情服务；
-- 需要线上可调用的静态基准参数接口，请使用 `www.openctp.cn/DataCenter.html`（本工具输出结构与其一致）。
-
-## 相关
-
-- openctp：<http://www.openctp.cn>
-- openctp数据中心接口：`http://www.openctp.cn/DataCenter.html`
+可直接至openctp官网下载预编译程序：[ctpcmd工具链](http://www.openctp.cn/ctpcmd.html)
 
 ## License
 
