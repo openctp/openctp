@@ -2162,8 +2162,10 @@ int main(int argc, char** argv)
 			nResumeType = THOST_TERT_RESUME;
 		else if (ResumeType == "quick")
 			nResumeType = THOST_TERT_QUICK;
-		else
+		else {
 			std::cout << "Invalid subscribe mode, valid mode: restart/resume/quick" << std::endl;
+			exit(-1);
+		}
 		});
 
 	auto cmdQrySettlementInfo = app.add_subcommand("query_settlement", "QrySettlementInfo");
@@ -2307,11 +2309,11 @@ int main(int argc, char** argv)
 		cmd = CTPCMD_Buy;
 		buy_tokens = cmdbuy->remaining();
 		cmdbuy_parameters = StringJoin(buy_tokens);
-		std::regex reg("(open|close|closetoday)?\\s*(hedge)?\\s+(\\d+)\\s+share[s]?\\s+of\\s+(\\S+)\\.(\\S+)\\s+at\\s+(-?\\w+)");
+		std::regex reg("(open|close|closetoday)?\\s*(hedge)?\\s+(\\d+)\\s+share[s]?\\s+of\\s+(\\S+)\\.(\\S+)\\s+at\\s+(market|-?\\d+|-?\\d+\\.\\d+)");
 		std::smatch m;
 		if (!std::regex_match(cmdbuy_parameters, m, reg)) {
 			std::cout << "invalid order parameters:" << cmdbuy_parameters << std::endl;
-			return;
+			exit(-1);
 		}
 
 		// open|close
@@ -2323,7 +2325,7 @@ int main(int argc, char** argv)
 			params.OffsetFlag = THOST_FTDC_OF_CloseToday;
 		} else {
 			std::cout << "invalid open|close parameters:" << cmdbuy_parameters << std::endl;
-			return;
+			exit(-1);
 		}
 
 		// hedge
@@ -2338,7 +2340,7 @@ int main(int argc, char** argv)
 		}
 		else {
 			std::cout << "invalid hedge parameters:" << cmdbuy_parameters << std::endl;
-			return;
+			exit(-1);
 		}
 
 		// Volume
@@ -2347,7 +2349,7 @@ int main(int argc, char** argv)
 		// Price
 		if (m[6] == "market") {
 			params.OrderPriceType = THOST_FTDC_OPT_AnyPrice;
-			params.Price = DBL_MAX;
+			params.Price = 0;
 		}
 		else {
 			params.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
@@ -2369,11 +2371,11 @@ int main(int argc, char** argv)
 		cmd = CTPCMD_Sell;
 		sell_tokens = cmdsell->remaining();
 		cmdsell_parameters = StringJoin(sell_tokens);
-		std::regex reg("(open|close|closetoday)?\\s*(hedge)?\\s+(\\d+)\\s+share[s]?\\s+of\\s+(\\S+)\\.(\\S+)\\s+at\\s+(-?\\w+)");
+		std::regex reg("(open|close|closetoday)?\\s*(hedge)?\\s+(\\d+)\\s+share[s]?\\s+of\\s+(\\S+)\\.(\\S+)\\s+at\\s+(market|-?\\d+|-?\\d+\\.\\d+)");
 		std::smatch m;
 		if (!std::regex_match(cmdsell_parameters, m, reg)) {
 			std::cout << "invalid order parameters:" << cmdsell_parameters << std::endl;
-			return;
+			exit(-1);
 		}
 
 		// open|close
@@ -2388,7 +2390,7 @@ int main(int argc, char** argv)
 		}
 		else {
 			std::cout << "invalid open|close parameters:" << cmdbuy_parameters << std::endl;
-			return;
+			exit(-1);
 		}
 
 		// hedge
@@ -2412,7 +2414,7 @@ int main(int argc, char** argv)
 		// Price
 		if (m[6] == "market") {
 			params.OrderPriceType = THOST_FTDC_OPT_AnyPrice;
-			params.Price = DBL_MAX;
+			params.Price = 0;
 		}
 		else {
 			params.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
@@ -2447,7 +2449,7 @@ int main(int argc, char** argv)
 		std::smatch m;
 		if (!std::regex_match(cmdcancel_parameters, m, reg)) {
 			std::cout << "invalid cancel parameters:" << cmdcancel_parameters << std::endl;
-			return;
+			exit(-1);
 		}
 
 		// OrderSysID

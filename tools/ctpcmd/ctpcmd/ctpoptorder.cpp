@@ -15,6 +15,7 @@
 #else
 #include <iconv.h>
 #endif
+#include <regex>
 #include "CLI.hpp"
 #include "tinyxml2.h"
 #include "json.hpp"
@@ -47,12 +48,8 @@ enum CTPCMD
 	CTPCMD_QryTransferSerial,
 	CTPCMD_QryAccountregister,
 	CTPCMD_QryTransferBank,
-	CTPCMD_BuyOpen,
-	CTPCMD_BuyClose,
-	CTPCMD_BuyCloseToday,
-	CTPCMD_SellOpen,
-	CTPCMD_SellClose,
-	CTPCMD_SellCloseToday,
+	CTPCMD_Buy,
+	CTPCMD_Sell,
 	CTPCMD_Cancel
 };
 
@@ -62,6 +59,11 @@ struct CTPCMD_Parameters {
 	std::string ProductID;
 	std::string OrderSysID;
 	std::string TradingDay;
+	TThostFtdcOffsetFlagType OffsetFlag;
+	TThostFtdcHedgeFlagType HedgeFlag;
+	TThostFtdcOrderPriceTypeType OrderPriceType;
+	double Price;
+	int Volume;
 };
 
 // GBK -> UTF-8
@@ -106,6 +108,16 @@ std::string GBKToUTF8(const std::string& gbk)
 	utf8.resize(utf8.size() - outLeft);
 	return utf8;
 #endif
+}
+
+std::string StringJoin(const std::vector<std::string>& vec, const std::string& sep = " ")
+{
+	if (vec.empty()) return "";
+	std::ostringstream oss;
+	oss << vec[0];
+	for (size_t i = 1; i < vec.size(); ++i)
+		oss << sep << vec[i];
+	return oss.str();
 }
 
 #define DBLMAX_TO_NULL(value) ((value) == DBL_MAX ? json(nullptr) : json(value))
@@ -157,7 +169,7 @@ public:
 		strncpy(Req.UserID, m_UserID.c_str(), sizeof(Req.UserID) - 1);
 		strncpy(Req.UserProductInfo, m_UserProductInfo.c_str(), sizeof(Req.UserProductInfo) - 1);
 		strncpy(Req.AppID, m_AppID.c_str(), sizeof(Req.AppID) - 1);
-		strcpy(Req.AuthCode, m_AuthCode.c_str()); // for the long key of XTP channel
+		strncpy(Req.AuthCode, m_AuthCode.c_str(), sizeof(Req.AuthCode) - 1);
 		if (m_pTdApi->ReqAuthenticate(&Req, 0) != 0) {
 			std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "Authenticate failed.") << std::endl;
 			exit(0);
@@ -197,9 +209,13 @@ public:
 		}
 
 		strncpy(m_TradingDay, pRspUserLogin->TradingDay, sizeof(m_TradingDay) - 1);
+		m_FrontID = pRspUserLogin->FrontID;
+		m_SessionID = pRspUserLogin->SessionID;
 
 		switch (m_cmd)
 		{
+		case CTPCMD_Subscribe:
+			break;
 		case CTPCMD_QrySettlementInfo:
 		{
 			CThostFtdcQrySettlementInfoField Req{};
@@ -486,8 +502,85 @@ public:
 			}
 		}
 		break;
-		case CTPCMD_Subscribe:
-			break;
+		case CTPCMD_Buy:
+		{
+			CThostFtdcInputOrderField Req{};
+
+			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
+			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.UserID, m_UserID.c_str(), sizeof(Req.UserID) - 1);
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
+			Req.Direction = THOST_FTDC_D_Buy;
+			Req.CombOffsetFlag[0] = m_params.OffsetFlag;
+			Req.CombHedgeFlag[0] = m_params.HedgeFlag;
+			Req.VolumeTotalOriginal = m_params.Volume;
+			Req.LimitPrice = m_params.Price;
+			Req.OrderPriceType = m_params.OrderPriceType;
+			strncpy(Req.OrderRef, "1", sizeof(Req.OrderRef) - 1);
+			Req.TimeCondition = THOST_FTDC_TC_GFD;
+			Req.VolumeCondition = THOST_FTDC_VC_AV;
+			Req.MinVolume = 1;
+			Req.ContingentCondition = THOST_FTDC_CC_Immediately;
+			Req.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
+			Req.IsAutoSuspend = 0;
+			Req.UserForceClose = 0;
+
+			if (m_pTdApi->ReqOrderInsert(&Req, 0) != 0) {
+				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "OrderInsert failed.") << std::endl;
+				exit(0);
+			}
+		}
+		break;
+		case CTPCMD_Sell:
+		{
+			CThostFtdcInputOrderField Req{};
+
+			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
+			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.UserID, m_UserID.c_str(), sizeof(Req.UserID) - 1);
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
+			Req.Direction = THOST_FTDC_D_Sell;
+			Req.CombOffsetFlag[0] = m_params.OffsetFlag;
+			Req.CombHedgeFlag[0] = m_params.HedgeFlag;
+			Req.VolumeTotalOriginal = m_params.Volume;
+			Req.LimitPrice = m_params.Price;
+			Req.OrderPriceType = m_params.OrderPriceType;
+			strncpy(Req.OrderRef, "1", sizeof(Req.OrderRef) - 1);
+			Req.TimeCondition = THOST_FTDC_TC_GFD;
+			Req.VolumeCondition = THOST_FTDC_VC_AV;
+			Req.MinVolume = 1;
+			Req.ContingentCondition = THOST_FTDC_CC_Immediately;
+			Req.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
+			Req.IsAutoSuspend = 0;
+			Req.UserForceClose = 0;
+
+			if (m_pTdApi->ReqOrderInsert(&Req, 0) != 0) {
+				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "OrderInsert failed.") << std::endl;
+				exit(0);
+			}
+		}
+		break;
+		case CTPCMD_Cancel:
+		{
+			CThostFtdcInputOrderActionField Req{};
+
+			strncpy(Req.BrokerID, m_BrokerID.c_str(), sizeof(Req.BrokerID) - 1);
+			strncpy(Req.InvestorID, m_UserID.c_str(), sizeof(Req.InvestorID) - 1);
+			strncpy(Req.UserID, m_UserID.c_str(), sizeof(Req.UserID) - 1);
+			strncpy(Req.ExchangeID, m_params.ExchangeID.c_str(), sizeof(Req.ExchangeID) - 1);
+			strncpy(Req.InstrumentID, m_params.InstrumentID.c_str(), sizeof(Req.InstrumentID) - 1);
+			strncpy(Req.OrderSysID, m_params.OrderSysID.c_str(), sizeof(Req.OrderSysID) - 1);
+			Req.ActionFlag = THOST_FTDC_AF_Delete;
+			Req.OrderActionRef = 1;
+
+			if (m_pTdApi->ReqOrderAction(&Req, 0) != 0) {
+				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "OrderAction failed.") << std::endl;
+				exit(0);
+			}
+		}
+		break;
 		default:
 			std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "No cmd.") << std::endl;
 			exit(0);
@@ -1587,18 +1680,89 @@ public:
 	{
 		switch (m_cmd)
 		{
-		case CTPCMD_BuyOpen:
-		case CTPCMD_BuyClose:
-		case CTPCMD_BuyCloseToday:
-		case CTPCMD_SellOpen:
-		case CTPCMD_SellClose:
-		case CTPCMD_SellCloseToday:
+		case CTPCMD_Buy:
+		case CTPCMD_Sell:
 		case CTPCMD_Cancel:
 			break;
 		case CTPCMD_Subscribe:
 			break;
 		default:
 			return;
+		}
+
+		if (m_cmd == CTPCMD_Buy || m_cmd == CTPCMD_Sell) {
+			// Ignore other orders
+			if (pOrder->FrontID != m_FrontID || pOrder->SessionID != m_SessionID)
+				return;
+
+			if (pOrder->OrderStatus == THOST_FTDC_OST_Canceled) {
+				// rejected
+				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, pOrder->StatusMsg) << std::endl;
+				exit(0);
+			}
+			else if (strlen(pOrder->OrderSysID) > 0) {
+				using json = nlohmann::ordered_json;
+
+				json msg;
+				msg["rsp_code"] = 0;
+				msg["rsp_message"] = "";
+
+				json rsp;
+				rsp["BrokerID"] = pOrder->BrokerID;
+				rsp["UserID"] = pOrder->UserID;
+				rsp["InvestorID"] = pOrder->InvestorID;
+				rsp["ExchangeID"] = pOrder->ExchangeID;
+				rsp["InstrumentID"] = pOrder->InstrumentID;
+				rsp["FrontID"] = pOrder->FrontID;
+				rsp["SessionID"] = pOrder->SessionID;
+				rsp["OrderRef"] = pOrder->OrderRef;
+				rsp["OrderSysID"] = pOrder->OrderSysID;
+
+				msg["data"] = rsp;
+
+				std::cout << msg.dump(m_json_indent) << std::endl;
+
+				exit(0);
+			}
+			else {
+				return;
+			}
+		}
+		else if (m_cmd == CTPCMD_Cancel) {
+			if (strcmp(pOrder->ExchangeID, m_params.ExchangeID.c_str()) != 0 || strcmp(pOrder->OrderSysID, m_params.OrderSysID.c_str()) != 0)
+				return;
+
+			if (pOrder->OrderStatus == THOST_FTDC_OST_Canceled) {
+				using json = nlohmann::ordered_json;
+
+				json msg;
+				msg["rsp_code"] = 0;
+				msg["rsp_message"] = "";
+
+				json rsp;
+				rsp["BrokerID"] = pOrder->BrokerID;
+				rsp["UserID"] = pOrder->UserID;
+				rsp["InvestorID"] = pOrder->InvestorID;
+				rsp["ExchangeID"] = pOrder->ExchangeID;
+				rsp["InstrumentID"] = pOrder->InstrumentID;
+				rsp["FrontID"] = pOrder->FrontID;
+				rsp["SessionID"] = pOrder->SessionID;
+				rsp["OrderRef"] = pOrder->OrderRef;
+				rsp["OrderSysID"] = pOrder->OrderSysID;
+				rsp["VolumeTraded"] = pOrder->VolumeTraded;
+				rsp["VolumeTotal"] = pOrder->VolumeTotal;
+				rsp["OrderStatus"] = ZERO_TO_EMPTY_STR(pOrder->OrderStatus);
+				rsp["StatusMsg"] = GBKToUTF8(pOrder->StatusMsg);
+
+				msg["data"] = rsp;
+
+				std::cout << msg.dump(m_json_indent) << std::endl;
+
+				exit(0);
+			}
+			else {
+				return;
+			}
 		}
 
 		using json = nlohmann::ordered_json;
@@ -1680,14 +1844,6 @@ public:
 	{
 		switch (m_cmd)
 		{
-		case CTPCMD_BuyOpen:
-		case CTPCMD_BuyClose:
-		case CTPCMD_BuyCloseToday:
-		case CTPCMD_SellOpen:
-		case CTPCMD_SellClose:
-		case CTPCMD_SellCloseToday:
-		case CTPCMD_Cancel:
-			break;
 		case CTPCMD_Subscribe:
 			break;
 		default:
@@ -1741,14 +1897,9 @@ public:
 	{
 		switch (m_cmd)
 		{
-		case CTPCMD_BuyOpen:
-		case CTPCMD_BuyClose:
-		case CTPCMD_BuyCloseToday:
-		case CTPCMD_SellOpen:
-		case CTPCMD_SellClose:
-		case CTPCMD_SellCloseToday:
-		case CTPCMD_Cancel:
-			break;
+		case CTPCMD_Buy:
+		case CTPCMD_Sell:
+			return; // Ignore OnErrRtnOrderInsert event, use OnRtnOrder to handle rejection.
 		case CTPCMD_Subscribe:
 			break;
 		default:
@@ -1803,18 +1954,29 @@ public:
 	{
 		switch (m_cmd)
 		{
-		case CTPCMD_BuyOpen:
-		case CTPCMD_BuyClose:
-		case CTPCMD_BuyCloseToday:
-		case CTPCMD_SellOpen:
-		case CTPCMD_SellClose:
-		case CTPCMD_SellCloseToday:
 		case CTPCMD_Cancel:
 			break;
 		case CTPCMD_Subscribe:
 			break;
 		default:
 			return;
+		}
+
+		if (m_cmd == CTPCMD_Cancel) {
+			if (strcmp(pOrderAction->ExchangeID, m_params.ExchangeID.c_str()) != 0 || strcmp(pOrderAction->OrderSysID, m_params.OrderSysID.c_str()) != 0)
+				return;
+
+
+
+			if (pRspInfo && pRspInfo->ErrorID) {
+				// rejected
+				std::cout << error_message(pRspInfo->ErrorID, pRspInfo->ErrorMsg) << std::endl;
+				exit(0);
+			}
+			else {
+				std::cout << error_message(CTPCMD_ERR_CODE_DEFAULT, "cancel action rejected") << std::endl;
+				exit(0);
+			}
 		}
 
 		using json = nlohmann::ordered_json;
@@ -1890,6 +2052,22 @@ public:
 		std::cout << msg.dump(m_json_indent) << std::endl;
 	}
 
+	void OnRspOrderInsert(CThostFtdcInputOrderField* pInputOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+	{
+		if (pRspInfo && pRspInfo->ErrorID != 0) {
+			std::cout << error_message(pRspInfo->ErrorID, pRspInfo->ErrorMsg) << std::endl;
+			exit(0);
+		}
+	}
+
+	void OnRspOrderAction(CThostFtdcInputOrderActionField* pInputOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+	{
+		if (pRspInfo && pRspInfo->ErrorID != 0) {
+			std::cout << error_message(pRspInfo->ErrorID, pRspInfo->ErrorMsg) << std::endl;
+			exit(0);
+		}
+	}
+
 
 	CThostFtdcTraderApi* m_pTdApi;
 	std::string m_BrokerID;
@@ -1898,6 +2076,9 @@ public:
 	std::string m_UserProductInfo;
 	std::string m_UserID;
 	std::string m_Password;
+	TThostFtdcFrontIDType m_FrontID;
+	TThostFtdcSessionIDType m_SessionID;
+
 	CTPCMD m_cmd;
 	CTPCMD_Parameters m_params;
 	int m_json_indent;
@@ -1970,8 +2151,10 @@ int main(int argc, char** argv)
 			nResumeType = THOST_TERT_RESUME;
 		else if (ResumeType == "quick")
 			nResumeType = THOST_TERT_QUICK;
-		else
+		else {
 			std::cout << "Invalid subscribe mode, valid mode: restart/resume/quick" << std::endl;
+			exit(-1);
+		}
 		});
 
 	auto cmdQrySettlementInfo = app.add_subcommand("query_settlement", "QrySettlementInfo");
@@ -2096,6 +2279,181 @@ int main(int argc, char** argv)
 		cmd = CTPCMD_QryTransferBank;
 		});
 
+	/*
+	* order command format :
+	*
+	* <buy|sell> <open|close|closetoday> [hedge|arbi] <num> share[s] of <exchange.instrument> at <price>
+	*
+	* example:
+	* buy open 5 shares of SHFE.ag2701 at 10000
+	* buy close 3 shares of SHFE.ag2701 at market
+	* sell closetoday 1 share of SHFE.ag2701 at 9950.5
+	*/
+
+	auto cmdbuy = app.add_subcommand("buy", "Order Buy");
+	std::vector<std::string> buy_tokens;
+	std::string cmdbuy_parameters;
+	cmdbuy->allow_extras();
+	cmdbuy->callback([&]() {
+		cmd = CTPCMD_Buy;
+		buy_tokens = cmdbuy->remaining();
+		cmdbuy_parameters = StringJoin(buy_tokens);
+		std::regex reg("(open|close|closetoday)?\\s*(hedge)?\\s+(\\d+)\\s+share[s]?\\s+of\\s+(\\S+)\\.(\\S+)\\s+at\\s+(market|-?\\d+|-?\\d+\\.\\d+)");
+		std::smatch m;
+		if (!std::regex_match(cmdbuy_parameters, m, reg)) {
+			std::cout << "invalid order parameters:" << cmdbuy_parameters << std::endl;
+			exit(-1);
+		}
+
+		// open|close
+		if (m[1] == "open") {
+			params.OffsetFlag = THOST_FTDC_OF_Open;
+		}
+		else if (m[1] == "close") {
+			params.OffsetFlag = THOST_FTDC_OF_Close;
+		}
+		else if (m[1] == "closetoday") {
+			params.OffsetFlag = THOST_FTDC_OF_CloseToday;
+		}
+		else {
+			std::cout << "invalid open|close parameters:" << cmdbuy_parameters << std::endl;
+			exit(-1);
+		}
+
+		// hedge
+		if (m[2] == "") {
+			params.HedgeFlag = THOST_FTDC_HF_Speculation;
+		}
+		else if (m[2] == "hedge") {
+			params.HedgeFlag = THOST_FTDC_HF_Hedge;
+		}
+		else if (m[2] == "arbi") {
+			params.HedgeFlag = THOST_FTDC_HF_Arbitrage;
+		}
+		else {
+			std::cout << "invalid hedge parameters:" << cmdbuy_parameters << std::endl;
+			exit(-1);
+		}
+
+		// Volume
+		params.Volume = std::stoi(m[3]);
+
+		// Price
+		if (m[6] == "market") {
+			params.OrderPriceType = THOST_FTDC_OPT_AnyPrice;
+			params.Price = 0;
+		}
+		else {
+			params.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
+			params.Price = std::stod(m[6]);
+		}
+
+		// ExchangeID
+		params.ExchangeID = m[4];
+
+		// Instrument
+		params.InstrumentID = m[5];
+		});
+
+	auto cmdsell = app.add_subcommand("sell", "Order Sell");
+	std::vector<std::string> sell_tokens;
+	std::string cmdsell_parameters;
+	cmdsell->allow_extras();
+	cmdsell->callback([&]() {
+		cmd = CTPCMD_Sell;
+		sell_tokens = cmdsell->remaining();
+		cmdsell_parameters = StringJoin(sell_tokens);
+		std::regex reg("(open|close|closetoday)?\\s*(hedge)?\\s+(\\d+)\\s+share[s]?\\s+of\\s+(\\S+)\\.(\\S+)\\s+at\\s+(market|-?\\d+|-?\\d+\\.\\d+)");
+		std::smatch m;
+		if (!std::regex_match(cmdsell_parameters, m, reg)) {
+			std::cout << "invalid order parameters:" << cmdsell_parameters << std::endl;
+			exit(-1);
+		}
+
+		// open|close
+		if (m[1] == "open") {
+			params.OffsetFlag = THOST_FTDC_OF_Open;
+		}
+		else if (m[1] == "close") {
+			params.OffsetFlag = THOST_FTDC_OF_Close;
+		}
+		else if (m[1] == "closetoday") {
+			params.OffsetFlag = THOST_FTDC_OF_CloseToday;
+		}
+		else {
+			std::cout << "invalid open|close parameters:" << cmdbuy_parameters << std::endl;
+			exit(-1);
+		}
+
+		// hedge
+		if (m[2] == "") {
+			params.HedgeFlag = THOST_FTDC_HF_Speculation;
+		}
+		else if (m[2] == "hedge") {
+			params.HedgeFlag = THOST_FTDC_HF_Hedge;
+		}
+		else if (m[2] == "arbi") {
+			params.HedgeFlag = THOST_FTDC_HF_Arbitrage;
+		}
+		else {
+			std::cout << "invalid open|close parameters:" << cmdbuy_parameters << std::endl;
+			exit(-1);
+		}
+
+		// Volume
+		params.Volume = std::stoi(m[3]);
+
+		// Price
+		if (m[6] == "market") {
+			params.OrderPriceType = THOST_FTDC_OPT_AnyPrice;
+			params.Price = 0;
+		}
+		else {
+			params.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
+			params.Price = std::stod(m[6]);
+		}
+
+		// ExchangeID
+		params.ExchangeID = m[4];
+
+		// Instrument
+		params.InstrumentID = m[5];
+		});
+
+	/*
+	* cancel command format :
+	*
+	* cancel <id> of <exchange.instrument>
+	*
+	* example:
+	* cancel 12388 of SHFE.ag2701
+	* cancel "    12388" of SHFE.ag2701 (Don't miss the space chars of OrderSysID on ctp.)
+	*/
+	auto cmdcancel = app.add_subcommand("cancel", "Order Cancel");
+	std::vector<std::string> cancel_tokens;
+	std::string cmdcancel_parameters;
+	cmdcancel->allow_extras();
+	cmdcancel->callback([&]() {
+		cmd = CTPCMD_Cancel;
+		cancel_tokens = cmdcancel->remaining();
+		cmdcancel_parameters = StringJoin(cancel_tokens);
+		std::regex reg("(\\s*\\S+)\\s+of\\s+(\\S+)\\.(\\S+)");
+		std::smatch m;
+		if (!std::regex_match(cmdcancel_parameters, m, reg)) {
+			std::cout << "invalid cancel parameters:" << cmdcancel_parameters << std::endl;
+			exit(-1);
+		}
+
+		// OrderSysID
+		params.OrderSysID = m[1];
+
+		// ExchangeID
+		params.ExchangeID = m[2];
+
+		// Instrument
+		params.InstrumentID = m[3];
+		});
+
 	try { app.parse(argc, argv); }
 	catch (const CLI::ParseError& e) { return app.exit(e); }
 
@@ -2141,12 +2499,8 @@ int main(int argc, char** argv)
 	// THOST_TERT_NONE is not supported on both topics
 	switch (cmd)
 	{
-	case CTPCMD_BuyOpen:
-	case CTPCMD_BuyClose:
-	case CTPCMD_BuyCloseToday:
-	case CTPCMD_SellOpen:
-	case CTPCMD_SellClose:
-	case CTPCMD_SellCloseToday:
+	case CTPCMD_Buy:
+	case CTPCMD_Sell:
 	case CTPCMD_Cancel:
 		pTdApi->SubscribePrivateTopic(THOST_TERT_QUICK);
 		pTdApi->SubscribePublicTopic(THOST_TERT_QUICK);
